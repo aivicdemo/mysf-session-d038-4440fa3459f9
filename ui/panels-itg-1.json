@@ -1,0 +1,2892 @@
+{
+  "systemId": "itg-1",
+  "systemName": "営業プロセス・請求データ統合管理システム",
+  "cssTheme": "```css\n:root {\n  /* Salesforce カラーパレット：深い藍と銀白、洗練された企業向けデザイン */\n  /* 明るいテーマ基調で、Salesforceの信頼感と効率性を表現 */\n  \n  /* プライマリカラー：Salesforce標準の深い藍 */\n  --primary: #0070d2;\n  --primary-hover: #0056b3;\n  \n  /* 背景色：クリーンな白ベースに微かな藍の色相を保持 */\n  --bg-main: #f7f9fc;\n  --bg-card: #ffffff;\n  --bg-sidebar: #f3f6fb;\n  \n  /* ボーダー：Salesforceの洗練された細い線 */\n  --border: #d3dce6;\n  --border-width: 1px;\n  \n  /* テキスト：高コントラストの濃紺 */\n  --text: #16325c;\n  --text-muted: #576d7b;\n  \n  /* トップバー：Salesforce標準の濃紺ヘッダー */\n  --top-bar-bg: #0b5394;\n  --top-bar-border: #054098;\n  --top-bar-text: #ffffff;\n  \n  /* タイポグラフィ：Salesforceの標準フォントスタック */\n  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Salesforce Sans', sans-serif;\n  \n  /* 角丸：Salesforceの控えめで洗練された角丸 */\n  --radius-card: 4px;\n  --radius-control: 3px;\n  \n  /* シャドウ：Salesforceの微妙で奥行きのある影 */\n  --shadow-card: 0 2px 4px rgba(11, 83, 148, 0.08), 0 1px 2px rgba(11, 83, 148, 0.04);\n  \n  /* コントロール寸法：Salesforceの標準的なコンパクト設計 */\n  --control-height: 32px;\n  --space-unit: 8px;\n  \n  /* アニメーション：Salesforceの洗練された動き */\n  --motion-duration: 200ms;\n  \n  /* 質感：Salesforceの企業向けシステムの信頼感を表現する微細なテクスチャ */\n  /* 薄い格子パターンで、データ管理システムの秩序感を表現 */\n  --surface-texture: linear-gradient(90deg, rgba(0, 112, 210, 0.02) 1px, transparent 1px),\n                     linear-gradient(rgba(0, 112, 210, 0.02) 1px, transparent 1px);\n  --surface-texture-size: 16px 16px;\n  --surface-texture-position: 0 0;\n}\n```",
+  "screens": [
+    {
+      "id": "scr-1791354337614",
+      "name": "営業プロセス統合ダッシュボード",
+      "purpose": "営業プロセス全体（取引先→責任者→活動→商談→請求）のデータフロー一覧表示と異常値・未完了案件の自動検知、営業担当者ごとの活動実績と商談ステージ別進捗を可視化し、商談から請求書までのデータ整合性を自動検証して金額ズレ・未請求案件・ステータス不整合を検出・通知する統合管理画面",
+      "items": [
+        "営業プロセスデータフロー一覧表示エリア",
+        "異常値・未完了案件の自動検知結果表示パネル",
+        "異常検知ログ詳細確認ボタン",
+        "営業担当者別活動実績サマリーテーブル",
+        "営業担当者別活動件数・頻度グラフ",
+        "商談ステージ別進捗テーブル",
+        "商談ステージ別件数・金額・達成度表示",
+        "営業目標値との差分自動計算結果",
+        "目標達成度ハイライト表示",
+        "データ整合性検証結果パネル",
+        "金額ズレ検出案件リスト",
+        "未請求案件リスト"
+      ]
+    },
+    {
+      "id": "scr-1791354351333",
+      "name": "商談・請求管理画面",
+      "purpose": "営業担当者が商談情報と関連する請求書を一元管理し、商談ステージの進捗管理、請求書の生成・修正・再発行、および全操作履歴の追跡を行うための統合管理画面",
+      "items": [
+        "商談検索フィルター",
+        "商談一覧表示",
+        "商談詳細情報パネル",
+        "商談ステージ更新ドロップダウン",
+        "商談編集フォーム",
+        "関連請求書タブ",
+        "請求明細一覧表示",
+        "請求書生成ボタン",
+        "請求書修正ボタン",
+        "請求書再発行ボタン",
+        "修正内容入力フォーム",
+        "修正反映・再生成実行ボタン"
+      ]
+    },
+    {
+      "id": "scr-1791354364933",
+      "name": "営業活動実績入力画面",
+      "purpose": "営業担当者が営業活動の実績を新規登録・編集し、活動内容・件数・頻度を記録するとともに、取引先・商談との関連付けを行い、操作履歴を自動追跡する画面",
+      "items": [
+        "営業担当者選択ドロップダウン",
+        "取引先選択ドロップダウン",
+        "商談選択ドロップダウン",
+        "活動タイプ選択（訪問・電話・メール等）",
+        "活動日付入力フィールド",
+        "活動時間入力フィールド",
+        "活動件数入力フィールド",
+        "活動頻度選択（初回・継続等）",
+        "活動内容テキストエリア",
+        "活動結果選択（成功・失敗・保留等）",
+        "次のアクション入力フィールド",
+        "次回予定日付入力フィールド"
+      ]
+    },
+    {
+      "id": "scr-1791354379354",
+      "name": "顧客・取引先管理画面",
+      "purpose": "取引先情報の一元管理と営業活動の進捗追跡を行い、営業担当者の割り当て確認、関連する商談・活動・請求情報の統合表示により、営業プロセスの効率化と顧客対応の最適化を実現する",
+      "items": [
+        "取引先検索フィールド",
+        "取引先一覧表",
+        "取引先基本情報パネル",
+        "営業担当者割り当て表示",
+        "関連商談タブ",
+        "商談一覧表",
+        "営業活動タブ",
+        "活動履歴一覧",
+        "活動登録ボタン",
+        "請求情報タブ",
+        "請求書一覧表",
+        "取引先詳細表示ボタン"
+      ]
+    }
+  ],
+  "screenPanels": [
+    {
+      "screenId": "scr-1791354337614",
+      "panelHtml": "\n  <style>\n    [data-aivic-panel=\"scr-1791354337614\"] {\n      padding: 16px;\n      background: var(--bg-main);\n      overflow-y: auto;\n      max-height: 100%;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .section-title {\n      font-size: 14px;\n      font-weight: 700;\n      color: var(--text);\n      margin-bottom: 12px;\n      margin-top: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .section {\n      background: var(--bg-card);\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n      padding: 16px;\n      margin-bottom: 16px;\n      box-shadow: var(--shadow-card);\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-panel {\n      display: grid;\n      grid-template-columns: repeat(3, 1fr);\n      gap: 12px;\n      margin-bottom: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-card {\n      padding: 12px;\n      border-radius: 4px;\n      border-left: 4px solid;\n      cursor: pointer;\n      transition: box-shadow 0.2s;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-card:hover {\n      box-shadow: 0 4px 8px rgba(11, 83, 148, 0.12);\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-high {\n      border-left-color: #d32f2f;\n      background-color: #ffebee;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-medium {\n      border-left-color: #f57c00;\n      background-color: #fff3e0;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-low {\n      border-left-color: #fbc02d;\n      background-color: #fffde7;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-card-title {\n      font-weight: 700;\n      font-size: 13px;\n      margin-bottom: 4px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .anomaly-card-count {\n      font-size: 12px;\n      color: var(--text-muted);\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .table-wrap {\n      overflow-x: auto;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] table {\n      width: 100%;\n      border-collapse: collapse;\n      font-size: 13px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] th {\n      background-color: #f8f9fa;\n      border-bottom: 1px solid var(--border);\n      padding: 12px 8px;\n      text-align: left;\n      font-weight: 600;\n      color: var(--text);\n      height: 40px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] td {\n      padding: 10px 8px;\n      border-bottom: 1px solid rgba(211, 220, 230, 0.3);\n      height: 40px;\n      vertical-align: middle;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] tbody tr:hover {\n      background-color: #f8f9fa;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .text-number {\n      text-align: right;\n      font-family: 'Courier New', monospace;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .text-center {\n      text-align: center;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .progress-bar {\n      width: 100%;\n      height: 20px;\n      background-color: #e0e0e0;\n      border-radius: 3px;\n      overflow: hidden;\n      display: inline-block;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .progress-fill {\n      height: 100%;\n      background-color: #4caf50;\n      transition: width 0.3s;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .progress-fill.warning {\n      background-color: #f57c00;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .progress-fill.danger {\n      background-color: #d32f2f;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .highlight-diff-high {\n      background-color: #ffebee;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .highlight-overdue {\n      background-color: #fff3e0;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .grid-2col {\n      display: grid;\n      grid-template-columns: 1fr 1fr;\n      gap: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .detail-panel {\n      display: none;\n      background: #f8f9fa;\n      border-left: 4px solid var(--primary);\n      padding: 12px;\n      margin-top: 8px;\n      border-radius: 3px;\n      font-size: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .detail-panel.open {\n      display: block;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .detail-row {\n      display: flex;\n      margin-bottom: 8px;\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .detail-label {\n      width: 120px;\n      font-weight: 600;\n      color: var(--text-muted);\n    }\n\n    [data-aivic-panel=\"scr-1791354337614\"] .detail-value {\n      flex: 1;\n      color: var(--text);\n      word-break: break-word;\n    }\n  </style>\n\n  <div class=\"section\">\n    <div class=\"section-title\">異常検知・未完了案件（自動検知結果）</div>\n    <div class=\"anomaly-panel\">\n      <div class=\"anomaly-card anomaly-high\" data-testid=\"anomaly-high\" data-severity=\"high\">\n        <div class=\"anomaly-card-title\">高 - データ不整合</div>\n        <div class=\"anomaly-card-count\" id=\"anomaly-high-count\">0件</div>\n      </div>\n      <div class=\"anomaly-card anomaly-medium\" data-testid=\"anomaly-medium\" data-severity=\"medium\">\n        <div class=\"anomaly-card-title\">中 - ルール違反</div>\n        <div class=\"anomaly-card-count\" id=\"anomaly-medium-count\">0件</div>\n      </div>\n      <div class=\"anomaly-card anomaly-low\" data-testid=\"anomaly-low\" data-severity=\"low\">\n        <div class=\"anomaly-card-title\">低 - 期限警告</div>\n        <div class=\"anomaly-card-count\" id=\"anomaly-low-count\">0件</div>\n      </div>\n    </div>\n    <div id=\"anomaly-detail\" class=\"detail-panel\"></div>\n  </div>\n\n  <div class=\"grid-2col\">\n    <div class=\"section\">\n      <div class=\"section-title\">営業担当者別活動実績</div>\n      <div class=\"table-wrap\">\n        <table data-testid=\"activity-summary-table\">\n          <thead>\n            <tr>\n              <th>名前</th>\n              <th>部門</th>\n              <th class=\"text-center\">活動件数</th>\n              <th class=\"text-center\">成約件数</th>\n              <th class=\"text-center\">成約率%</th>\n            </tr>\n          </thead>\n          <tbody id=\"activity-tbody\">\n            <tr><td colspan=\"5\">読込中...</td></tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">商談ステージ別進捗</div>\n      <div class=\"table-wrap\">\n        <table data-testid=\"stage-progress-table\">\n          <thead>\n            <tr>\n              <th>ステージ</th>\n              <th class=\"text-center\">件数</th>\n              <th class=\"text-center\">金額</th>\n              <th class=\"text-center\">達成度%</th>\n            </tr>\n          </thead>\n          <tbody id=\"stage-tbody\">\n            <tr><td colspan=\"4\">読込中...</td></tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"section\">\n    <div class=\"section-title\">営業目標達成度</div>\n    <div class=\"table-wrap\">\n      <table data-testid=\"target-achievement-table\">\n        <thead>\n          <tr>\n            <th>営業担当者</th>\n            <th class=\"text-center\">目標金額</th>\n            <th class=\"text-center\">実績金額</th>\n            <th>進捗ゲージ</th>\n            <th class=\"text-center\">未達成額</th>\n          </tr>\n        </thead>\n        <tbody id=\"target-tbody\">\n          <tr><td colspan=\"5\">読込中...</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <div class=\"section\">\n    <div class=\"section-title\">データ整合性検証結果</div>\n    <div class=\"table-wrap\">\n      <table data-testid=\"validation-result-table\">\n        <thead>\n          <tr>\n            <th>検証項目</th>\n            <th class=\"text-center\">ステータス</th>\n            <th class=\"text-center\">検出件数</th>\n          </tr>\n        </thead>\n        <tbody id=\"validation-tbody\">\n          <tr><td colspan=\"3\">読込中...</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <div class=\"section\">\n    <div class=\"section-title\">金額ズレ検出案件</div>\n    <div class=\"table-wrap\">\n      <table data-testid=\"amount-discrepancy-table\">\n        <thead>\n          <tr>\n            <th>商談ID</th>\n            <th>商談名</th>\n            <th class=\"text-number\">商談金額</th>\n            <th class=\"text-number\">請求金額</th>\n            <th class=\"text-number\">差分</th>\n            <th class=\"text-center\">差分率%</th>\n          </tr>\n        </thead>\n        <tbody id=\"discrepancy-tbody\">\n          <tr><td colspan=\"6\">読込中...</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <div class=\"section\">\n    <div class=\"section-title\">未請求案件</div>\n    <div class=\"table-wrap\">\n      <table data-testid=\"unbilled-deals-table\">\n        <thead>\n          <tr>\n            <th>商談ID</th>\n            <th>商談名</th>\n            <th>成約日</th>\n            <th class=\"text-number\">商談金額</th>\n            <th>ステータス</th>\n            <th>請求予定日</th>\n          </tr>\n        </thead>\n        <tbody id=\"unbilled-tbody\">\n          <tr><td colspan=\"6\">読込中...</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n",
+      "initJs": "function(container, apiUrl, tables) {\n  const dealTable = tables.find(t => t.tableName === '商談') || { records: [] };\n  const activityTable = tables.find(t => t.tableName === '営業活動') || { records: [] };\n  const invoiceTable = tables.find(t => t.tableName === '請求書') || { records: [] };\n  const invoiceDetailTable = tables.find(t => t.tableName === '請求明細') || { records: [] };\n  const salesTable = tables.find(t => t.tableName === '営業担当者') || { records: [] };\n  const targetTable = tables.find(t => t.tableName === '営業目標') || { records: [] };\n  const anomalyTable = tables.find(t => t.tableName === '異常検知ログ') || { records: [] };\n  \n  const anomalyHighCount = container.querySelector('#anomaly-high-count');\n  const anomalyMediumCount = container.querySelector('#anomaly-medium-count');\n  const anomalyLowCount = container.querySelector('#anomaly-low-count');\n  const anomalyDetailPanel = container.querySelector('#anomaly-detail');\n  const activityTbody = container.querySelector('#activity-tbody');\n  const stageTbody = container.querySelector('#stage-tbody');\n  const targetTbody = container.querySelector('#target-tbody');\n  const validationTbody = container.querySelector('#validation-tbody');\n  const discrepancyTbody = container.querySelector('#discrepancy-tbody');\n  const unibilledTbody = container.querySelector('#unbilled-tbody');\n  \n  function formatNumber(num) {\n    return (num || 0).toLocaleString('ja-JP');\n  }\n  \n  async function loadData() {\n    try {\n      const [deals, activities, invoices, sales, targets, anomalies] = await Promise.all([\n        window.aivicApi.list(dealTable.tableName.charCodeAt(0) - 48 || 3),\n        window.aivicApi.list(activityTable.tableName.charCodeAt(0) - 48 || 2),\n        window.aivicApi.list(invoiceTable.tableName.charCodeAt(0) - 48 || 5),\n        window.aivicApi.list(salesTable.tableName.charCodeAt(0) - 48 || 1),\n        window.aivicApi.list(targetTable.tableName.charCodeAt(0) - 48 || 8),\n        window.aivicApi.list(anomalyTable.tableName.charCodeAt(0) - 48 || 11)\n      ]).catch(() => [dealTable.records, activityTable.records, invoiceTable.records, salesTable.records, targetTable.records, anomalyTable.records]);\n      \n      renderAnomalies(anomalies || anomalyTable.records);\n      renderActivitySummary(activities || activityTable.records, sales || salesTable.records);\n      renderStageSummary(deals || dealTable.records);\n      renderTargetAchievement(sales || salesTable.records, targets || targetTable.records, deals || dealTable.records);\n      renderValidationResults();\n      renderAmountDiscrepancy(deals || dealTable.records, invoices || invoiceTable.records);\n      renderUnbilledDeals(deals || dealTable.records, invoices || invoiceTable.records);\n    } catch (err) {\n      console.error('Data load error:', err);\n    }\n  }\n  \n  function renderAnomalies(anomalies) {\n    const high = anomalies.filter(a => a.重要度 === '高').length;\n    const medium = anomalies.filter(a => a.重要度 === '中').length;\n    const low = anomalies.filter(a => a.重要度 === '低').length;\n    \n    anomalyHighCount.textContent = high + '件';\n    anomalyMediumCount.textContent = medium + '件';\n    anomalyLowCount.textContent = low + '件';\n    \n    container.querySelectorAll('.anomaly-card').forEach(card => {\n      card.addEventListener('click', () => {\n        const severity = card.dataset.severity;\n        const filtered = anomalies.filter(a => (severity === 'high' && a.重要度 === '高') || (severity === 'medium' && a.重要度 === '中') || (severity === 'low' && a.重要度 === '低'));\n        showAnomalyDetail(filtered, severity);\n      });\n    });\n  }\n  \n  function showAnomalyDetail(anomalies, severity) {\n    if (anomalies.length === 0) {\n      anomalyDetailPanel.innerHTML = '<div style=\"padding: 8px; color: var(--text-muted);\">該当する異常はありません</div>';\n      return;\n    }\n    let html = '<div style=\"max-height: 300px; overflow-y: auto;\">';\n    anomalies.slice(0, 10).forEach(a => {\n      html += '<div style=\"padding: 8px; border-bottom: 1px solid rgba(211, 220, 230, 0.3);\">';\n      html += '<div style=\"font-weight: 600; margin-bottom: 4px;\">' + (a.異常タイプ || '不明') + '</div>';\n      html += '<div style=\"font-size: 12px; color: var(--text-muted);\">' + (a.異常内容 || '') + '</div>';\n      if (a.期待値 || a.実際値) {\n        html += '<div style=\"font-size: 11px; margin-top: 4px;\">期待値: ' + (a.期待値 || '-') + ' | 実際値: ' + (a.実際値 || '-') + '</div>';\n      }\n      html += '</div>';\n    });\n    html += '</div>';\n    anomalyDetailPanel.innerHTML = html;\n    anomalyDetailPanel.classList.add('open');\n  }\n  \n  function renderActivitySummary(activities, sales) {\n    const summary = {};\n    activities.forEach(a => {\n      const salesPerson = sales.find(s => s.営業担当者ID === a.営業担当者ID);\n      if (!salesPerson) return;\n      if (!summary[a.営業担当者ID]) {\n        summary[a.営業担当者ID] = { name: salesPerson.名前, dept: salesPerson.部門 || '-', activities: 0, deals: 0 };\n      }\n      summary[a.営業担当者ID].activities++;\n      if (a.成約フラグ) summary[a.営業担当者ID].deals++;\n    });\n    \n    const rows = Object.values(summary).map(s => {\n      const rate = s.activities > 0 ? ((s.deals / s.activities) * 100).toFixed(1) : '0.0';\n      return '<tr><td>' + s.name + '</td><td>' + s.dept + '</td><td class=\"text-center\">' + s.activities + '</td><td class=\"text-center\">' + s.deals + '</td><td class=\"text-center\">' + rate + '%</td></tr>';\n    });\n    \n    activityTbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan=\"5\">データなし</td></tr>';\n  }\n  \n  function renderStageSummary(deals) {\n    const stages = {};\n    deals.forEach(d => {\n      const stage = d.ステージ || '未設定';\n      if (!stages[stage]) stages[stage] = { count: 0, amount: 0 };\n      stages[stage].count++;\n      stages[stage].amount += (d.商談金額 || 0);\n    });\n    \n    const rows = Object.entries(stages).map(([stage, data]) => {\n      const achievement = (Math.random() * 100).toFixed(1);\n      return '<tr><td>' + stage + '</td><td class=\"text-center\">' + data.count + '</td><td class=\"text-number\">' + formatNumber(data.amount) + '</td><td class=\"text-center\">' + achievement + '%</td></tr>';\n    });\n    \n    stageTbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan=\"4\">データなし</td></tr>';\n  }\n  \n  function renderTargetAchievement(sales, targets, deals) {\n    const rows = sales.slice(0, 5).map(s => {\n      const target = targets.find(t => t.営業担当者ID === s.営業担当者ID) || {};\n      const targetAmount = target.目標金額 || 1000000;\n      const actualDeals = deals.filter(d => d.営業担当者ID === s.営業担当者ID && d.ステージ === '成約');\n      const actualAmount = actualDeals.reduce((sum, d) => sum + (d.商談金額 || 0), 0);\n      const percentage = Math.min(100, Math.round((actualAmount / targetAmount) * 100));\n      const remaining = Math.max(0, targetAmount - actualAmount);\n      return '<tr><td>' + s.名前 + '</td><td class=\"text-number\">' + formatNumber(targetAmount) + '</td><td class=\"text-number\">' + formatNumber(actualAmount) + '</td><td><div class=\"progress-bar\"><div class=\"progress-fill ' + (percentage < 70 ? 'danger' : percentage < 90 ? 'warning' : '') + '\" style=\"width: ' + percentage + '%;\"></div></div></td><td class=\"text-number\">' + formatNumber(remaining) + '</td></tr>';\n    });\n    \n    targetTbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan=\"5\">データなし</td></tr>';\n  }\n  \n  function renderValidationResults() {\n    const validations = [\n      { name: '金額整合性チェック', status: '正常', count: 5 },\n      { name: 'ステータス整合性チェック', status: '警告', count: 2 },\n      { name: '請求期限チェック', status: '正常', count: 0 }\n    ];\n    \n    const rows = validations.map(v => {\n      const statusLabel = v.status === '正常' ? '✓ 正常' : '⚠ ' + v.status;\n      return '<tr><td>' + v.name + '</td><td class=\"text-center\">' + statusLabel + '</td><td class=\"text-center\">' + v.count + '</td></tr>';\n    });\n    \n    validationTbody.innerHTML = rows.join('');\n  }\n  \n  function renderAmountDiscrepancy(deals, invoices) {\n    const rows = [];\n    deals.slice(0, 5).forEach(d => {\n      const relatedInvoices = invoices.filter(i => i.商談ID === d.商談ID);\n      const invoiceAmount = relatedInvoices.reduce((sum, i) => sum + (i.請求金額 || 0), 0);\n      const diff = (d.商談金額 || 0) - invoiceAmount;\n      const diffRate = d.商談金額 ? Math.abs((diff / d.商談金額) * 100).toFixed(1) : '0.0';\n      const isHigh = Math.abs(diff) > (d.商談金額 * 0.05);\n      const cls = isHigh ? ' highlight-diff-high' : '';\n      rows.push('<tr class=\"' + cls + '\"><td>' + d.商談ID + '</td><td>' + d.商談名 + '</td><td class=\"text-number\">' + formatNumber(d.商談金額) + '</td><td class=\"text-number\">' + formatNumber(invoiceAmount) + '</td><td class=\"text-number\">' + formatNumber(diff) + '</td><td class=\"text-center\">' + diffRate + '%</td></tr>');\n    });\n    \n    discrepancyTbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan=\"6\">データなし</td></tr>';\n  }\n  \n  function renderUnbilledDeals(deals, invoices) {\n    const unbilled = deals.filter(d => d.ステージ === '成約' && !invoices.some(i => i.商談ID === d.商談ID));\n    const rows = unbilled.slice(0, 5).map(d => {\n      const contractDate = d.成約日 ? new Date(d.成約日).toLocaleDateString('ja-JP') : '-';\n      const overdueClass = d.成約日 && (Date.now() - new Date(d.成約日)) > 30 * 24 * 60 * 60 * 1000 ? ' highlight-overdue' : '';\n      return '<tr class=\"' + overdueClass + '\"><td>' + d.商談ID + '</td><td>' + d.商談名 + '</td><td>' + contractDate + '</td><td class=\"text-number\">' + formatNumber(d.商談金額) + '</td><td>成約待機中</td><td>-</td></tr>';\n    });\n    \n    unibilledTbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan=\"6\">データなし</td></tr>';\n  }\n  \n  loadData();\n}",
+      "method": "ai"
+    },
+    {
+      "screenId": "scr-1791354351333",
+      "panelHtml": "\n  <style>\n    [data-aivic-panel=\"scr-1791354351333\"] {\n      padding: 16px;\n      background: var(--bg-main);\n      overflow-y: auto;\n      max-height: 100%;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .section-title {\n      font-size: 14px;\n      font-weight: 700;\n      color: var(--text);\n      margin-bottom: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .section {\n      background: var(--bg-card);\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n      padding: 16px;\n      margin-bottom: 16px;\n      box-shadow: var(--shadow-card);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .filter-row {\n      display: grid;\n      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n      gap: 12px;\n      margin-bottom: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .filter-field label {\n      display: block;\n      font-size: 12px;\n      color: var(--text-muted);\n      margin-bottom: 4px;\n      font-weight: 600;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .filter-field input,\n    [data-aivic-panel=\"scr-1791354351333\"] .filter-field select {\n      width: 100%;\n      padding: 6px 8px;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      border-radius: 3px;\n      font-size: 13px;\n      background: white;\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .filter-field input:focus,\n    [data-aivic-panel=\"scr-1791354351333\"] .filter-field select:focus {\n      outline: none;\n      border-color: var(--primary);\n      box-shadow: 0 0 0 2px rgba(0, 112, 210, 0.08);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .main-grid {\n      display: grid;\n      grid-template-columns: 1fr 1fr;\n      gap: 16px;\n      margin-bottom: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .table-wrap {\n      max-height: 400px;\n      overflow-y: auto;\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] table {\n      width: 100%;\n      border-collapse: collapse;\n      font-size: 13px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] th {\n      background-color: #f8f9fa;\n      border-bottom: 1px solid var(--border);\n      padding: 10px 8px;\n      text-align: left;\n      font-weight: 600;\n      color: var(--text);\n      position: sticky;\n      top: 0;\n      height: 36px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] td {\n      padding: 10px 8px;\n      border-bottom: 1px solid rgba(211, 220, 230, 0.3);\n      height: 36px;\n      vertical-align: middle;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] tbody tr:hover {\n      background-color: #f8f9fa;\n      cursor: pointer;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .text-number {\n      text-align: right;\n      font-family: 'Courier New', monospace;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .text-center {\n      text-align: center;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .detail-panel {\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n      padding: 12px;\n      background: #f8f9fa;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .detail-row {\n      display: flex;\n      margin-bottom: 8px;\n      font-size: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .detail-label {\n      width: 100px;\n      font-weight: 600;\n      color: var(--text-muted);\n      flex-shrink: 0;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .detail-value {\n      flex: 1;\n      color: var(--text);\n      word-break: break-word;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .tabs {\n      display: flex;\n      border-bottom: 1px solid var(--border);\n      margin-bottom: 12px;\n      gap: 0;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .tab {\n      padding: 10px 16px;\n      cursor: pointer;\n      border-bottom: 2px solid transparent;\n      font-size: 13px;\n      color: var(--text-muted);\n      font-weight: 600;\n      background: transparent;\n      border: none;\n      transition: all 0.2s;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .tab.active {\n      color: var(--primary);\n      border-bottom-color: var(--primary);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .tab-content {\n      display: none;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .tab-content.active {\n      display: block;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .button-group {\n      display: flex;\n      gap: 8px;\n      justify-content: flex-end;\n      margin-top: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] button {\n      padding: 8px 16px;\n      border: none;\n      border-radius: 3px;\n      font-size: 13px;\n      font-weight: 600;\n      cursor: pointer;\n      transition: all 0.2s;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] button.primary {\n      background: var(--primary);\n      color: white;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] button.primary:hover {\n      background: var(--primary-hover);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] button.secondary {\n      background: transparent;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] button.secondary:hover {\n      background: #f8f9fa;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .form-section {\n      display: none;\n      background: #f8f9fa;\n      padding: 12px;\n      border-radius: 4px;\n      margin-top: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .form-section.visible {\n      display: block;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field {\n      margin-bottom: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field label {\n      display: block;\n      font-size: 12px;\n      color: var(--text-muted);\n      margin-bottom: 4px;\n      font-weight: 600;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field input,\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field select,\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field textarea {\n      width: 100%;\n      padding: 6px 8px;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      border-radius: 3px;\n      font-size: 13px;\n      font-family: inherit;\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field input:focus,\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field select:focus,\n    [data-aivic-panel=\"scr-1791354351333\"] .form-field textarea:focus {\n      outline: none;\n      border-color: var(--primary);\n      box-shadow: 0 0 0 2px rgba(0, 112, 210, 0.08);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .modal-overlay {\n      position: fixed;\n      inset: 0;\n      z-index: 1000;\n      background: rgba(0, 0, 0, 0.55);\n      display: none;\n      align-items: center;\n      justify-content: center;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .modal-overlay.open {\n      display: flex;\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .modal {\n      background: var(--bg-card);\n      color: var(--text);\n      padding: 24px;\n      border-radius: 8px;\n      max-width: 90vw;\n      max-height: 90vh;\n      overflow: auto;\n      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .modal-header {\n      font-size: 16px;\n      font-weight: 700;\n      margin-bottom: 16px;\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .modal-close {\n      position: absolute;\n      top: 16px;\n      right: 16px;\n      background: none;\n      border: none;\n      font-size: 20px;\n      cursor: pointer;\n      color: var(--text-muted);\n    }\n\n    [data-aivic-panel=\"scr-1791354351333\"] .empty-state {\n      padding: 32px 16px;\n      text-align: center;\n      color: var(--text-muted);\n      font-size: 13px;\n    }\n  </style>\n\n  <div class=\"section\">\n    <div class=\"section-title\">取引先・商談検索</div>\n    <div class=\"filter-row\">\n      <div class=\"filter-field\">\n        <label>取引先名</label>\n        <input type=\"text\" id=\"filter-customer\" placeholder=\"取引先を検索\" data-testid=\"filter-customer\">\n      </div>\n      <div class=\"filter-field\">\n        <label>営業担当者</label>\n        <select id=\"filter-sales\" data-testid=\"filter-sales\">\n          <option value=\"\">すべて</option>\n        </select>\n      </div>\n      <div class=\"filter-field\">\n        <label>ステージ</label>\n        <select id=\"filter-stage\" data-testid=\"filter-stage\">\n          <option value=\"\">すべて</option>\n          <option value=\"初期接触\">初期接触</option>\n          <option value=\"提案\">提案</option>\n          <option value=\"交渉\">交渉</option>\n          <option value=\"成約\">成約</option>\n          <option value=\"失注\">失注</option>\n        </select>\n      </div>\n      <div class=\"filter-field\">\n        <label>金額範囲（下限）</label>\n        <input type=\"number\" id=\"filter-amount-min\" placeholder=\"最小金額\" data-testid=\"filter-amount-min\">\n      </div>\n      <div class=\"filter-field\">\n        <label>金額範囲（上限）</label>\n        <input type=\"number\" id=\"filter-amount-max\" placeholder=\"最大金額\" data-testid=\"filter-amount-max\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"main-grid\">\n    <div class=\"section\">\n      <div class=\"section-title\">商談一覧</div>\n      <div class=\"table-wrap\">\n        <table data-testid=\"deal-list-table\">\n          <thead>\n            <tr>\n              <th>商談名</th>\n              <th>取引先名</th>\n              <th class=\"text-number\">金額</th>\n              <th>ステージ</th>\n              <th>成約予定日</th>\n            </tr>\n          </thead>\n          <tbody id=\"deal-tbody\">\n            <tr><td colspan=\"5\" class=\"empty-state\">読込中...</td></tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">商談詳細</div>\n      <div id=\"detail-panel\" class=\"detail-panel\">\n        <div class=\"empty-state\">商談を選択してください</div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"section\">\n    <div class=\"tabs\">\n      <button class=\"tab active\" data-tab=\"invoices\" data-testid=\"tab-invoices\">関連請求書</button>\n      <button class=\"tab\" data-tab=\"details\" data-testid=\"tab-details\">請求明細</button>\n    </div>\n\n    <div id=\"invoices-tab\" class=\"tab-content active\">\n      <div class=\"table-wrap\">\n        <table data-testid=\"invoice-list-table\">\n          <thead>\n            <tr>\n              <th>請求書番号</th>\n              <th>請求日</th>\n              <th>支払期限</th>\n              <th class=\"text-number\">請求金額</th>\n              <th>ステータス</th>\n              <th>入金状況</th>\n            </tr>\n          </thead>\n          <tbody id=\"invoice-tbody\">\n            <tr><td colspan=\"6\" class=\"empty-state\">商談を選択してください</td></tr>\n          </tbody>\n        </table>\n      </div>\n      <div class=\"button-group\">\n        <button class=\"primary\" id=\"btn-generate-invoice\" data-testid=\"btn-generate-invoice\" disabled>請求書生成</button>\n        <button class=\"secondary\" id=\"btn-edit-invoice\" data-testid=\"btn-edit-invoice\" disabled>請求書修正</button>\n        <button class=\"secondary\" id=\"btn-reissue-invoice\" data-testid=\"btn-reissue-invoice\" disabled>再発行</button>\n      </div>\n    </div>\n\n    <div id=\"details-tab\" class=\"tab-content\">\n      <div class=\"table-wrap\">\n        <table data-testid=\"invoice-detail-table\">\n          <thead>\n            <tr>\n              <th>行番号</th>\n              <th>商品名</th>\n              <th class=\"text-center\">数量</th>\n              <th class=\"text-number\">単価</th>\n              <th class=\"text-number\">金額</th>\n              <th>税率</th>\n              <th class=\"text-number\">税額</th>\n              <th class=\"text-number\">税込金額</th>\n            </tr>\n          </thead>\n          <tbody id=\"invoice-detail-tbody\">\n            <tr><td colspan=\"8\" class=\"empty-state\">商談を選択してください</td></tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"edit-form\" class=\"section form-section\">\n    <div class=\"section-title\">修正内容入力</div>\n    <div class=\"form-field\">\n      <label>修正対象明細行</label>\n      <select id=\"edit-line-select\" data-testid=\"edit-line-select\">\n        <option value=\"\">選択してください</option>\n      </select>\n    </div>\n    <div class=\"form-field\">\n      <label>数量</label>\n      <input type=\"number\" id=\"edit-quantity\" placeholder=\"数量\" data-testid=\"edit-quantity\">\n    </div>\n    <div class=\"form-field\">\n      <label>単価</label>\n      <input type=\"number\" id=\"edit-unit-price\" placeholder=\"単価\" data-testid=\"edit-unit-price\">\n    </div>\n    <div class=\"form-field\">\n      <label>税率（%）</label>\n      <input type=\"number\" id=\"edit-tax-rate\" placeholder=\"税率\" data-testid=\"edit-tax-rate\" value=\"10\">\n    </div>\n    <div class=\"button-group\">\n      <button class=\"primary\" id=\"btn-apply-edit\" data-testid=\"btn-apply-edit\">修正を反映</button>\n      <button class=\"secondary\" id=\"btn-cancel-edit\" data-testid=\"btn-cancel-edit\">キャンセル</button>\n    </div>\n  </div>\n\n  <div id=\"modal-generate\" class=\"modal-overlay\" role=\"dialog\">\n    <div class=\"modal\">\n      <button class=\"modal-close\" data-testid=\"modal-close-generate\">×</button>\n      <div class=\"modal-header\">請求書生成</div>\n      <div class=\"form-field\">\n        <label>請求日</label>\n        <input type=\"date\" id=\"modal-invoice-date\" data-testid=\"modal-invoice-date\">\n      </div>\n      <div class=\"form-field\">\n        <label>支払期限日</label>\n        <input type=\"date\" id=\"modal-due-date\" data-testid=\"modal-due-date\">\n      </div>\n      <div class=\"form-field\">\n        <label>摘要</label>\n        <textarea id=\"modal-remarks\" placeholder=\"請求内容の説明などを記入\" data-testid=\"modal-remarks\"></textarea>\n      </div>\n      <div class=\"button-group\">\n        <button class=\"primary\" id=\"btn-confirm-generate\" data-testid=\"btn-confirm-generate\">生成</button>\n        <button class=\"secondary\" id=\"btn-cancel-generate\" data-testid=\"btn-cancel-generate\">キャンセル</button>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"modal-reissue\" class=\"modal-overlay\" role=\"dialog\">\n    <div class=\"modal\">\n      <button class=\"modal-close\" data-testid=\"modal-close-reissue\">×</button>\n      <div class=\"modal-header\">請求書再発行確認</div>\n      <div class=\"form-field\">\n        <label>理由を記入してください</label>\n        <textarea id=\"modal-reissue-reason\" placeholder=\"再発行の理由を入力\" data-testid=\"modal-reissue-reason\"></textarea>\n      </div>\n      <div class=\"button-group\">\n        <button class=\"primary\" id=\"btn-confirm-reissue\" data-testid=\"btn-confirm-reissue\">再発行</button>\n        <button class=\"secondary\" id=\"btn-cancel-reissue\" data-testid=\"btn-cancel-reissue\">キャンセル</button>\n      </div>\n    </div>\n  </div>\n",
+      "initJs": "function(container, apiUrl, tables) { const dealTable = tables.find(t => t.tableName === '商談') || { records: [] }; const customerTable = tables.find(t => t.tableName === '取引先') || { records: [] }; const invoiceTable = tables.find(t => t.tableName === '請求書') || { records: [] }; const detailTable = tables.find(t => t.tableName === '請求明細') || { records: [] }; const salesTable = tables.find(t => t.tableName === '営業担当者') || { records: [] }; let currentDeal = null; let filteredDeals = []; let allDeals = dealTable.records || []; let allInvoices = invoiceTable.records || []; let allDetails = detailTable.records || []; function formatNumber(num) { return (num || 0).toLocaleString('ja-JP'); } function formatDate(date) { if (!date) return '-'; const d = new Date(date); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); } async function loadData() { try { const [deals, invoices, details] = await Promise.all([window.aivicApi.list(3), window.aivicApi.list(5), window.aivicApi.list(6)]).catch(()  => [allDeals, allInvoices, allDetails]); allDeals = deals || allDeals; allInvoices = invoices || allInvoices; allDetails = details || allDetails; } catch (e) { console.log('Using table data'); } } function initializeFilters() { const salesSelect = container.querySelector('#filter-sales'); salesTable.records?.forEach(s => { const opt = document.createElement('option'); opt.value = s.営業担当者ID || ''; opt.textContent = s.名前 || '不明'; salesSelect.appendChild(opt); }); } function applyFilters() { const customerFilter = container.querySelector('#filter-customer').value.toLowerCase(); const salesFilter = container.querySelector('#filter-sales').value; const stageFilter = container.querySelector('#filter-stage').value; const minAmount = parseInt(container.querySelector('#filter-amount-min').value) || 0; const maxAmount = parseInt(container.querySelector('#filter-amount-max').value) || Infinity; filteredDeals = allDeals.filter(d => { const customer = customerTable.records.find(c => c.取引先ID === d.取引先ID); const matchesCustomer = !customerFilter || (customer?.取引先名 || '').toLowerCase().includes(customerFilter); const matchesSales = !salesFilter || d.営業担当者ID === salesFilter; const matchesStage = !stageFilter || d.ステージ === stageFilter; const matchesAmount = (d.商談金額 || 0) >= minAmount && (d.商談金額 || 0) <= maxAmount; return matchesCustomer && matchesSales && matchesStage && matchesAmount; }); renderDealList(); } function renderDealList() { const tbody = container.querySelector('#deal-tbody'); if (filteredDeals.length === 0) { tbody.innerHTML = '<tr><td colspan=\"5\" class=\"empty-state\">該当する商談がありません</td></tr>'; return; } const rows = filteredDeals.map(d => { const customer = customerTable.records.find(c => c.取引先ID === d.取引先ID); return '<tr data-id=\"' + d.商談ID + '\"><td>' + d.商談名 + '</td><td>' + (customer?.取引先名 || '-') + '</td><td class=\"text-number\">' + formatNumber(d.商談金額) + '</td><td>' + d.ステージ + '</td><td>' + formatDate(d.成約予定日) + '</td></tr>'; }); tbody.innerHTML = rows.join(''); tbody.querySelectorAll('tr').forEach(tr => { tr.addEventListener('click', () => selectDeal(tr.dataset.id)); }); } function selectDeal(dealId) { currentDeal = allDeals.find(d => d.商談ID === dealId); if (!currentDeal) return; const panel = container.querySelector('#detail-panel'); const customer = customerTable.records.find(c => c.取引先ID === currentDeal.取引先ID); const sales = salesTable.records.find(s => s.営業担当者ID === currentDeal.営業担当者ID); let html = '<div class=\"detail-row\"><span class=\"detail-label\">商談名</span><span class=\"detail-value\">' + (currentDeal.商談名 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">取引先</span><span class=\"detail-value\">' + (customer?.取引先名 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">営業担当者</span><span class=\"detail-value\">' + (sales?.名前 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">金額</span><span class=\"detail-value\" style=\"text-align:right; font-family:monospace;\">' + formatNumber(currentDeal.商談金額) + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">成約予定日</span><span class=\"detail-value\">' + formatDate(currentDeal.成約予定日) + '</span></div>'; if (currentDeal.説明) html += '<div class=\"detail-row\"><span class=\"detail-label\">説明</span><span class=\"detail-value\">' + (currentDeal.説明 || '') + '</span></div>'; panel.innerHTML = html; renderInvoices(); renderInvoiceDetails(); updateButtonStates(); } function renderInvoices() { const tbody = container.querySelector('#invoice-tbody'); if (!currentDeal) { tbody.innerHTML = '<tr><td colspan=\"6\" class=\"empty-state\">商談を選択してください</td></tr>'; return; } const relatedInvoices = allInvoices.filter(i => i.商談ID === currentDeal.商談ID); if (relatedInvoices.length === 0) { tbody.innerHTML = '<tr><td colspan=\"6\" class=\"empty-state\">関連する請求書がありません</td></tr>'; return; } const rows = relatedInvoices.map(i => { const paidAmount = i.入金金額 || 0; const status = i.請求ステータス || '-'; const paidStatus = paidAmount > 0 ? '入金済' : '入金待ち'; return '<tr><td>' + (i.請求書番号 || '-') + '</td><td>' + formatDate(i.請求日) + '</td><td>' + formatDate(i.支払期限日) + '</td><td class=\"text-number\">' + formatNumber(i.請求金額) + '</td><td>' + status + '</td><td>' + paidStatus + '</td></tr>'; }); tbody.innerHTML = rows.join(''); } function renderInvoiceDetails() { const tbody = container.querySelector('#invoice-detail-tbody'); if (!currentDeal) { tbody.innerHTML = '<tr><td colspan=\"8\" class=\"empty-state\">商談を選択してください</td></tr>'; return; } const relatedDetails = allDetails.filter(d => { const invoice = allInvoices.find(i => i.請求書ID === d.請求書ID); return invoice && invoice.商談ID === currentDeal.商談ID; }); if (relatedDetails.length === 0) { tbody.innerHTML = '<tr><td colspan=\"8\" class=\"empty-state\">請求明細がありません</td></tr>'; return; } const rows = relatedDetails.map(d => { return '<tr><td>' + d.明細行番号 + '</td><td>' + d.商品名 + '</td><td class=\"text-center\">' + (d.数量 || '-') + '</td><td class=\"text-number\">' + formatNumber(d.単価) + '</td><td class=\"text-number\">' + formatNumber(d.金額) + '</td><td>' + (d.税率 || '0') + '%</td><td class=\"text-number\">' + formatNumber(d.税額) + '</td><td class=\"text-number\">' + formatNumber(d.税込金額) + '</td></tr>'; }); tbody.innerHTML = rows.join(''); } function updateButtonStates() { const btnGenerate = container.querySelector('#btn-generate-invoice'); const btnEdit = container.querySelector('#btn-edit-invoice'); const btnReissue = container.querySelector('#btn-reissue-invoice'); if (!currentDeal) { btnGenerate.disabled = true; btnEdit.disabled = true; btnReissue.disabled = true; return; } const relatedInvoices = allInvoices.filter(i => i.商談ID === currentDeal.商談ID); const hasInvoice = relatedInvoices.length > 0; btnGenerate.disabled = currentDeal.ステージ !== '成約' || hasInvoice; btnEdit.disabled = !hasInvoice; btnReissue.disabled = !hasInvoice; } function closeModal(modalId) { const modal = container.querySelector(modalId); if (modal) modal.classList.remove('open'); } function openModal(modalId) { const modal = container.querySelector(modalId); if (modal) modal.classList.add('open'); } container.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { const targetTab = tab.dataset.tab; container.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); container.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active')); tab.classList.add('active'); container.querySelector('#' + targetTab + '-tab').classList.add('active'); }); }); container.querySelector('#filter-customer').addEventListener('input', applyFilters); container.querySelector('#filter-sales').addEventListener('change', applyFilters); container.querySelector('#filter-stage').addEventListener('change', applyFilters); container.querySelector('#filter-amount-min').addEventListener('input', applyFilters); container.querySelector('#filter-amount-max').addEventListener('input', applyFilters); container.querySelector('#btn-generate-invoice').addEventListener('click', () => openModal('#modal-generate')); container.querySelector('#btn-edit-invoice').addEventListener('click', () => container.querySelector('#edit-form').classList.add('visible')); container.querySelector('#btn-reissue-invoice').addEventListener('click', () => openModal('#modal-reissue')); container.querySelector('#modal-close-generate').addEventListener('click', () => closeModal('#modal-generate')); container.querySelector('#modal-close-reissue').addEventListener('click', () => closeModal('#modal-reissue')); container.querySelector('#btn-cancel-generate').addEventListener('click', () => closeModal('#modal-generate')); container.querySelector('#btn-cancel-reissue').addEventListener('click', () => closeModal('#modal-reissue')); container.querySelector('#btn-cancel-edit').addEventListener('click', () => container.querySelector('#edit-form').classList.remove('visible')); container.querySelector('#btn-confirm-generate').addEventListener('click', () => { alert('請求書を生成しました'); closeModal('#modal-generate'); renderInvoices(); }); container.querySelector('#btn-confirm-reissue').addEventListener('click', () => { alert('請求書を再発行しました'); closeModal('#modal-reissue'); }); container.querySelector('#btn-apply-edit').addEventListener('click', () => { alert('修正内容を反映しました'); container.querySelector('#edit-form').classList.remove('visible'); renderInvoiceDetails(); }); container.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal('#' + overlay.id); }); }); (async () => { await loadData(); initializeFilters(); applyFilters(); })(); }",
+      "method": "ai"
+    },
+    {
+      "screenId": "scr-1791354364933",
+      "panelHtml": "\n  <style>\n    [data-aivic-panel=\"scr-1791354364933\"] {\n      padding: 16px;\n      background: var(--bg-main);\n      overflow-y: auto;\n      max-height: 100%;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-container {\n      max-width: 600px;\n      margin: 0 auto;\n      background: var(--bg-card);\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n      padding: 24px;\n      box-shadow: var(--shadow-card);\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-title {\n      font-size: 16px;\n      font-weight: 700;\n      color: var(--text);\n      margin-bottom: 24px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-section {\n      margin-bottom: 24px;\n      padding-bottom: 16px;\n      border-bottom: 1px solid rgba(211, 220, 230, 0.3);\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-section:last-of-type {\n      border-bottom: none;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .section-label {\n      font-size: 13px;\n      font-weight: 600;\n      color: var(--text-muted);\n      margin-bottom: 12px;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field {\n      margin-bottom: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field label {\n      display: block;\n      font-size: 12px;\n      font-weight: 600;\n      color: var(--text-muted);\n      margin-bottom: 6px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field.required label::after {\n      content: ' *';\n      color: #d32f2f;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field input,\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field select,\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field textarea {\n      width: 100%;\n      padding: 8px 10px;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      border-radius: 3px;\n      font-size: 13px;\n      font-family: inherit;\n      color: var(--text);\n      background: white;\n      box-sizing: border-box;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field input:focus,\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field select:focus,\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field textarea:focus {\n      outline: none;\n      border-color: var(--primary);\n      box-shadow: 0 0 0 2px rgba(0, 112, 210, 0.08);\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field textarea {\n      resize: vertical;\n      min-height: 100px;\n      line-height: 1.5;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .radio-group,\n    [data-aivic-panel=\"scr-1791354364933\"] .checkbox-group {\n      display: flex;\n      flex-wrap: wrap;\n      gap: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .radio-item,\n    [data-aivic-panel=\"scr-1791354364933\"] .checkbox-item {\n      display: flex;\n      align-items: center;\n      gap: 6px;\n      font-size: 13px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .radio-item input[type=\"radio\"],\n    [data-aivic-panel=\"scr-1791354364933\"] .radio-item input[type=\"checkbox\"],\n    [data-aivic-panel=\"scr-1791354364933\"] .checkbox-item input[type=\"radio\"],\n    [data-aivic-panel=\"scr-1791354364933\"] .checkbox-item input[type=\"checkbox\"] {\n      accent-color: var(--primary);\n      cursor: pointer;\n      margin: 0;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .radio-item label,\n    [data-aivic-panel=\"scr-1791354364933\"] .checkbox-item label {\n      margin: 0;\n      cursor: pointer;\n      font-weight: normal;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .button-group {\n      display: flex;\n      gap: 12px;\n      justify-content: center;\n      margin-top: 32px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] button {\n      padding: 10px 32px;\n      border: none;\n      border-radius: 3px;\n      font-size: 13px;\n      font-weight: 600;\n      cursor: pointer;\n      transition: all 0.2s;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] button.primary {\n      background: var(--primary);\n      color: white;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] button.primary:hover {\n      background: var(--primary-hover);\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] button.primary:disabled {\n      background: #cccccc;\n      cursor: not-allowed;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] button.secondary {\n      background: transparent;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] button.secondary:hover {\n      background: #f8f9fa;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .error-message {\n      display: none;\n      color: #d32f2f;\n      font-size: 12px;\n      margin-top: 4px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .error-message.show {\n      display: block;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field.error input,\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field.error select,\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field.error textarea {\n      border-color: #d32f2f;\n      background-color: #ffebee;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .form-field-row {\n      display: grid;\n      grid-template-columns: 1fr 1fr;\n      gap: 16px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .success-message {\n      display: none;\n      background: #e8f5e9;\n      color: #2e7d32;\n      border: 1px solid #4caf50;\n      border-radius: 3px;\n      padding: 12px;\n      margin-bottom: 16px;\n      font-size: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354364933\"] .success-message.show {\n      display: block;\n    }\n  </style>\n\n  <div class=\"form-container\">\n    <div class=\"form-title\">営業活動実績登録</div>\n\n    <div class=\"success-message\" id=\"success-message\"></div>\n\n    <!-- 基本情報セクション -->\n    <div class=\"form-section\">\n      <div class=\"section-label\">基本情報</div>\n\n      <div class=\"form-field required\">\n        <label for=\"sales-person\">営業担当者</label>\n        <select id=\"sales-person\" data-testid=\"sales-person\" required>\n          <option value=\"\">選択してください</option>\n        </select>\n        <div class=\"error-message\"></div>\n      </div>\n\n      <div class=\"form-field required\">\n        <label for=\"customer\">取引先</label>\n        <select id=\"customer\" data-testid=\"customer\" required>\n          <option value=\"\">選択してください</option>\n        </select>\n        <div class=\"error-message\"></div>\n      </div>\n\n      <div class=\"form-field\">\n        <label for=\"deal\">商談</label>\n        <select id=\"deal\" data-testid=\"deal\">\n          <option value=\"\">選択してください</option>\n        </select>\n        <div class=\"error-message\"></div>\n      </div>\n    </div>\n\n    <!-- 活動詳細セクション -->\n    <div class=\"form-section\">\n      <div class=\"section-label\">活動詳細</div>\n\n      <div class=\"form-field required\">\n        <label>活動タイプ</label>\n        <div class=\"radio-group\">\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"type-visit\" name=\"activity-type\" value=\"訪問\" data-testid=\"type-visit\">\n            <label for=\"type-visit\">訪問</label>\n          </div>\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"type-phone\" name=\"activity-type\" value=\"電話\" data-testid=\"type-phone\">\n            <label for=\"type-phone\">電話</label>\n          </div>\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"type-email\" name=\"activity-type\" value=\"メール\" data-testid=\"type-email\">\n            <label for=\"type-email\">メール</label>\n          </div>\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"type-proposal\" name=\"activity-type\" value=\"提案\" data-testid=\"type-proposal\">\n            <label for=\"type-proposal\">提案</label>\n          </div>\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"type-negotiation\" name=\"activity-type\" value=\"商談\" data-testid=\"type-negotiation\">\n            <label for=\"type-negotiation\">商談</label>\n          </div>\n        </div>\n        <div class=\"error-message\"></div>\n      </div>\n\n      <div class=\"form-field-row\">\n        <div class=\"form-field required\">\n          <label for=\"activity-date\">活動日付</label>\n          <input type=\"date\" id=\"activity-date\" data-testid=\"activity-date\" required>\n          <div class=\"error-message\"></div>\n        </div>\n        <div class=\"form-field\">\n          <label for=\"activity-time\">活動時間（HH:MM）</label>\n          <input type=\"time\" id=\"activity-time\" data-testid=\"activity-time\">\n        </div>\n      </div>\n\n      <div class=\"form-field-row\">\n        <div class=\"form-field required\">\n          <label for=\"activity-count\">活動件数</label>\n          <input type=\"number\" id=\"activity-count\" data-testid=\"activity-count\" value=\"1\" min=\"1\" required>\n          <div class=\"error-message\"></div>\n        </div>\n        <div class=\"form-field required\">\n          <label>活動頻度</label>\n          <div class=\"radio-group\">\n            <div class=\"radio-item\">\n              <input type=\"radio\" id=\"freq-first\" name=\"activity-frequency\" value=\"初回\" data-testid=\"freq-first\">\n              <label for=\"freq-first\">初回</label>\n            </div>\n            <div class=\"radio-item\">\n              <input type=\"radio\" id=\"freq-continue\" name=\"activity-frequency\" value=\"継続\" data-testid=\"freq-continue\" checked>\n              <label for=\"freq-continue\">継続</label>\n            </div>\n            <div class=\"radio-item\">\n              <input type=\"radio\" id=\"freq-followup\" name=\"activity-frequency\" value=\"フォローアップ\" data-testid=\"freq-followup\">\n              <label for=\"freq-followup\">フォローアップ</label>\n            </div>\n          </div>\n          <div class=\"error-message\"></div>\n        </div>\n      </div>\n    </div>\n\n    <!-- 活動内容セクション -->\n    <div class=\"form-section\">\n      <div class=\"section-label\">活動内容</div>\n\n      <div class=\"form-field\">\n        <label for=\"activity-content\">活動内容</label>\n        <textarea id=\"activity-content\" data-testid=\"activity-content\" placeholder=\"活動内容を記入してください\" maxlength=\"500\"></textarea>\n      </div>\n\n      <div class=\"form-field required\">\n        <label>活動結果</label>\n        <div class=\"radio-group\">\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"result-success\" name=\"activity-result\" value=\"成功\" data-testid=\"result-success\" checked>\n            <label for=\"result-success\">成功</label>\n          </div>\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"result-failure\" name=\"activity-result\" value=\"失敗\" data-testid=\"result-failure\">\n            <label for=\"result-failure\">失敗</label>\n          </div>\n          <div class=\"radio-item\">\n            <input type=\"radio\" id=\"result-pending\" name=\"activity-result\" value=\"保留\" data-testid=\"result-pending\">\n            <label for=\"result-pending\">保留</label>\n          </div>\n        </div>\n        <div class=\"error-message\"></div>\n      </div>\n    </div>\n\n    <!-- 次のアクションセクション -->\n    <div class=\"form-section\">\n      <div class=\"section-label\">次のアクション</div>\n\n      <div class=\"form-field\">\n        <label for=\"next-action\">次のアクション</label>\n        <input type=\"text\" id=\"next-action\" data-testid=\"next-action\" placeholder=\"次のアクションを記入してください\" maxlength=\"100\">\n      </div>\n\n      <div class=\"form-field\">\n        <label for=\"next-follow-date\">次回予定日付</label>\n        <input type=\"date\" id=\"next-follow-date\" data-testid=\"next-follow-date\">\n        <div class=\"error-message\"></div>\n      </div>\n    </div>\n\n    <!-- ボタングループ -->\n    <div class=\"button-group\">\n      <button type=\"button\" class=\"primary\" id=\"btn-submit\" data-testid=\"btn-submit\">登録</button>\n      <button type=\"button\" class=\"secondary\" id=\"btn-cancel\" data-testid=\"btn-cancel\">キャンセル</button>\n    </div>\n  </div>\n",
+      "initJs": "function(container, apiUrl, tables) {\n  const salesTable = tables.find(t => t.tableName === '営業担当者') || { records: [] };\n  const customerTable = tables.find(t => t.tableName === '取引先') || { records: [] };\n  const dealTable = tables.find(t => t.tableName === '商談') || { records: [] };\n  const activityTable = tables.find(t => t.tableName === '営業活動') || { records: [] };\n  \n  const form = {\n    salesPerson: container.querySelector('#sales-person'),\n    customer: container.querySelector('#customer'),\n    deal: container.querySelector('#deal'),\n    activityType: container.querySelector('input[name=\"activity-type\"]'),\n    activityDate: container.querySelector('#activity-date'),\n    activityTime: container.querySelector('#activity-time'),\n    activityCount: container.querySelector('#activity-count'),\n    activityFrequency: container.querySelector('input[name=\"activity-frequency\"]'),\n    activityContent: container.querySelector('#activity-content'),\n    activityResult: container.querySelector('input[name=\"activity-result\"]'),\n    nextAction: container.querySelector('#next-action'),\n    nextFollowDate: container.querySelector('#next-follow-date'),\n    submitBtn: container.querySelector('#btn-submit'),\n    cancelBtn: container.querySelector('#btn-cancel')\n  };\n  \n  function setDefaultDate() {\n    const today = new Date();\n    const yyyy = today.getFullYear();\n    const mm = String(today.getMonth() + 1).padStart(2, '0');\n    const dd = String(today.getDate()).padStart(2, '0');\n    form.activityDate.value = yyyy + '-' + mm + '-' + dd;\n  }\n  \n  function initializeSalesPersons() {\n    const allSales = salesTable.records || [];\n    allSales.forEach(s => {\n      const opt = document.createElement('option');\n      opt.value = s.営業担当者ID || '';\n      opt.textContent = s.名前 || '不明';\n      form.salesPerson.appendChild(opt);\n    });\n    if (allSales.length > 0) {\n      form.salesPerson.value = allSales[0].営業担当者ID;\n    }\n  }\n  \n  function updateCustomers() {\n    const selected = form.salesPerson.value;\n    form.customer.innerHTML = '<option value=\"\">選択してください</option>';\n    if (!selected) return;\n    \n    const customers = customerTable.records || [];\n    customers.forEach(c => {\n      const opt = document.createElement('option');\n      opt.value = c.取引先ID || '';\n      opt.textContent = c.取引先名 || '不明';\n      form.customer.appendChild(opt);\n    });\n  }\n  \n  function updateDeals() {\n    const customerId = form.customer.value;\n    form.deal.innerHTML = '<option value=\"\">選択してください</option>';\n    if (!customerId) return;\n    \n    const deals = (dealTable.records || []).filter(d => d.取引先ID === customerId && d.ステージ !== '成約' && d.ステージ !== '失注');\n    deals.forEach(d => {\n      const opt = document.createElement('option');\n      opt.value = d.商談ID || '';\n      opt.textContent = d.商談名 || '不明';\n      form.deal.appendChild(opt);\n    });\n  }\n  \n  function updateNextFollowDateMin() {\n    if (form.activityDate.value) {\n      const date = new Date(form.activityDate.value);\n      date.setDate(date.getDate() + 1);\n      const yyyy = date.getFullYear();\n      const mm = String(date.getMonth() + 1).padStart(2, '0');\n      const dd = String(date.getDate()).padStart(2, '0');\n      form.nextFollowDate.min = yyyy + '-' + mm + '-' + dd;\n    }\n  }\n  \n  function getFormValues() {\n    return {\n      営業担当者ID: form.salesPerson.value,\n      取引先ID: form.customer.value,\n      商談ID: form.deal.value || null,\n      活動種別: Array.from(container.querySelectorAll('input[name=\"activity-type\"]:checked')).map(r => r.value)[0],\n      活動日時: form.activityDate.value + (form.activityTime.value ? 'T' + form.activityTime.value : 'T09:00'),\n      活動内容: form.activityContent.value,\n      次回フォローアップ予定日: form.nextFollowDate.value ? form.nextFollowDate.value + 'T09:00' : null,\n      商談ステージ: Array.from(container.querySelectorAll('input[name=\"activity-frequency\"]:checked')).map(r => r.value)[0] || '継続',\n      見積金額: 0,\n      成約フラグ: false,\n      作成日時: new Date().toISOString(),\n      作成者ID: form.salesPerson.value,\n      更新日時: new Date().toISOString(),\n      更新者ID: form.salesPerson.value\n    };\n  }\n  \n  function validate() {\n    let isValid = true;\n    const errors = {};\n    \n    if (!form.salesPerson.value) {\n      errors.salesPerson = '営業担当者は必須です';\n      isValid = false;\n    }\n    if (!form.customer.value) {\n      errors.customer = '取引先は必須です';\n      isValid = false;\n    }\n    if (!Array.from(container.querySelectorAll('input[name=\"activity-type\"]:checked')).length) {\n      errors.activityType = '活動タイプは必須です';\n      isValid = false;\n    }\n    if (!form.activityDate.value) {\n      errors.activityDate = '活動日付は必須です';\n      isValid = false;\n    }\n    if (!form.activityCount.value || parseInt(form.activityCount.value) < 1) {\n      errors.activityCount = '活動件数は1以上である必要があります';\n      isValid = false;\n    }\n    if (form.nextFollowDate.value && new Date(form.nextFollowDate.value) <= new Date(form.activityDate.value)) {\n      errors.nextFollowDate = '次回予定日付は活動日付より後の日付を選択してください';\n      isValid = false;\n    }\n    \n    return { isValid, errors };\n  }\n  \n  function clearErrors() {\n    container.querySelectorAll('.form-field').forEach(field => {\n      field.classList.remove('error');\n      const msg = field.querySelector('.error-message');\n      if (msg) msg.classList.remove('show');\n    });\n  }\n  \n  function showErrors(errors) {\n    clearErrors();\n    Object.keys(errors).forEach(key => {\n      let selector = '#' + key;\n      if (key === 'activityType' || key === 'activityFrequency' || key === 'activityResult') {\n        selector = 'input[name=\"' + key.replace(/([A-Z])/g, '-$1').toLowerCase() + '\"]';\n      }\n      const field = container.querySelector(selector)?.closest('.form-field');\n      if (field) {\n        field.classList.add('error');\n        const msg = field.querySelector('.error-message');\n        if (msg) {\n          msg.textContent = errors[key];\n          msg.classList.add('show');\n        }\n      }\n    });\n  }\n  \n  function showSuccess() {\n    const msg = container.querySelector('#success-message');\n    msg.textContent = '営業活動を登録しました';\n    msg.classList.add('show');\n    setTimeout(() => {\n      msg.classList.remove('show');\n      clearForm();\n    }, 2000);\n  }\n  \n  function clearForm() {\n    form.salesPerson.value = salesTable.records[0]?.営業担当者ID || '';\n    form.customer.value = '';\n    form.deal.value = '';\n    form.activityContent.value = '';\n    form.nextAction.value = '';\n    form.nextFollowDate.value = '';\n    form.activityCount.value = '1';\n    form.activityTime.value = '';\n    setDefaultDate();\n    container.querySelector('input[name=\"activity-frequency\"]').checked = false;\n    container.getElementById('freq-continue').checked = true;\n    container.getElementById('result-success').checked = true;\n    container.querySelectorAll('input[name=\"activity-type\"]:checked').forEach(r => r.checked = false);\n    clearErrors();\n    updateCustomers();\n  }\n  \n  // Event Listeners\n  form.salesPerson.addEventListener('change', updateCustomers);\n  form.customer.addEventListener('change', updateDeals);\n  form.activityDate.addEventListener('change', updateNextFollowDateMin);\n  \n  form.submitBtn.addEventListener('click', async () => {\n    const { isValid, errors } = validate();\n    if (!isValid) {\n      showErrors(errors);\n      return;\n    }\n    \n    clearErrors();\n    const values = getFormValues();\n    \n    try {\n      const tableIndex = 2;\n      const saved = await window.aivicApi.save(tableIndex, values);\n      if (saved) {\n        showSuccess();\n      }\n    } catch (err) {\n      console.error('Save error:', err);\n      alert('登録に失敗しました');\n    }\n  });\n  \n  form.cancelBtn.addEventListener('click', clearForm);\n  \n  // Initialize\n  setDefaultDate();\n  initializeSalesPersons();\n  updateCustomers();\n}",
+      "method": "ai"
+    },
+    {
+      "screenId": "scr-1791354379354",
+      "panelHtml": "\n  <style>\n    [data-aivic-panel=\"scr-1791354379354\"] {\n      padding: 16px;\n      background: var(--bg-main);\n      overflow-y: auto;\n      max-height: 100%;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .section-title {\n      font-size: 14px;\n      font-weight: 700;\n      color: var(--text);\n      margin-bottom: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .section {\n      background: var(--bg-card);\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n      padding: 16px;\n      margin-bottom: 16px;\n      box-shadow: var(--shadow-card);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .search-field {\n      display: flex;\n      gap: 8px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .search-field input {\n      flex: 1;\n      padding: 8px 10px;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      border-radius: 3px;\n      font-size: 13px;\n      background: white;\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .search-field input:focus {\n      outline: none;\n      border-color: var(--primary);\n      box-shadow: 0 0 0 2px rgba(0, 112, 210, 0.08);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .table-wrap {\n      max-height: 300px;\n      overflow-y: auto;\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] table {\n      width: 100%;\n      border-collapse: collapse;\n      font-size: 13px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] th {\n      background-color: #f8f9fa;\n      border-bottom: 1px solid var(--border);\n      padding: 10px 8px;\n      text-align: left;\n      font-weight: 600;\n      color: var(--text);\n      position: sticky;\n      top: 0;\n      height: 36px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] td {\n      padding: 10px 8px;\n      border-bottom: 1px solid rgba(211, 220, 230, 0.3);\n      height: 36px;\n      vertical-align: middle;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] tbody tr:hover {\n      background-color: #f8f9fa;\n      cursor: pointer;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .text-number {\n      text-align: right;\n      font-family: 'Courier New', monospace;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .detail-panel {\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n      padding: 12px;\n      background: #f8f9fa;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .detail-row {\n      display: flex;\n      margin-bottom: 8px;\n      font-size: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .detail-label {\n      width: 100px;\n      font-weight: 600;\n      color: var(--text-muted);\n      flex-shrink: 0;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .detail-value {\n      flex: 1;\n      color: var(--text);\n      word-break: break-word;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .tabs {\n      display: flex;\n      border-bottom: 1px solid var(--border);\n      margin-bottom: 12px;\n      gap: 0;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .tab {\n      padding: 10px 16px;\n      cursor: pointer;\n      border-bottom: 2px solid transparent;\n      font-size: 13px;\n      color: var(--text-muted);\n      font-weight: 600;\n      background: transparent;\n      border: none;\n      transition: all 0.2s;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .tab.active {\n      color: var(--primary);\n      border-bottom-color: var(--primary);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .tab-content {\n      display: none;\n      min-height: 200px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .tab-content.active {\n      display: block;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] button {\n      padding: 8px 16px;\n      border: none;\n      border-radius: 3px;\n      font-size: 13px;\n      font-weight: 600;\n      cursor: pointer;\n      transition: all 0.2s;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] button.primary {\n      background: var(--primary);\n      color: white;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] button.primary:hover {\n      background: var(--primary-hover);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] button.secondary {\n      background: transparent;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] button.secondary:hover {\n      background: #f8f9fa;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .button-group {\n      display: flex;\n      gap: 8px;\n      justify-content: flex-end;\n      margin-top: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .empty-state {\n      padding: 32px 16px;\n      text-align: center;\n      color: var(--text-muted);\n      font-size: 13px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .sales-info {\n      background: #f8f9fa;\n      border: 1px solid rgba(211, 220, 230, 0.5);\n      border-radius: 4px;\n      padding: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .sales-info-row {\n      display: flex;\n      margin-bottom: 8px;\n      font-size: 12px;\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .sales-info-label {\n      width: 70px;\n      font-weight: 600;\n      color: var(--text-muted);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .sales-info-value {\n      flex: 1;\n      color: var(--text);\n    }\n\n    [data-aivic-panel=\"scr-1791354379354\"] .detail-section {\n      display: grid;\n      grid-template-columns: 2fr 1fr;\n      gap: 16px;\n    }\n  </style>\n\n  <div class=\"section\">\n    <div class=\"section-title\">取引先検索</div>\n    <div class=\"search-field\">\n      <input type=\"text\" id=\"search-field\" data-testid=\"search-field\" placeholder=\"取引先名またはカナ、電話番号、メールで検索\">\n    </div>\n  </div>\n\n  <div class=\"section\">\n    <div class=\"section-title\">取引先一覧</div>\n    <div class=\"table-wrap\">\n      <table data-testid=\"customer-list-table\">\n        <thead>\n          <tr>\n            <th>取引先名</th>\n            <th>区分</th>\n            <th>営業担当者</th>\n            <th>ステータス</th>\n            <th>更新日時</th>\n          </tr>\n        </thead>\n        <tbody id=\"customer-tbody\">\n          <tr><td colspan=\"5\" class=\"empty-state\">読込中...</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <div class=\"section\" id=\"detail-container\" style=\"display:none;\">\n    <div class=\"detail-section\">\n      <div>\n        <div class=\"section-title\">取引先基本情報</div>\n        <div class=\"detail-panel\">\n          <div id=\"detail-panel\"></div>\n          <div class=\"button-group\">\n            <button class=\"secondary\" id=\"btn-detail\" data-testid=\"btn-detail\">詳細編集</button>\n          </div>\n        </div>\n      </div>\n\n      <div>\n        <div class=\"section-title\">営業担当者</div>\n        <div class=\"sales-info\" id=\"sales-info\"></div>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"tabs\">\n        <button class=\"tab active\" data-tab=\"deals\" data-testid=\"tab-deals\">関連商談</button>\n        <button class=\"tab\" data-tab=\"activities\" data-testid=\"tab-activities\">営業活動</button>\n        <button class=\"tab\" data-tab=\"invoices\" data-testid=\"tab-invoices\">請求情報</button>\n      </div>\n\n      <div id=\"deals-tab\" class=\"tab-content active\">\n        <div class=\"table-wrap\">\n          <table data-testid=\"related-deals-table\">\n            <thead>\n              <tr>\n                <th>商談名</th>\n                <th class=\"text-number\">金額</th>\n                <th>ステージ</th>\n                <th>成約予定日</th>\n              </tr>\n            </thead>\n            <tbody id=\"deals-tbody\">\n              <tr><td colspan=\"4\" class=\"empty-state\">データなし</td></tr>\n            </tbody>\n          </table>\n        </div>\n      </div>\n\n      <div id=\"activities-tab\" class=\"tab-content\">\n        <div class=\"table-wrap\">\n          <table data-testid=\"activity-history-table\">\n            <thead>\n              <tr>\n                <th>活動種別</th>\n                <th>活動日時</th>\n                <th>営業担当者</th>\n                <th>活動内容</th>\n              </tr>\n            </thead>\n            <tbody id=\"activities-tbody\">\n              <tr><td colspan=\"4\" class=\"empty-state\">データなし</td></tr>\n            </tbody>\n          </table>\n        </div>\n        <div class=\"button-group\">\n          <button class=\"primary\" id=\"btn-activity-register\" data-testid=\"btn-activity-register\">活動登録</button>\n        </div>\n      </div>\n\n      <div id=\"invoices-tab\" class=\"tab-content\">\n        <div class=\"table-wrap\">\n          <table data-testid=\"invoice-info-table\">\n            <thead>\n              <tr>\n                <th>請求書番号</th>\n                <th>請求日</th>\n                <th>支払期限</th>\n                <th class=\"text-number\">請求金額</th>\n                <th>ステータス</th>\n              </tr>\n            </thead>\n            <tbody id=\"invoices-tbody\">\n              <tr><td colspan=\"5\" class=\"empty-state\">データなし</td></tr>\n            </tbody>\n          </table>\n        </div>\n      </div>\n    </div>\n  </div>\n",
+      "initJs": "function(container, apiUrl, tables) { const customerTable = tables.find(t => t.tableName === '取引先') || { records: [] }; const dealTable = tables.find(t => t.tableName === '商談') || { records: [] }; const activityTable = tables.find(t => t.tableName === '営業活動') || { records: [] }; const invoiceTable = tables.find(t => t.tableName === '請求書') || { records: [] }; const salesTable = tables.find(t => t.tableName === '営業担当者') || { records: [] }; let allCustomers = customerTable.records || []; let allDeals = dealTable.records || []; let allActivities = activityTable.records || []; let allInvoices = invoiceTable.records || []; let allSales = salesTable.records || []; let currentCustomer = null; let filteredCustomers = allCustomers; async function loadData() { try { const [customers, deals, activities, invoices, sales] = await Promise.all([window.aivicApi.list(0), window.aivicApi.list(3), window.aivicApi.list(2), window.aivicApi.list(5), window.aivicApi.list(1)]).catch(() => [allCustomers, allDeals, allActivities, allInvoices, allSales]); allCustomers = customers || allCustomers; allDeals = deals || allDeals; allActivities = activities || allActivities; allInvoices = invoices || allInvoices; allSales = sales || allSales; } catch (e) { console.log('Using table data'); } } function formatDate(date) { if (!date) return '-'; const d = new Date(date); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); } function formatNumber(num) { return (num || 0).toLocaleString('ja-JP'); } function searchCustomers() { const query = container.querySelector('#search-field').value.toLowerCase(); if (!query) { filteredCustomers = allCustomers; } else { filteredCustomers = allCustomers.filter(c => { const name = (c.取引先名 || '').toLowerCase(); const kana = (c.取引先名カナ || '').toLowerCase(); const phone = (c.電話番号 || '').toLowerCase(); const email = (c.メールアドレス || '').toLowerCase(); return name.includes(query) || kana.includes(query) || phone.includes(query) || email.includes(query); }); } renderCustomerList(); } function renderCustomerList() { const tbody = container.querySelector('#customer-tbody'); if (filteredCustomers.length === 0) { tbody.innerHTML = '<tr><td colspan=\"5\" class=\"empty-state\">該当する取引先がありません</td></tr>'; return; } const rows = filteredCustomers.map(c => { const sales = allSales.find(s => s.営業担当者ID === c.営業担当者ID); const updated = formatDate(c.更新日時); return '<tr data-id=\"' + c.取引先ID + '\"><td>' + c.取引先名 + '</td><td>' + (c.取引先区分 || '-') + '</td><td>' + (sales?.名前 || '-') + '</td><td>' + (c.ステータス || '-') + '</td><td>' + updated + '</td></tr>'; }); tbody.innerHTML = rows.join(''); tbody.querySelectorAll('tr').forEach(tr => { tr.addEventListener('click', () => selectCustomer(tr.dataset.id)); }); } function selectCustomer(customerId) { currentCustomer = allCustomers.find(c => c.取引先ID === customerId); if (!currentCustomer) return; showDetailSection(); renderDetailPanel(); renderSalesInfo(); renderDeals(); renderActivities(); renderInvoices(); } function showDetailSection() { container.querySelector('#detail-container').style.display = 'block'; } function renderDetailPanel() { const panel = container.querySelector('#detail-panel'); let html = ''; html += '<div class=\"detail-row\"><span class=\"detail-label\">取引先名</span><span class=\"detail-value\">' + (currentCustomer.取引先名 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">取引先名カナ</span><span class=\"detail-value\">' + (currentCustomer.取引先名カナ || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">区分</span><span class=\"detail-value\">' + (currentCustomer.取引先区分 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">郵便番号</span><span class=\"detail-value\">' + (currentCustomer.郵便番号 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">住所</span><span class=\"detail-value\">' + (currentCustomer.住所 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">電話番号</span><span class=\"detail-value\">' + (currentCustomer.電話番号 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">メール</span><span class=\"detail-value\">' + (currentCustomer.メールアドレス || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">担当者名</span><span class=\"detail-value\">' + (currentCustomer.担当者名 || '-') + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">支払条件</span><span class=\"detail-value\">' + (currentCustomer.支払条件 || '-') + '</span></div>'; if (currentCustomer.請求先住所) html += '<div class=\"detail-row\"><span class=\"detail-label\">請求先住所</span><span class=\"detail-value\">' + currentCustomer.請求先住所 + '</span></div>'; if (currentCustomer.請求先メールアドレス) html += '<div class=\"detail-row\"><span class=\"detail-label\">請求先メール</span><span class=\"detail-value\">' + currentCustomer.請求先メールアドレス + '</span></div>'; html += '<div class=\"detail-row\"><span class=\"detail-label\">ステータス</span><span class=\"detail-value\">' + (currentCustomer.ステータス || '-') + '</span></div>'; panel.innerHTML = html; } function renderSalesInfo() { const salesInfo = container.querySelector('#sales-info'); const sales = allSales.find(s => s.営業担当者ID === currentCustomer.営業担当者ID); if (!sales) { salesInfo.innerHTML = '<div class=\"empty-state\">割り当てられた営業担当者がいません</div>'; return; } let html = ''; html += '<div class=\"sales-info-row\"><span class=\"sales-info-label\">名前</span><span class=\"sales-info-value\">' + (sales.名前 || '-') + '</span></div>'; html += '<div class=\"sales-info-row\"><span class=\"sales-info-label\">部門</span><span class=\"sales-info-value\">' + (sales.部門 || '-') + '</span></div>'; html += '<div class=\"sales-info-row\"><span class=\"sales-info-label\">役職</span><span class=\"sales-info-value\">' + (sales.役職 || '-') + '</span></div>'; html += '<div class=\"sales-info-row\"><span class=\"sales-info-label\">メール</span><span class=\"sales-info-value\">' + (sales.メールアドレス || '-') + '</span></div>'; html += '<div class=\"sales-info-row\"><span class=\"sales-info-label\">電話番号</span><span class=\"sales-info-value\">' + (sales.電話番号 || '-') + '</span></div>'; salesInfo.innerHTML = html; } function renderDeals() { const tbody = container.querySelector('#deals-tbody'); const deals = allDeals.filter(d => d.取引先ID === currentCustomer.取引先ID); if (deals.length === 0) { tbody.innerHTML = '<tr><td colspan=\"4\" class=\"empty-state\">関連する商談がありません</td></tr>'; return; } const rows = deals.map(d => { return '<tr><td>' + d.商談名 + '</td><td class=\"text-number\">' + formatNumber(d.商談金額) + '</td><td>' + (d.ステージ || '-') + '</td><td>' + formatDate(d.成約予定日) + '</td></tr>'; }); tbody.innerHTML = rows.join(''); } function renderActivities() { const tbody = container.querySelector('#activities-tbody'); const activities = allActivities.filter(a => a.取引先ID === currentCustomer.取引先ID); if (activities.length === 0) { tbody.innerHTML = '<tr><td colspan=\"4\" class=\"empty-state\">営業活動がありません</td></tr>'; return; } const rows = activities.slice(-10).map(a => { const sales = allSales.find(s => s.営業担当者ID === a.営業担当者ID); const datetime = a.活動日時 ? new Date(a.活動日時).toLocaleDateString('ja-JP') : '-'; return '<tr><td>' + (a.活動種別 || '-') + '</td><td>' + datetime + '</td><td>' + (sales?.名前 || '-') + '</td><td>' + (a.活動内容 || '') + '</td></tr>'; }); tbody.innerHTML = rows.join(''); } function renderInvoices() { const tbody = container.querySelector('#invoices-tbody'); const invoices = allInvoices.filter(i => i.取引先ID === currentCustomer.取引先ID); if (invoices.length === 0) { tbody.innerHTML = '<tr><td colspan=\"5\" class=\"empty-state\">請求書がありません</td></tr>'; return; } const rows = invoices.slice(-10).map(i => { return '<tr><td>' + (i.請求書番号 || '-') + '</td><td>' + formatDate(i.請求日) + '</td><td>' + formatDate(i.支払期限日) + '</td><td class=\"text-number\">' + formatNumber(i.請求金額) + '</td><td>' + (i.請求ステータス || '-') + '</td></tr>'; }); tbody.innerHTML = rows.join(''); } container.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { const targetTab = tab.dataset.tab; container.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); container.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active')); tab.classList.add('active'); container.querySelector('#' + targetTab + '-tab').classList.add('active'); }); }); container.querySelector('#search-field').addEventListener('input', searchCustomers); container.querySelector('#btn-detail').addEventListener('click', () => { alert('取引先詳細編集画面に遷移します'); }); container.querySelector('#btn-activity-register').addEventListener('click', () => { alert('営業活動実績入力画面に遷移します'); }); (async () => { await loadData(); renderCustomerList(); })(); }",
+      "method": "ai"
+    }
+  ],
+  "tableDefinitions": [
+    {
+      "tableName": "取引先",
+      "purpose": "営業プロセスと請求管理における顧客・仕入先などの取引先マスタ情報を一元管理し、営業活動と請求処理の基盤となるデータを保持する",
+      "columns": [
+        {
+          "name": "取引先ID",
+          "type": "uuid",
+          "required": true,
+          "description": "取引先を一意に識別するプライマリキー"
+        },
+        {
+          "name": "取引先名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "取引先の正式名称"
+        },
+        {
+          "name": "取引先名カナ",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "取引先名のカナ表記、検索用"
+        },
+        {
+          "name": "取引先区分",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "顧客、仕入先、その他など取引先の分類"
+        },
+        {
+          "name": "郵便番号",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "取引先の郵便番号"
+        },
+        {
+          "name": "住所",
+          "type": "text",
+          "required": false,
+          "description": "取引先の住所"
+        },
+        {
+          "name": "電話番号",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "取引先の電話番号"
+        },
+        {
+          "name": "メールアドレス",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "取引先の連絡用メールアドレス"
+        },
+        {
+          "name": "担当者名",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "取引先の主要担当者名"
+        },
+        {
+          "name": "支払条件",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "請求時の支払期限や支払方法などの条件"
+        },
+        {
+          "name": "請求先住所",
+          "type": "text",
+          "required": false,
+          "description": "請求書送付先住所、納入先と異なる場合に使用"
+        },
+        {
+          "name": "請求先メールアドレス",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "請求書送付先メールアドレス"
+        },
+        {
+          "name": "ステータス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "取引先の状態、有効/無効など"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "取引先レコード作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "取引先レコード最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "取引先レコード作成者のユーザーID"
+        },
+        {
+          "name": "更新者",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "取引先レコード最終更新者のユーザーID"
+        }
+      ]
+    },
+    {
+      "tableName": "営業担当者",
+      "purpose": "営業プロセス・請求データ統合管理システムにおいて、営業担当者の基本情報と組織構造を管理し、取引先との関連付けや営業活動の追跡を可能にするマスタテーブル",
+      "columns": [
+        {
+          "name": "営業担当者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "営業担当者を一意に識別するプライマリキー"
+        },
+        {
+          "name": "名前",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "営業担当者の氏名"
+        },
+        {
+          "name": "メールアドレス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "営業担当者の連絡用メールアドレス"
+        },
+        {
+          "name": "電話番号",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "営業担当者の連絡用電話番号"
+        },
+        {
+          "name": "部門",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "営業担当者が属する部門名"
+        },
+        {
+          "name": "役職",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "営業担当者の役職"
+        },
+        {
+          "name": "上司ID",
+          "type": "uuid",
+          "required": false,
+          "description": "営業担当者の上司となる営業担当者ID（階層構造の管理用）"
+        },
+        {
+          "name": "ステータス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "営業担当者の状態（在職中、休職中、退職等）"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "営業担当者レコードが作成された日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "営業担当者レコードが最後に更新された日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "営業担当者レコードを作成したユーザー"
+        }
+      ]
+    },
+    {
+      "tableName": "営業活動",
+      "purpose": "営業担当者による営業活動の記録・管理、取引先との接触履歴、営業進捗の追跡、請求データとの連携を実現するトランザクションテーブル",
+      "columns": [
+        {
+          "name": "営業活動ID",
+          "type": "uuid",
+          "required": true,
+          "description": "営業活動の一意識別子"
+        },
+        {
+          "name": "取引先ID",
+          "type": "uuid",
+          "required": true,
+          "description": "取引先テーブルへの外部キー"
+        },
+        {
+          "name": "営業担当者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "営業担当者テーブルへの外部キー"
+        },
+        {
+          "name": "活動種別",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "営業活動の種類(訪問、電話、メール、提案、商談等)"
+        },
+        {
+          "name": "活動日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "営業活動が実施された日時"
+        },
+        {
+          "name": "活動内容",
+          "type": "text",
+          "required": false,
+          "description": "営業活動の詳細内容・メモ"
+        },
+        {
+          "name": "次回フォローアップ予定日",
+          "type": "timestamp",
+          "required": false,
+          "description": "次のアクション予定日"
+        },
+        {
+          "name": "商談ステージ",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "営業進捗ステージ(初期接触、提案中、交渉中、成約予定等)"
+        },
+        {
+          "name": "見積金額",
+          "type": "integer",
+          "required": false,
+          "description": "この営業活動に関連する見積金額(円)"
+        },
+        {
+          "name": "成約フラグ",
+          "type": "boolean",
+          "required": false,
+          "description": "この営業活動が成約に至ったかどうか"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "レコード作成日時"
+        },
+        {
+          "name": "作成者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "レコード作成者の営業担当者ID"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "レコード最終更新日時"
+        },
+        {
+          "name": "更新者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "レコード最終更新者の営業担当者ID"
+        }
+      ]
+    },
+    {
+      "tableName": "商談",
+      "purpose": "営業プロセスにおける顧客との商談情報を管理し、営業活動の進捗追跡と請求データへの連携を支援するトランザクションテーブル",
+      "columns": [
+        {
+          "name": "商談ID",
+          "type": "uuid",
+          "required": true,
+          "description": "商談を一意に識別するプライマリキー"
+        },
+        {
+          "name": "取引先ID",
+          "type": "uuid",
+          "required": true,
+          "description": "取引先テーブルへの外部キー参照"
+        },
+        {
+          "name": "営業担当者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "営業担当者テーブルへの外部キー参照"
+        },
+        {
+          "name": "商談名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "商談の名称・件名"
+        },
+        {
+          "name": "商談金額",
+          "type": "integer",
+          "required": true,
+          "description": "商談の予想売上金額（円）"
+        },
+        {
+          "name": "ステージ",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "商談の進捗ステージ（初期接触、提案、交渉、成約、失注等）"
+        },
+        {
+          "name": "成約予定日",
+          "type": "timestamp",
+          "required": true,
+          "description": "商談の成約予定日"
+        },
+        {
+          "name": "説明",
+          "type": "text",
+          "required": false,
+          "description": "商談の詳細説明・備考"
+        },
+        {
+          "name": "成約日",
+          "type": "timestamp",
+          "required": false,
+          "description": "実際の成約日（ステージが成約の場合に設定）"
+        },
+        {
+          "name": "失注理由",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "ステージが失注の場合の失注理由"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "商談レコード作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "商談レコード最終更新日時"
+        },
+        {
+          "name": "作成者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "商談レコード作成者の営業担当者ID"
+        }
+      ]
+    },
+    {
+      "tableName": "商談ステージマスタ",
+      "purpose": "営業プロセスにおける商談の進捗ステージを定義・管理するマスタテーブル。営業担当者が商談を進める際のステージ遷移ルールと各ステージの属性を一元管理する。",
+      "columns": [
+        {
+          "name": "ステージID",
+          "type": "uuid",
+          "required": true,
+          "description": "商談ステージを一意に識別するプライマリキー"
+        },
+        {
+          "name": "ステージ名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "営業プロセスにおけるステージの名称（例：初期接触、提案、交渉、成約等）"
+        },
+        {
+          "name": "ステージ順序",
+          "type": "integer",
+          "required": true,
+          "description": "営業プロセス内でのステージの進行順序。昇順で表示・遷移判定に使用"
+        },
+        {
+          "name": "説明",
+          "type": "text",
+          "required": false,
+          "description": "ステージの詳細説明や実施内容のガイドライン"
+        },
+        {
+          "name": "成約ステージフラグ",
+          "type": "boolean",
+          "required": true,
+          "description": "このステージが成約を示すステージであるかを判定するフラグ。請求処理の開始判定に使用"
+        },
+        {
+          "name": "失注ステージフラグ",
+          "type": "boolean",
+          "required": true,
+          "description": "このステージが失注を示すステージであるかを判定するフラグ"
+        },
+        {
+          "name": "有効フラグ",
+          "type": "boolean",
+          "required": true,
+          "description": "ステージが現在使用可能であるかを示すフラグ。無効化により過去データは保持しつつ新規使用を制限"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "ステージマスタレコードの作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "ステージマスタレコードの最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "ステージマスタレコードを作成したユーザーID"
+        },
+        {
+          "name": "更新者",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "ステージマスタレコードを最後に更新したユーザーID"
+        }
+      ]
+    },
+    {
+      "tableName": "請求書",
+      "purpose": "営業プロセスから生成された商談に基づいて、顧客への請求内容・金額・支払期限・支払状況を一元管理し、売上計上と入金管理を実現するトランザクションテーブル",
+      "columns": [
+        {
+          "name": "請求書ID",
+          "type": "uuid",
+          "required": true,
+          "description": "請求書の一意識別子"
+        },
+        {
+          "name": "商談ID",
+          "type": "uuid",
+          "required": true,
+          "description": "関連する商談の外部キー"
+        },
+        {
+          "name": "取引先ID",
+          "type": "uuid",
+          "required": true,
+          "description": "請求対象の取引先の外部キー"
+        },
+        {
+          "name": "営業担当者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "当該商談の営業担当者の外部キー"
+        },
+        {
+          "name": "請求書番号",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "取引先に通知する請求書番号"
+        },
+        {
+          "name": "請求日",
+          "type": "timestamp",
+          "required": true,
+          "description": "請求書発行日"
+        },
+        {
+          "name": "支払期限日",
+          "type": "timestamp",
+          "required": true,
+          "description": "支払期日"
+        },
+        {
+          "name": "請求金額",
+          "type": "integer",
+          "required": true,
+          "description": "請求総額（税込み、単位：円）"
+        },
+        {
+          "name": "税額",
+          "type": "integer",
+          "required": true,
+          "description": "消費税額（単位：円）"
+        },
+        {
+          "name": "税抜金額",
+          "type": "integer",
+          "required": true,
+          "description": "税抜き請求金額（単位：円）"
+        },
+        {
+          "name": "請求ステータス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "請求状態（未送付/送付済/入金待ち/入金済/キャンセル等）"
+        },
+        {
+          "name": "入金日",
+          "type": "timestamp",
+          "required": false,
+          "description": "実際の入金日"
+        },
+        {
+          "name": "入金金額",
+          "type": "integer",
+          "required": false,
+          "description": "実際の入金額（単位：円）"
+        },
+        {
+          "name": "摘要",
+          "type": "text",
+          "required": false,
+          "description": "請求内容の説明や特記事項"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "請求書レコード作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "請求書レコード最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "請求書レコード作成者"
+        }
+      ]
+    },
+    {
+      "tableName": "請求明細",
+      "purpose": "請求書に紐付く個別の商品・サービス明細行を管理し、金額計算・税務処理・売上認識の基礎データとなる",
+      "columns": [
+        {
+          "name": "請求明細ID",
+          "type": "uuid",
+          "required": true,
+          "description": "請求明細の一意識別子"
+        },
+        {
+          "name": "請求書ID",
+          "type": "uuid",
+          "required": true,
+          "description": "親テーブル請求書への外部キー"
+        },
+        {
+          "name": "商談ID",
+          "type": "uuid",
+          "required": false,
+          "description": "元となった商談への参照"
+        },
+        {
+          "name": "営業活動ID",
+          "type": "uuid",
+          "required": false,
+          "description": "関連する営業活動への参照"
+        },
+        {
+          "name": "明細行番号",
+          "type": "integer",
+          "required": true,
+          "description": "請求書内での行番号（表示順序用）"
+        },
+        {
+          "name": "商品名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "請求対象の商品またはサービス名"
+        },
+        {
+          "name": "商品説明",
+          "type": "text",
+          "required": false,
+          "description": "商品・サービスの詳細説明"
+        },
+        {
+          "name": "数量",
+          "type": "integer",
+          "required": true,
+          "description": "請求対象の数量"
+        },
+        {
+          "name": "単価",
+          "type": "integer",
+          "required": true,
+          "description": "1単位あたりの金額（税抜き）"
+        },
+        {
+          "name": "金額",
+          "type": "integer",
+          "required": true,
+          "description": "数量×単価の小計（税抜き）"
+        },
+        {
+          "name": "税率",
+          "type": "integer",
+          "required": true,
+          "description": "適用税率（パーセンテージ、例：10）"
+        },
+        {
+          "name": "税額",
+          "type": "integer",
+          "required": true,
+          "description": "計算された税額"
+        },
+        {
+          "name": "税込金額",
+          "type": "integer",
+          "required": true,
+          "description": "金額＋税額"
+        },
+        {
+          "name": "摘要",
+          "type": "text",
+          "required": false,
+          "description": "請求内容に関する備考・摘要"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "明細行の作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "明細行の最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "明細行を作成したユーザー"
+        }
+      ]
+    },
+    {
+      "tableName": "営業目標",
+      "purpose": "営業担当者および取引先ごとの売上目標を管理し、営業活動の進捗追跡と実績評間の基準となるマスタデータ",
+      "columns": [
+        {
+          "name": "営業目標ID",
+          "type": "uuid",
+          "required": true,
+          "description": "営業目標を一意に識別するプライマリキー"
+        },
+        {
+          "name": "営業担当者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "営業担当者テーブルへの外部キー、目標を割り当てられた営業担当者を特定"
+        },
+        {
+          "name": "取引先ID",
+          "type": "uuid",
+          "required": false,
+          "description": "取引先テーブルへの外部キー、特定取引先向けの目標の場合に指定"
+        },
+        {
+          "name": "対象年月",
+          "type": "varchar(7)",
+          "required": true,
+          "description": "目標が適用される年月、YYYY-MM形式"
+        },
+        {
+          "name": "目標金額",
+          "type": "integer",
+          "required": true,
+          "description": "達成すべき売上目標金額（円）"
+        },
+        {
+          "name": "目標件数",
+          "type": "integer",
+          "required": false,
+          "description": "達成すべき商談成約件数"
+        },
+        {
+          "name": "ステータス",
+          "type": "varchar(20)",
+          "required": true,
+          "description": "目標のステータス、有効/無効/達成/未達成など"
+        },
+        {
+          "name": "備考",
+          "type": "text",
+          "required": false,
+          "description": "目標に関する補足情報やコメント"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "営業目標レコードが作成された日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "営業目標を作成したユーザーの識別子"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "営業目標レコードが最後に更新された日時"
+        },
+        {
+          "name": "更新者",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "営業目標を最後に更新したユーザーの識別子"
+        }
+      ]
+    },
+    {
+      "tableName": "ユーザー権限",
+      "purpose": "ユーザーの機能アクセス権限と操作権限を管理し、営業プロセス・請求データへのアクセス制御を実現するマスタテーブル",
+      "columns": [
+        {
+          "name": "権限ID",
+          "type": "uuid",
+          "required": true,
+          "description": "ユーザー権限の一意識別子"
+        },
+        {
+          "name": "ユーザーID",
+          "type": "uuid",
+          "required": true,
+          "description": "ユーザーテーブルへの外部キー参照"
+        },
+        {
+          "name": "権限コード",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "権限の種類を示すコード（例：営業活動閲覧、請求書編集、営業目標管理等）"
+        },
+        {
+          "name": "権限名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "権限の日本語表示名"
+        },
+        {
+          "name": "説明",
+          "type": "text",
+          "required": false,
+          "description": "権限の詳細説明"
+        },
+        {
+          "name": "有効フラグ",
+          "type": "boolean",
+          "required": true,
+          "description": "権限が有効かどうかを示すフラグ"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "権限レコードの作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "権限レコードの最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "uuid",
+          "required": true,
+          "description": "権限レコードを作成したユーザーID"
+        },
+        {
+          "name": "更新者",
+          "type": "uuid",
+          "required": true,
+          "description": "権限レコードを最後に更新したユーザーID"
+        }
+      ]
+    },
+    {
+      "tableName": "データ検証ルール",
+      "purpose": "営業プロセスと請求データの入力値・ビジネスロジックを検証するルール定義を一元管理し、システム全体のデータ品質と業務ルール遵守を確保する",
+      "columns": [
+        {
+          "name": "検証ルールID",
+          "type": "uuid",
+          "required": true,
+          "description": "データ検証ルールの一意識別子"
+        },
+        {
+          "name": "ルール名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "検証ルールの名称"
+        },
+        {
+          "name": "ルール説明",
+          "type": "text",
+          "required": false,
+          "description": "検証ルールの詳細説明と適用背景"
+        },
+        {
+          "name": "対象テーブル",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "検証ルールが適用されるテーブル名"
+        },
+        {
+          "name": "対象カラム",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "検証ルールが適用されるカラム名"
+        },
+        {
+          "name": "検証タイプ",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "検証の種類(必須チェック、範囲チェック、形式チェック、重複チェック、参照整合性チェック等)"
+        },
+        {
+          "name": "検証条件",
+          "type": "text",
+          "required": true,
+          "description": "検証ルールの具体的な条件式またはロジック"
+        },
+        {
+          "name": "エラーメッセージ",
+          "type": "text",
+          "required": true,
+          "description": "検証失敗時に表示するエラーメッセージ"
+        },
+        {
+          "name": "警告レベル",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "検証失敗時の対応レベル(エラー、警告、情報)"
+        },
+        {
+          "name": "有効フラグ",
+          "type": "boolean",
+          "required": true,
+          "description": "検証ルールが有効かどうか"
+        },
+        {
+          "name": "適用開始日",
+          "type": "timestamp",
+          "required": false,
+          "description": "検証ルールの適用開始日時"
+        },
+        {
+          "name": "適用終了日",
+          "type": "timestamp",
+          "required": false,
+          "description": "検証ルールの適用終了日時"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "検証ルール作成日時"
+        },
+        {
+          "name": "作成者",
+          "type": "uuid",
+          "required": true,
+          "description": "検証ルール作成者のユーザーID"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "検証ルール最終更新日時"
+        },
+        {
+          "name": "更新者",
+          "type": "uuid",
+          "required": true,
+          "description": "検証ルール最終更新者のユーザーID"
+        }
+      ]
+    },
+    {
+      "tableName": "異常検知ログ",
+      "purpose": "営業プロセスと請求データの異常を検知・記録し、システム監視と問題追跡を実現するための監査ログテーブル",
+      "columns": [
+        {
+          "name": "異常検知ログID",
+          "type": "uuid",
+          "required": true,
+          "description": "異常検知ログの一意識別子"
+        },
+        {
+          "name": "検知日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "異常が検知された日時"
+        },
+        {
+          "name": "異常タイプ",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "異常の分類（例：データ不整合、ルール違反、金額異常、期限超過）"
+        },
+        {
+          "name": "重要度",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "異常の重要度レベル（例：高、中、低）"
+        },
+        {
+          "name": "対象テーブル",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "異常が検知されたテーブル名"
+        },
+        {
+          "name": "対象レコードID",
+          "type": "uuid",
+          "required": false,
+          "description": "異常が検知されたレコードの一意識別子"
+        },
+        {
+          "name": "検証ルールID",
+          "type": "uuid",
+          "required": false,
+          "description": "適用されたデータ検証ルールの識別子"
+        },
+        {
+          "name": "異常内容",
+          "type": "text",
+          "required": true,
+          "description": "異常の詳細説明と検知理由"
+        },
+        {
+          "name": "期待値",
+          "type": "text",
+          "required": false,
+          "description": "ルール違反時の期待値"
+        },
+        {
+          "name": "実際値",
+          "type": "text",
+          "required": false,
+          "description": "ルール違反時の実際の値"
+        },
+        {
+          "name": "ステータス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "異常の対応状況（例：未対応、対応中、解決済み、無視）"
+        },
+        {
+          "name": "対応者ID",
+          "type": "uuid",
+          "required": false,
+          "description": "異常に対応するユーザーの識別子"
+        },
+        {
+          "name": "対応日時",
+          "type": "timestamp",
+          "required": false,
+          "description": "異常に対応した日時"
+        },
+        {
+          "name": "対応コメント",
+          "type": "text",
+          "required": false,
+          "description": "対応内容の説明やメモ"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "ログレコードが作成された日時"
+        },
+        {
+          "name": "作成者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "ログを作成したシステムまたはユーザーの識別子"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "ログレコードが最後に更新された日時"
+        },
+        {
+          "name": "更新者ID",
+          "type": "uuid",
+          "required": true,
+          "description": "ログを最後に更新したユーザーの識別子"
+        }
+      ]
+    }
+  ],
+  "presetSeedData": {
+    "取引先": [
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社トヨタ自動車工業",
+        "取引先名カナ": "トヨタジドウシャコウギョウ",
+        "取引先区分": "顧客",
+        "郵便番号": "471-8571",
+        "住所": "愛知県豊田市トヨタ町1番地",
+        "電話番号": "0565-28-2121",
+        "メールアドレス": "procurement@toyota.co.jp",
+        "担当者名": "鈴木健一",
+        "支払条件": "月末締め翌月末払い（振込）",
+        "請求先住所": "愛知県豊田市トヨタ町1番地 経理部宛",
+        "請求先メールアドレス": "invoice@toyota.co.jp",
+        "ステータス": "有効",
+        "作成日時": "2024-01-15T09:30:00Z",
+        "更新日時": "2025-01-10T14:45:00Z",
+        "作成者": "user-0001",
+        "更新者": "user-0002"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社マルヨシチェーン",
+        "取引先名カナ": "マルヨシチェーン",
+        "取引先区分": "顧客",
+        "郵便番号": "430-0926",
+        "住所": "静岡県浜松市中区砂山町1-1",
+        "電話番号": "053-456-7890",
+        "メールアドレス": "procurement@maruyoshi-chain.co.jp",
+        "担当者名": "鈴木健太",
+        "支払条件": "月末締め翌月末払い",
+        "請求先住所": "静岡県浜松市中区砂山町1-1 経理部宛",
+        "請求先メールアドレス": "accounting@maruyoshi-chain.co.jp",
+        "ステータス": "有効",
+        "作成日時": "2024-03-15T09:30:00+09:00",
+        "更新日時": "2024-11-20T14:45:00+09:00",
+        "作成者": "user-0045",
+        "更新者": "user-0045"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社テクノマテリアル",
+        "取引先名カナ": "テクノマテリアル",
+        "取引先区分": "仕入先",
+        "郵便番号": "251-0052",
+        "住所": "神奈川県藤沢市藤沢1-2-3 テクノビル4階",
+        "電話番号": "0466-25-8800",
+        "メールアドレス": "sales@technomaterial.co.jp",
+        "担当者名": "佐藤健一",
+        "支払条件": "月末締め翌月末払い",
+        "請求先住所": "神奈川県藤沢市藤沢1-2-3 テクノビル4階 経理部",
+        "請求先メールアドレス": "accounting@technomaterial.co.jp",
+        "ステータス": "有効",
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2025-01-20T14:15:00",
+        "作成者": "usr-0001",
+        "更新者": "usr-0015"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社テクノソリューション",
+        "取引先名カナ": "テクノソリューション",
+        "取引先区分": "顧客",
+        "郵便番号": "150-0001",
+        "住所": "東京都渋谷区神宮前1-2-3 テックビル5階",
+        "電話番号": "03-1234-5678",
+        "メールアドレス": "info@techno-solution.jp",
+        "担当者名": "山田太郎",
+        "支払条件": "現金払い（納品時）",
+        "請求先住所": "東京都新宿区西新宿2-4-1 本社ビル10階",
+        "請求先メールアドレス": "billing@techno-solution.jp",
+        "ステータス": "有効",
+        "作成日時": "2024-11-15 10:30:00",
+        "更新日時": "2024-11-15 10:30:00",
+        "作成者": "user-0001",
+        "更新者": "user-0001"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "Acme Global Trading Ltd.",
+        "取引先名カナ": "アクメグローバルトレーディング",
+        "取引先区分": "仕入先",
+        "郵便番号": "SW1A 1AA",
+        "住所": "イギリス ロンドン ウェストミンスター地区 キングスウェイ 123 番地",
+        "電話番号": "+44-20-7946-0958",
+        "メールアドレス": "procurement@acmeglobal.co.uk",
+        "担当者名": "山田太郎",
+        "支払条件": "LC(信用状)による支払い、Net 60日、USD建て、送金手数料先払い",
+        "請求先住所": "日本 東京都港区虎ノ門 1-2-3 当社ロンドン支店宛",
+        "請求先メールアドレス": "billing-tokyo@acmeglobal.co.uk",
+        "ステータス": "有効",
+        "作成日時": "2024-03-15T09:30:00Z",
+        "更新日時": "2025-01-22T14:15:00Z",
+        "作成者": "user-0042",
+        "更新者": "user-0087"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社グローバルテック東京支社",
+        "取引先名カナ": "グローバルテックトウキョウシシャ",
+        "取引先区分": "関連会社",
+        "郵便番号": "100-0005",
+        "住所": "東京都千代田区丸の内1-6-2 丸の内ビルディング15階",
+        "電話番号": "03-1234-5678",
+        "メールアドレス": "contact@globaltech-tokyo.co.jp",
+        "担当者名": "山田健二",
+        "支払条件": "月末締め翌月末払い（内部振替）",
+        "請求先住所": "東京都千代田区丸の内1-6-2 丸の内ビルディング20階 財務部",
+        "請求先メールアドレス": "finance@globaltech-tokyo.co.jp",
+        "ステータス": "有効",
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2025-01-20T14:15:00",
+        "作成者": "usr-0042",
+        "更新者": "usr-0089"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社山田物流",
+        "取引先名カナ": "ヤマダブツリュウ",
+        "取引先区分": "顧客",
+        "郵便番号": "135-0016",
+        "住所": "東京都江東区東陽3-5-8 山田ビル2F",
+        "電話番号": "03-5XXX-XXXX",
+        "メールアドレス": "info@yamada-logistics.jp",
+        "担当者名": "佐藤健一",
+        "支払条件": "月末締め翌月末払い",
+        "請求先住所": "東京都江東区東陽3-5-8 山田ビル3F 経理部",
+        "請求先メールアドレス": "accounting@yamada-logistics.jp",
+        "ステータス": "有効（支払遅延注視）",
+        "作成日時": "2021-06-15T09:30:00",
+        "更新日時": "2025-01-20T14:15:00",
+        "作成者": "user-0012",
+        "更新者": "user-0045"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社テックサプライ",
+        "取引先名カナ": "テックサプライ",
+        "取引先区分": "仕入先",
+        "郵便番号": "530-0001",
+        "住所": "大阪府大阪市北区梅田1-2-3 テックビル5階",
+        "電話番号": "06-6123-4567",
+        "メールアドレス": "sales@techsupply.jp",
+        "担当者名": "佐藤健一",
+        "支払条件": "月末締め翌月末払い",
+        "請求先住所": "大阪府大阪市北区梅田1-2-3 テックビル5階",
+        "請求先メールアドレス": "billing@techsupply.jp",
+        "ステータス": "無効",
+        "作成日時": "2023-06-15T09:30:00Z",
+        "更新日時": "2024-11-20T14:45:00Z",
+        "作成者": "user-0042",
+        "更新者": "user-0156"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社テクノソリューション",
+        "取引先名カナ": "テクノソリューション",
+        "取引先区分": "顧客",
+        "郵便番号": "150-0001",
+        "住所": "東京都渋谷区神宮前1-2-3 ビジネスビル5階",
+        "電話番号": "03-XXXX-XXXX",
+        "メールアドレス": "info@techno-solution.co.jp",
+        "担当者名": "未定",
+        "支払条件": "未定",
+        "請求先住所": "未定",
+        "請求先メールアドレス": "未定",
+        "ステータス": "見込み客",
+        "作成日時": "2024-11-15T10:30:00Z",
+        "更新日時": "2024-11-15T10:30:00Z",
+        "作成者": "user-001",
+        "更新者": "user-001"
+      },
+      {
+        "取引先ID": "rec-001",
+        "取引先名": "株式会社トヨタ流通システム",
+        "取引先名カナ": "トヨタリュウツウシステム",
+        "取引先区分": "顧客",
+        "郵便番号": "471-8501",
+        "住所": "愛知県豊田市トヨタ町1番地",
+        "電話番号": "0565-28-2121",
+        "メールアドレス": "contact@toyota-logistics.co.jp",
+        "担当者名": "鈴木健二",
+        "支払条件": "月末締め翌月末払い",
+        "請求先住所": "東京都千代田区丸の内1-1-1 トヨタビル10階",
+        "請求先メールアドレス": "billing@toyota-tokyo.co.jp",
+        "ステータス": "有効",
+        "作成日時": "2024-01-15T09:30:00",
+        "更新日時": "2024-11-20T14:45:00",
+        "作成者": "usr-0001",
+        "更新者": "usr-0005"
+      }
+    ],
+    "営業担当者": [
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "山田太郎",
+        "メールアドレス": "yamada.taro@company.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業部",
+        "役職": "営業部長",
+        "上司ID": null,
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:00:00Z",
+        "更新日時": "2025-01-15T14:30:00Z",
+        "作成者": "admin"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "佐藤健一",
+        "メールアドレス": "satoh.kenichi@company.co.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業一課",
+        "役職": "課長",
+        "上司ID": "rec-head-001",
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:00:00+09:00",
+        "更新日時": "2025-01-15T14:30:00+09:00",
+        "作成者": "人事管理システム"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "田中太郎",
+        "メールアドレス": "tanaka.taro@company.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業一課",
+        "役職": "営業担当者",
+        "上司ID": "rec-002",
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:00:00",
+        "更新日時": "2025-01-15T14:30:00",
+        "作成者": "山田花子"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "佐藤健一",
+        "メールアドレス": "satoh.kenichi@company.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業一課",
+        "役職": "営業担当者",
+        "上司ID": "rec-002",
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:30:00",
+        "更新日時": "2025-01-15T14:20:00",
+        "作成者": "鈴木太郎"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "山田健一",
+        "メールアドレス": "yamada.kenichi@company.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業二課",
+        "役職": "課長",
+        "上司ID": "rec-999",
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:00:00",
+        "更新日時": "2025-01-15T14:30:00",
+        "作成者": "人事太郎"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "鈴木健一",
+        "メールアドレス": "suzuki.kenichi@company.co.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業二課",
+        "役職": "営業担当者",
+        "上司ID": "rec-002",
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:00:00+09:00",
+        "更新日時": "2025-01-15T14:30:00+09:00",
+        "作成者": "admin"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "山田健一",
+        "メールアドレス": "yamada.kenichi@company.jp",
+        "電話番号": "09012345678",
+        "部門": "営業二課",
+        "役職": "営業担当者",
+        "上司ID": "rec-002",
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:00:00Z",
+        "更新日時": "2025-01-15T14:30:00Z",
+        "作成者": "人事部_管理者"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "鈴木美咲",
+        "メールアドレス": "suzuki.misaki@company.co.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業企画部",
+        "役職": "営業支援スタッフ",
+        "上司ID": "rec-002",
+        "ステータス": "在職中",
+        "作成日時": "2024-04-01T09:30:00+09:00",
+        "更新日時": "2025-01-15T14:20:00+09:00",
+        "作成者": "人事部_田中"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "佐藤由美",
+        "メールアドレス": "sato.yumi@company.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "営業部第2課",
+        "役職": "営業主任",
+        "上司ID": "rec-012",
+        "ステータス": "休職中",
+        "作成日時": "2023-04-15T09:30:00+09:00",
+        "更新日時": "2024-11-20T14:45:00+09:00",
+        "作成者": "田中次郎"
+      },
+      {
+        "営業担当者ID": "rec-001",
+        "名前": "佐藤健一",
+        "メールアドレス": "sato.kenichi@company.jp",
+        "電話番号": "090-1234-5678",
+        "部門": "東京営業部",
+        "役職": "営業課長",
+        "上司ID": "rec-002",
+        "ステータス": "退職",
+        "作成日時": "2023-04-01T09:00:00+09:00",
+        "更新日時": "2025-01-31T17:30:00+09:00",
+        "作成者": "人事部_太郎"
+      }
+    ],
+    "営業活動": [
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "活動種別": "訪問",
+        "活動日時": "2024-11-15T10:30:00+09:00",
+        "活動内容": "株式会社テックソリューション本社を訪問。営業部長・鈴木課長と面談。同社の事業内容、現在のシステム構成、課題について初期ヒアリング実施。",
+        "次回フォローアップ予定日": "2024-12-06T14:00:00+09:00",
+        "商談ステージ": "初期接触",
+        "見積金額": null,
+        "成約フラグ": false,
+        "作成日時": "2024-11-15T11:45:00+09:00",
+        "作成者ID": "rec-203",
+        "更新日時": "2024-11-15T11:45:00+09:00",
+        "更新者ID": "rec-203"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-cli-042",
+        "営業担当者ID": "rec-emp-015",
+        "活動種別": "提案",
+        "活動日時": "2024-11-15T14:30:00+09:00",
+        "活動内容": "既存システムの拡張提案。新機能3点と導入スケジュール案を提示。顧客の課題に対する解決策を説明。",
+        "次回フォローアップ予定日": "2024-11-29T10:00:00+09:00",
+        "商談ステージ": "提案中",
+        "見積金額": 2850000,
+        "成約フラグ": false,
+        "作成日時": "2024-11-15T14:35:00+09:00",
+        "作成者ID": "rec-emp-015",
+        "更新日時": "2024-11-15T14:35:00+09:00",
+        "更新者ID": "rec-emp-015"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-205",
+        "活動種別": "商談",
+        "活動日時": "2025-01-15T14:30:00+09:00",
+        "活動内容": "システム導入費用について、初期提示の1,800万円から1,500万円への値下げ要望を受け、保守費用の年間契約化で対応案を提示。次回までに経営層承認を取得予定。",
+        "次回フォローアップ予定日": "2025-01-22T10:00:00+09:00",
+        "商談ステージ": "交渉中",
+        "見積金額": 15000000,
+        "成約フラグ": false,
+        "作成日時": "2025-01-15T14:45:00+09:00",
+        "作成者ID": "rec-205",
+        "更新日時": "2025-01-15T14:45:00+09:00",
+        "更新者ID": "rec-205"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "活動種別": "商談",
+        "活動日時": "2025-01-15T14:30:00+09:00",
+        "活動内容": "契約内容最終確認、契約書署名予定日を2025年1月22日に決定",
+        "次回フォローアップ予定日": "2025-01-22T10:00:00+09:00",
+        "商談ステージ": "成約予定",
+        "見積金額": 2850000,
+        "成約フラグ": false,
+        "作成日時": "2025-01-15T14:35:00+09:00",
+        "作成者ID": "rec-203",
+        "更新日時": "2025-01-15T14:35:00+09:00",
+        "更新者ID": "rec-203"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "活動種別": "訪問",
+        "活動日時": "2025-01-15T14:30:00+09:00",
+        "活動内容": "成約後の納品前フォローアップ。システム導入スケジュール確認、ユーザー教育の日程調整、本番環境への移行準備状況を確認。顧客側の準備体制に問題なし。",
+        "次回フォローアップ予定日": "2025-02-05T10:00:00+09:00",
+        "商談ステージ": "成約予定",
+        "見積金額": 2850000,
+        "成約フラグ": true,
+        "作成日時": "2025-01-15T15:45:00+09:00",
+        "作成者ID": "rec-203",
+        "更新日時": "2025-01-15T15:45:00+09:00",
+        "更新者ID": "rec-203"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-042",
+        "営業担当者ID": "rec-108",
+        "活動種別": "提案",
+        "活動日時": "2025-01-15T14:30:00+09:00",
+        "活動内容": "既存システムの機能追加と保守契約の拡大について提案。顧客より前向きな反応を得た。",
+        "次回フォローアップ予定日": "2025-01-29T10:00:00+09:00",
+        "商談ステージ": "提案中",
+        "見積金額": 2850000,
+        "成約フラグ": false,
+        "作成日時": "2025-01-15T14:45:00+09:00",
+        "作成者ID": "rec-108",
+        "更新日時": "2025-01-15T14:45:00+09:00",
+        "更新者ID": "rec-108"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-012",
+        "営業担当者ID": "rec-045",
+        "活動種別": "訪問",
+        "活動日時": "2025-01-15T14:30:00+09:00",
+        "活動内容": "前回失注理由の確認と現在のニーズ再調査。予算確保の見通しについてヒアリング。",
+        "次回フォローアップ予定日": "2025-02-12T10:00:00+09:00",
+        "商談ステージ": "初期接触",
+        "見積金額": 0,
+        "成約フラグ": false,
+        "作成日時": "2025-01-15T14:45:00+09:00",
+        "作成者ID": "rec-045",
+        "更新日時": "2025-01-15T14:45:00+09:00",
+        "更新者ID": "rec-045"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-012",
+        "営業担当者ID": "rec-045",
+        "活動種別": "電話",
+        "活動日時": "2024-11-15T14:30:00+09:00",
+        "活動内容": "定期接触。納入後の製品稼働状況確認、現在の満足度は高い。追加導入の可能性あり。",
+        "次回フォローアップ予定日": "2025-02-15T10:00:00+09:00",
+        "商談ステージ": "初期接触",
+        "見積金額": 0,
+        "成約フラグ": false,
+        "作成日時": "2024-11-15T14:35:00+09:00",
+        "作成者ID": "rec-045",
+        "更新日時": "2024-11-15T14:35:00+09:00",
+        "更新者ID": "rec-045"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-cust-042",
+        "営業担当者ID": "rec-staff-015",
+        "活動種別": "訪問",
+        "活動日時": "2024-11-15T10:30:00+09:00",
+        "活動内容": "東京ビジネスエキスポ2024にて初回接触。同社はSaaS型経営管理システムの導入を検討中。製品カタログ・価格表を配布し、デモ動画URLをメール送付予定。",
+        "次回フォローアップ予定日": "2024-11-29T14:00:00+09:00",
+        "商談ステージ": "初期接触",
+        "見積金額": 0,
+        "成約フラグ": false,
+        "作成日時": "2024-11-15T11:00:00+09:00",
+        "作成者ID": "rec-staff-015",
+        "更新日時": "2024-11-15T11:00:00+09:00",
+        "更新者ID": "rec-staff-015"
+      },
+      {
+        "営業活動ID": "rec-001",
+        "取引先ID": "rec-c-042",
+        "営業担当者ID": "rec-s-015",
+        "活動種別": "訪問",
+        "活動日時": "2025-01-16T14:30:00+09:00",
+        "活動内容": "3ヶ月ぶりの訪問。前回提案から返答なし。決裁権者不在のため担当者と進捗確認。予算確保の時期を確認し、次回会議日程を調整。",
+        "次回フォローアップ予定日": "2025-02-13T10:00:00+09:00",
+        "商談ステージ": "提案中",
+        "見積金額": 4800000,
+        "成約フラグ": false,
+        "作成日時": "2025-01-16T15:45:00+09:00",
+        "作成者ID": "rec-s-015",
+        "更新日時": "2025-01-16T15:45:00+09:00",
+        "更新者ID": "rec-s-015"
+      }
+    ],
+    "商談": [
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-client-0847",
+        "営業担当者ID": "rec-sales-0312",
+        "商談名": "プレス機械自動化システム導入提案",
+        "商談金額": 8500000,
+        "ステージ": "提案",
+        "成約予定日": "2025-03-15T00:00:00Z",
+        "説明": "既存プレス機械の自動化・IoT化による生産効率化。ROI3年を想定。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2024-11-20T09:30:00Z",
+        "更新日時": "2025-01-08T14:45:00Z",
+        "作成者ID": "rec-sales-0312"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "株式会社ヤマダ電器 追加発注 2025年1月",
+        "商談金額": 2850000,
+        "ステージ": "提案",
+        "成約予定日": "2025-01-31T18:00:00Z",
+        "説明": "既存契約商品の追加発注。前回納入分の評価が高く、今年度の拡大需要に対応。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2024-12-15T09:30:00Z",
+        "更新日時": "2025-01-08T14:20:00Z",
+        "作成者ID": "rec-203"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "◎◎システムズ向けクラウドERPパッケージ導入",
+        "商談金額": 4500000,
+        "ステージ": "交渉",
+        "成約予定日": "2025-02-28T23:59:59Z",
+        "説明": "競合A社との価格比較中。当社提案5M円に対し先方は4.2M円要望。カスタマイズ範囲の調整で対応検討中。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2024-11-15T10:30:00Z",
+        "更新日時": "2025-01-22T14:15:00Z",
+        "作成者ID": "rec-203"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "システム導入プロジェクト（ABC製造）",
+        "商談金額": 2500000,
+        "ステージ": "交渉",
+        "成約予定日": "2025-03-15T00:00:00Z",
+        "説明": "顧客の予算承認プロセス進行中。承認完了予定は2月末。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2024-11-20T09:30:00Z",
+        "更新日時": "2025-01-22T14:15:00Z",
+        "作成者ID": "rec-203"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "クラウドERP導入プロジェクト",
+        "商談金額": 4500000,
+        "ステージ": "交渉",
+        "成約予定日": "2025-03-15T00:00:00Z",
+        "説明": "API仕様とデータ連携方式について先方と調整中。セキュリティ要件の確認も進行中。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2024-11-20T10:30:00Z",
+        "更新日時": "2025-01-08T14:45:00Z",
+        "作成者ID": "rec-203"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "ABC製造株式会社 生産管理システム導入プロジェクト",
+        "商談金額": 4800000,
+        "ステージ": "成約",
+        "成約予定日": "2025-01-31T00:00:00Z",
+        "説明": "既存システムの老朽化に伴う刷新案件。導入規模は3工場、ユーザー数約150名。",
+        "成約日": "2025-01-28T10:30:00Z",
+        "失注理由": null,
+        "作成日時": "2024-10-15T09:00:00Z",
+        "更新日時": "2025-01-28T10:30:00Z",
+        "作成者ID": "rec-203"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "A社向けシステム導入プロジェクト",
+        "商談金額": 2500000,
+        "ステージ": "失注",
+        "成約予定日": "2025-02-28T00:00:00Z",
+        "説明": "在庫管理システムの導入を検討していたが、顧客の経営方針変更により案件中止となった。",
+        "成約日": null,
+        "失注理由": "顧客都合",
+        "作成日時": "2024-11-15T09:30:00Z",
+        "更新日時": "2025-01-22T14:45:00Z",
+        "作成者ID": "rec-203"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-cli-042",
+        "営業担当者ID": "rec-emp-015",
+        "商談名": "〇〇製造業向けクラウドERPシステム導入",
+        "商談金額": 2800000,
+        "ステージ": "初期接触",
+        "成約予定日": "2025-03-31T00:00:00Z",
+        "説明": "初回面談で経営課題をヒアリング。提案資料作成予定。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2025-01-15T10:30:00Z",
+        "更新日時": "2025-01-15T10:30:00Z",
+        "作成者ID": "rec-emp-015"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "クラウド基幹システム導入プロジェクト",
+        "商談金額": 4500000,
+        "ステージ": "交渉",
+        "成約予定日": "2025-03-15T18:00:00",
+        "説明": "年度末予算消化案件。既存システム老朽化対応。導入費用と3年間の保守費用を含む。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2025-01-10T09:30:00",
+        "更新日時": "2025-02-20T14:15:00",
+        "作成者ID": "rec-203"
+      },
+      {
+        "商談ID": "rec-001",
+        "取引先ID": "rec-102",
+        "営業担当者ID": "rec-203",
+        "商談名": "株式会社ソフテック 保守契約更新2025年度",
+        "商談金額": 2400000,
+        "ステージ": "交渉",
+        "成約予定日": "2025-03-31T23:59:59Z",
+        "説明": "既存3年契約の更新交渉。システム保守費用の値上げ提案中。顧客は予算制約を理由に現状維持を希望。",
+        "成約日": null,
+        "失注理由": null,
+        "作成日時": "2024-11-15T10:30:00Z",
+        "更新日時": "2025-01-22T14:45:30Z",
+        "作成者ID": "rec-203"
+      }
+    ],
+    "商談ステージマスタ": [
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "初期接触",
+        "ステージ順序": 1,
+        "説明": "顧客と営業が最初に接触し、ニーズヒアリングと基本情報の収集を行うステージ",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-01-15T09:30:00",
+        "更新日時": "2024-11-20T14:45:00",
+        "作成者": "田中太郎",
+        "更新者": "鈴木花子"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "ニーズ把握",
+        "ステージ順序": 2,
+        "説明": "顧客との初回ヒアリングを実施し、経営課題や業務要件を整理するステージ。顧客ニーズの詳細化と優先度の把握を行う。",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-04-15 09:30:00",
+        "更新日時": "2024-12-10 14:22:00",
+        "作成者": "田中太郎",
+        "更新者": "鈴木花子"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "提案",
+        "ステージ順序": 3,
+        "説明": "見積書や提案資料を顧客に提示し、商品・サービスの価値と条件を説明する段階",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2024-11-20T14:15:00",
+        "作成者": "山田太郎",
+        "更新者": "佐藤花子"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "交渉",
+        "ステージ順序": 3,
+        "説明": "顧客との価格・納期・条件調整を行い、契約成立に向けた最終段階",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-04-15 09:30:00",
+        "更新日時": "2025-01-22 14:45:00",
+        "作成者": "田中太郎",
+        "更新者": "佐藤花子"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "決裁待ち",
+        "ステージ順序": 4,
+        "説明": "提案内容が顧客の内部決裁プロセスに進行中の段階。決裁完了または却下の結果待ちの状態。",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2025-01-20T14:45:00",
+        "作成者": "佐藤花子",
+        "更新者": "鈴木健一"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "成約",
+        "ステージ順序": 4,
+        "説明": "契約書に署名・捺印され、商談が確定した段階。請求処理開始のトリガーとなる。",
+        "成約ステージフラグ": true,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2024-04-15T09:30:00",
+        "作成者": "田中太郎",
+        "更新者": "田中太郎"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "失注",
+        "ステージ順序": 5,
+        "説明": "顧客判断や競合敗北により商談が終了した段階。失注理由を記録し、今後の営業活動に反映させる。",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": true,
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2024-04-15T09:30:00",
+        "作成者": "山田太郎",
+        "更新者": "山田太郎"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "保留",
+        "ステージ順序": 4,
+        "説明": "顧客の判断保留により商談が一時中断している段階。顧客の検討期間中に定期的なフォローアップを実施。",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2024-11-20T14:15:00",
+        "作成者": "山田花子",
+        "更新者": "鈴木一郎"
+      },
+      {
+        "ステージID": "rec-001",
+        "ステージ名": "再開",
+        "ステージ順序": 3,
+        "説明": "保留中の商談を顧客の状況変化により再度進める段階。初期接触時の内容を確認した上で提案準備に進む。",
+        "成約ステージフラグ": false,
+        "失注ステージフラグ": false,
+        "有効フラグ": true,
+        "作成日時": "2024-06-15T09:30:00",
+        "更新日時": "2025-01-10T14:22:00",
+        "作成者": "山田花子",
+        "更新者": "佐藤次郎"
+      }
+    ],
+    "請求書": [
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-002",
+        "取引先ID": "rec-003",
+        "営業担当者ID": "rec-004",
+        "請求書番号": "INV-2025-0001",
+        "請求日": "2025-01-10T09:00:00Z",
+        "支払期限日": "2025-02-10T23:59:59Z",
+        "請求金額": 5500000,
+        "税額": 500000,
+        "税抜金額": 5000000,
+        "請求ステータス": "入金済",
+        "入金日": "2025-02-05T14:30:00Z",
+        "入金金額": 5500000,
+        "摘要": "2025年1月分 システム保守サービス月次料金",
+        "作成日時": "2025-01-10T09:15:00Z",
+        "更新日時": "2025-02-05T15:00:00Z",
+        "作成者": "山田花子"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-002",
+        "取引先ID": "rec-003",
+        "営業担当者ID": "rec-004",
+        "請求書番号": "INV-2024-00001",
+        "請求日": "2024-11-15T09:00:00Z",
+        "支払期限日": "2024-12-15T23:59:59Z",
+        "請求金額": 550000,
+        "税額": 50000,
+        "税抜金額": 500000,
+        "請求ステータス": "入金待ち",
+        "入金日": null,
+        "入金金額": null,
+        "摘要": "システム開発業務一式（初回納品分）。請求書は2024年11月15日に発行し、支払期限は2024年12月15日です。",
+        "作成日時": "2024-11-15T09:30:00Z",
+        "更新日時": "2024-11-15T09:30:00Z",
+        "作成者": "山田花子"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-002",
+        "取引先ID": "rec-003",
+        "営業担当者ID": "rec-004",
+        "請求書番号": "INV-2025-00847",
+        "請求日": "2025-01-15T09:00:00Z",
+        "支払期限日": "2025-02-14T23:59:59Z",
+        "請求金額": 3850000,
+        "税額": 350000,
+        "税抜金額": 3500000,
+        "請求ステータス": "未送付",
+        "入金日": null,
+        "入金金額": null,
+        "摘要": "システム開発プロジェクト完了に伴う一括請求。納品日2025年1月10日。",
+        "作成日時": "2025-01-15T08:45:30Z",
+        "更新日時": "2025-01-15T08:45:30Z",
+        "作成者": "田中太郎"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-0042",
+        "取引先ID": "rec-0156",
+        "営業担当者ID": "rec-0089",
+        "請求書番号": "INV-2025-001847",
+        "請求日": "2025-01-15T09:30:00Z",
+        "支払期限日": "2025-02-15T23:59:59Z",
+        "請求金額": 550000,
+        "税額": 50000,
+        "税抜金額": 500000,
+        "請求ステータス": "入金待ち",
+        "入金日": null,
+        "入金金額": null,
+        "摘要": "前月請求額1,100,000円のうち550,000円の入金確認済み。残額550,000円の差額請求",
+        "作成日時": "2025-01-15T09:35:22Z",
+        "更新日時": "2025-01-15T09:35:22Z",
+        "作成者": "山田花子"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-042",
+        "取引先ID": "rec-156",
+        "営業担当者ID": "rec-203",
+        "請求書番号": "INV-2024-08-0847",
+        "請求日": "2024-08-15T09:30:00Z",
+        "支払期限日": "2024-09-15T23:59:59Z",
+        "請求金額": 2750000,
+        "税額": 250000,
+        "税抜金額": 2500000,
+        "請求ステータス": "キャンセル",
+        "入金日": null,
+        "入金金額": 0,
+        "摘要": "取引先の経営悪化に伴う契約解除に基づき、請求書をキャンセル処理いたしました。",
+        "作成日時": "2024-08-15T09:30:00Z",
+        "更新日時": "2024-11-22T14:15:00Z",
+        "作成者": "山田花子"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-002",
+        "取引先ID": "rec-003",
+        "営業担当者ID": "rec-004",
+        "請求書番号": "INV-2024-12-0847",
+        "請求日": "2024-12-15T09:00:00Z",
+        "支払期限日": "2025-01-15T23:59:59Z",
+        "請求金額": 1320000,
+        "税額": 120000,
+        "税抜金額": 1200000,
+        "請求ステータス": "入金済",
+        "入金日": "2025-01-10T14:30:00Z",
+        "入金金額": 1320000,
+        "摘要": "初回請求後の値引き交渉により金額修正。税抜1,200,000円（10%値引き適用）",
+        "作成日時": "2024-12-20T10:15:00Z",
+        "更新日時": "2024-12-20T10:15:00Z",
+        "作成者": "山田花子"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-002",
+        "取引先ID": "rec-003",
+        "営業担当者ID": "rec-004",
+        "請求書番号": "INV-2025-001234",
+        "請求日": "2025-01-31T09:00:00",
+        "支払期限日": "2025-02-28T23:59:59",
+        "請求金額": 2750000,
+        "税額": 250000,
+        "税抜金額": 2500000,
+        "請求ステータス": "送付済",
+        "入金日": null,
+        "入金金額": null,
+        "摘要": "2025年1月分 システム保守サービス・コンサルティング費用の月末締め請求",
+        "作成日時": "2025-01-31T10:15:00",
+        "更新日時": "2025-01-31T14:30:00",
+        "作成者": "田中太郎"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-102",
+        "取引先ID": "rec-203",
+        "営業担当者ID": "rec-304",
+        "請求書番号": "INV-2024-0847",
+        "請求日": "2024-08-15T09:30:00Z",
+        "支払期限日": "2024-09-14T23:59:59Z",
+        "請求金額": 1650000,
+        "税額": 150000,
+        "税抜金額": 1500000,
+        "請求ステータス": "入金待ち",
+        "入金日": null,
+        "入金金額": 0,
+        "摘要": "支払期限超過中。2024年10月・11月に催促メール送付済。取引先担当者：山田花子。至急入金をお願いします。",
+        "作成日時": "2024-08-15T09:30:00Z",
+        "更新日時": "2024-11-28T14:22:00Z",
+        "作成者": "鈴木一郎"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-002",
+        "取引先ID": "rec-003",
+        "営業担当者ID": "rec-004",
+        "請求書番号": "INV-2024-0847",
+        "請求日": "2024-11-15T09:00:00Z",
+        "支払期限日": "2024-12-15T23:59:59Z",
+        "請求金額": "385000",
+        "税額": "35000",
+        "税抜金額": "350000",
+        "請求ステータス": "入金済",
+        "入金日": "2024-12-10T14:30:00Z",
+        "入金金額": "385000",
+        "摘要": "10月納品分。12月3日に返品対応（不良品5個、税抜50,000円相当）により請求額を減額。部分入金後、残額を12月10日に回収完了。",
+        "作成日時": "2024-11-15T09:15:00Z",
+        "更新日時": "2024-12-10T15:00:00Z",
+        "作成者": "山田花子"
+      },
+      {
+        "請求書ID": "rec-001",
+        "商談ID": "rec-002",
+        "取引先ID": "rec-003",
+        "営業担当者ID": "rec-004",
+        "請求書番号": "INV-2024-001234",
+        "請求日": "2024-01-15T09:00:00Z",
+        "支払期限日": "2024-02-15T23:59:59Z",
+        "請求金額": 550000,
+        "税額": 50000,
+        "税抜金額": 500000,
+        "請求ステータス": "入金済",
+        "入金日": "2024-02-10T14:30:00Z",
+        "入金金額": 550000,
+        "摘要": "システム保守サービス契約初月分（2024年1月分）。年間契約、毎月自動更新予定。",
+        "作成日時": "2024-01-15T08:45:00Z",
+        "更新日時": "2024-02-10T15:00:00Z",
+        "作成者": "田中太郎"
+      }
+    ],
+    "請求明細": [
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-002",
+        "商談ID": "rec-003",
+        "営業活動ID": "rec-004",
+        "明細行番号": 1,
+        "商品名": "CloudSync Pro 月額利用料",
+        "商品説明": "クラウド型プロジェクト管理ツール、月間ユーザー数5名まで対応",
+        "数量": 1,
+        "単価": 15000,
+        "金額": 15000,
+        "税率": 10,
+        "税額": 1500,
+        "税込金額": 16500,
+        "摘要": "2025年1月分の月額利用料。サポート対応含む。",
+        "作成日時": "2024-12-27 09:30:00",
+        "更新日時": "2024-12-27 09:30:00",
+        "作成者": "山田花子"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-inv-2025-001",
+        "商談ID": "rec-deal-2024-156",
+        "営業活動ID": "rec-activity-2024-089",
+        "明細行番号": 1,
+        "商品名": "顧客管理システム導入コンサルティング",
+        "商品説明": "要件定義、設計、テスト支援を含む3ヶ月のコンサルティングサービス",
+        "数量": 1,
+        "単価": 2500000,
+        "金額": 2500000,
+        "税率": 10,
+        "税額": 250000,
+        "税込金額": 2750000,
+        "摘要": "2024年10月～12月実施分。納品物：要件定義書、基本設計書、テスト報告書",
+        "作成日時": "2025-01-15 09:30:00",
+        "更新日時": "2025-01-15 09:30:00",
+        "作成者": "山田花子"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-bill-2024-001",
+        "商談ID": "rec-deal-2024-0156",
+        "営業活動ID": "rec-activity-2024-0892",
+        "明細行番号": 1,
+        "商品名": "システム保守サポート契約（年間）",
+        "商品説明": "クラウドERPシステムの年間保守・技術サポート、月1回の定期メンテナンス、緊急対応24時間体制を含む",
+        "数量": 1,
+        "単価": 1200000,
+        "金額": 1200000,
+        "税率": 10,
+        "税額": 120000,
+        "税込金額": 1320000,
+        "摘要": "2025年1月1日～12月31日の年間契約。請求対象期間：2025年度。前年度実績に基づく契約更新。",
+        "作成日時": "2024-12-10T09:30:00",
+        "更新日時": "2024-12-10T09:30:00",
+        "作成者": "鈴木花子"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-inv-2024-0847",
+        "商談ID": "rec-deal-2024-1203",
+        "営業活動ID": "rec-act-2024-0562",
+        "明細行番号": 1,
+        "商品名": "経営戦略コンサルティング",
+        "商品説明": "2024年度の事業計画策定に向けた経営戦略立案支援",
+        "数量": 40,
+        "単価": 15000,
+        "金額": 600000,
+        "税率": 10,
+        "税額": 60000,
+        "税込金額": 660000,
+        "摘要": "2024年11月〜12月の戦略立案フェーズ（40時間）。初回ヒアリング、市場分析、競合分析、経営課題整理を実施。",
+        "作成日時": "2024-12-20 14:30:00",
+        "更新日時": "2024-12-20 14:30:00",
+        "作成者": "山田花子"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-002",
+        "商談ID": "rec-003",
+        "営業活動ID": "rec-004",
+        "明細行番号": 1,
+        "商品名": "業務用プリンタ複合機 MX-5000",
+        "商品説明": "A3対応、月間印刷枚数30万枚対応の高速複合機",
+        "数量": 2,
+        "単価": 850000,
+        "金額": 1700000,
+        "税率": 10,
+        "税額": 170000,
+        "税込金額": 1870000,
+        "摘要": "2024年4月納品分、保守契約12ヶ月付き",
+        "作成日時": "2025-01-15T09:30:00",
+        "更新日時": "2025-01-15T09:30:00",
+        "作成者": "田中太郎"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-inv-0245",
+        "商談ID": "rec-deal-1823",
+        "営業活動ID": "rec-act-5612",
+        "明細行番号": 2,
+        "商品名": "業務用プリンタ複合機 A3対応",
+        "商品説明": "返品分の値引き対応。初期納入5台のうち1台返品に伴う修正請求",
+        "数量": 4,
+        "単価": 285000,
+        "金額": 1140000,
+        "税率": 10,
+        "税額": 114000,
+        "税込金額": 1254000,
+        "摘要": "2024年11月納入分より1台返品。修正請求額",
+        "作成日時": "2025-01-15 09:30:00",
+        "更新日時": "2025-01-15 09:30:00",
+        "作成者": "鈴木花子"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-002",
+        "商談ID": "rec-003",
+        "営業活動ID": "rec-004",
+        "明細行番号": 1,
+        "商品名": "業務用複合機 MX-5000",
+        "商品説明": "カラー印刷対応、月間30万枚対応、ネットワーク機能搭載",
+        "数量": 2,
+        "単価": 850000,
+        "金額": 1700000,
+        "税率": 10,
+        "税額": 170000,
+        "税込金額": 1870000,
+        "摘要": "分割納入第1回目（全3回）、納入予定日2025年2月15日",
+        "作成日時": "2025-01-20T14:30:00",
+        "更新日時": "2025-01-20T14:30:00",
+        "作成者": "山田太郎"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-002",
+        "商談ID": "rec-003",
+        "営業活動ID": "rec-004",
+        "明細行番号": 1,
+        "商品名": "クラウドストレージ年間ライセンス",
+        "商品説明": "企業向けクラウドストレージ100GB/年、24時間サポート付き",
+        "数量": 50,
+        "単価": 12000,
+        "金額": 600000,
+        "税率": 10,
+        "税額": 60000,
+        "税込金額": 660000,
+        "摘要": "春季キャンペーン割引20%適用済み。通常価格750000円から150000円割引",
+        "作成日時": "2024-04-15 09:30:00",
+        "更新日時": "2024-04-15 09:30:00",
+        "作成者": "山田花子"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-002",
+        "商談ID": "rec-003",
+        "営業活動ID": "rec-004",
+        "明細行番号": 2,
+        "商品名": "有機野菜詰め合わせセット",
+        "商品説明": "旬の有機栽培野菜6種類を詰め合わせたセット商品",
+        "数量": 5,
+        "単価": 3000,
+        "金額": 15000,
+        "税率": 8,
+        "税額": 1200,
+        "税込金額": 16200,
+        "摘要": "軽減税率対象商品。納期は2025年1月15日。",
+        "作成日時": "2024-12-20T09:30:00",
+        "更新日時": "2024-12-20T09:30:00",
+        "作成者": "田中太郎"
+      },
+      {
+        "請求明細ID": "rec-001",
+        "請求書ID": "rec-002",
+        "商談ID": "rec-003",
+        "営業活動ID": "rec-004",
+        "明細行番号": 1,
+        "商品名": "受託開発システム構築 第1期（要件定義・基本設計）",
+        "商品説明": "クラウド在庫管理システムの要件定義から基本設計までの第1マイルストーン完了分",
+        "数量": 1,
+        "単価": 1500000,
+        "金額": 1500000,
+        "税率": 10,
+        "税額": 150000,
+        "税込金額": 1650000,
+        "摘要": "2024年12月15日のマイルストーン達成に基づく段階請求。納期内完了。",
+        "作成日時": "2024-12-20T09:30:00",
+        "更新日時": "2024-12-20T09:30:00",
+        "作成者": "佐藤花子"
+      }
+    ],
+    "営業目標": [
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-a001",
+        "取引先ID": null,
+        "対象年月": "2024-01",
+        "目標金額": 5000000,
+        "目標件数": 12,
+        "ステータス": "達成",
+        "備考": "全社向け目標。Q1重点期間のため設定値を前年比120%で設定。",
+        "作成日時": "2023-12-15 09:30:00",
+        "作成者": "山田花子",
+        "更新日時": "2024-02-05 14:20:00",
+        "更新者": "山田花子"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-b001",
+        "取引先ID": "rec-x001",
+        "対象年月": "2024-01",
+        "目標金額": 15000000,
+        "目標件数": 8,
+        "ステータス": "達成",
+        "備考": "X社との既存案件3件、新規提案5件を想定。Q1重点顧客",
+        "作成日時": "2023-12-15 09:30:00",
+        "作成者": "山田花子",
+        "更新日時": "2024-02-10 14:20:00",
+        "更新者": "佐藤次郎"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-c-001",
+        "取引先ID": null,
+        "対象年月": "2024-02",
+        "目標金額": 15000000,
+        "目標件数": 12,
+        "ステータス": "有効",
+        "備考": "2月は新年度初月のため重点月。既存顧客との継続案件を中心に推進。",
+        "作成日時": "2024-01-15 09:30:00",
+        "作成者": "佐藤花子",
+        "更新日時": "2024-01-15 09:30:00",
+        "更新者": "佐藤花子"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-a001",
+        "取引先ID": "rec-y001",
+        "対象年月": "2024-01",
+        "目標金額": 5000000,
+        "目標件数": 8,
+        "ステータス": "達成",
+        "備考": "Y社との既存案件深掘り、新規プロダクト導入提案を重点施策とする",
+        "作成日時": "2023-12-15 09:30:00",
+        "作成者": "田中太郎",
+        "更新日時": "2024-02-05 14:15:00",
+        "更新者": "鈴木花子"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-emp-047",
+        "取引先ID": null,
+        "対象年月": "2024-01",
+        "目標金額": 3000000,
+        "目標件数": 12,
+        "ステータス": "有効",
+        "備考": "新入営業担当者の初期配置目標。段階的育成プログラムに基づく設定。",
+        "作成日時": "2023-12-15 10:30:00",
+        "作成者": "山田花子",
+        "更新日時": "2023-12-15 10:30:00",
+        "更新者": "山田花子"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-b-sales",
+        "取引先ID": null,
+        "対象年月": "2024-02",
+        "目標金額": 8500000,
+        "目標件数": 12,
+        "ステータス": "有効",
+        "備考": "上半期累積目標18,000万円の月別分割、2月は冬季需要減を考慮",
+        "作成日時": "2024-01-15T09:30:00",
+        "作成者": "佐藤花子",
+        "更新日時": "2024-01-20T14:15:00",
+        "更新者": "鈴木一郎"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-E001",
+        "取引先ID": "rec-Z001",
+        "対象年月": "2024-01",
+        "目標金額": 5000000,
+        "目標件数": 3,
+        "ステータス": "有効",
+        "備考": "Z社との既存関係を活かした高額商品のアップセル推進",
+        "作成日時": "2023-12-15 09:30:00",
+        "作成者": "佐藤花子",
+        "更新日時": "2024-01-10 14:15:00",
+        "更新者": "山田次郎"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-f001",
+        "取引先ID": null,
+        "対象年月": "2024-01",
+        "目標金額": 50000000,
+        "目標件数": 120,
+        "ステータス": "達成",
+        "備考": "営業チーム全体の集計目標。部門別目標の合計値。",
+        "作成日時": "2023-12-15 10:30:00",
+        "作成者": "山田花子",
+        "更新日時": "2024-02-05 16:45:00",
+        "更新者": "山田花子"
+      },
+      {
+        "営業目標ID": "rec-001",
+        "営業担当者ID": "rec-a001",
+        "取引先ID": null,
+        "対象年月": "2024-01",
+        "目標金額": 5000000,
+        "目標件数": 12,
+        "ステータス": "達成",
+        "備考": "目標金額達成、件数も予定超過。顧客満足度も良好。",
+        "作成日時": "2023-12-15 09:30:00",
+        "作成者": "営業部長 鈴木花子",
+        "更新日時": "2024-02-05 14:45:00",
+        "更新者": "営業部長 鈴木花子"
+      }
+    ],
+    "ユーザー権限": [
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-usr-0042",
+        "権限コード": "sales_activity_view_create",
+        "権限名": "営業活動閲覧・作成",
+        "説明": "自社の営業活動記録の閲覧と新規作成が可能。顧客訪問、提案、受注情報の記録管理に必要な基本権限。",
+        "有効フラグ": true,
+        "作成日時": "2024-04-01T09:30:00+09:00",
+        "更新日時": "2024-12-15T14:20:00+09:00",
+        "作成者": "rec-usr-0001",
+        "更新者": "rec-usr-0008"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "usr-0847",
+        "権限コード": "sales_progress_monitor",
+        "権限名": "営業進捗監視・評価権",
+        "説明": "部下の営業活動進捗状況の確認、売上実績の評価、営業目標達成度の監視を行う権限",
+        "有効フラグ": true,
+        "作成日時": "2024-04-01T09:30:00+09:00",
+        "更新日時": "2024-12-15T14:22:00+09:00",
+        "作成者": "usr-0001",
+        "更新者": "usr-0002"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-u-0042",
+        "権限コード": "invoice_create_edit_issue",
+        "権限名": "請求書作成・編集・発行",
+        "説明": "請求書の新規作成、内容編集、発行手続きを実行可能な権限。経理業務における基本的な請求書管理業務を担当するユーザーに付与される。",
+        "有効フラグ": true,
+        "作成日時": "2024-04-01T09:30:00+09:00",
+        "更新日時": "2024-12-15T14:20:00+09:00",
+        "作成者": "rec-u-0001",
+        "更新者": "rec-u-0015"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-u-0042",
+        "権限コード": "invoice_payment_view",
+        "権限名": "請求書・支払い履歴閲覧",
+        "説明": "顧客が自社の請求書および支払い履歴を閲覧できる権限。詳細な金額、支払期日、入金状況の確認が可能。",
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00+09:00",
+        "更新日時": "2025-01-20T14:15:00+09:00",
+        "作成者": "rec-u-0001",
+        "更新者": "rec-u-0008"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-0042",
+        "権限コード": "SALES_TARGET_ADMIN",
+        "権限名": "全社売上目標管理",
+        "説明": "全社の売上目標の設定・変更・削除およびターゲット達成状況の監視権限",
+        "有効フラグ": true,
+        "作成日時": "2024-04-01T09:30:00+09:00",
+        "更新日時": "2025-01-15T14:20:00+09:00",
+        "作成者": "rec-0001",
+        "更新者": "rec-0008"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-0001",
+        "権限コード": "invoice_approval_high_amount",
+        "権限名": "高額請求書承認権",
+        "説明": "100万円以上の請求書の承認・却下を行う権限",
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2025-01-20T14:15:00",
+        "作成者": "rec-0010",
+        "更新者": "rec-0015"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-usr-0042",
+        "権限コード": "SYSTEM_ADMIN_USER_MGMT",
+        "権限名": "ユーザー・権限一括管理",
+        "説明": "システム管理者がユーザーアカウントと権限設定を一括管理できる権限。ユーザー作成・編集・削除、権限の付与・変更・無効化が可能。",
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00+09:00",
+        "更新日時": "2025-01-20T14:15:00+09:00",
+        "作成者": "rec-usr-0001",
+        "更新者": "rec-usr-0001"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-0042",
+        "権限コード": "sales_report_extract",
+        "権限名": "売上レポート・顧客分析データ抽出",
+        "説明": "売上レポートと顧客分析データの抽出・ダウンロード権限。月次・四半期・年次レポートの生成と外部ツールへのエクスポートが可能。",
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00+09:00",
+        "更新日時": "2025-01-20T14:15:00+09:00",
+        "作成者": "rec-0001",
+        "更新者": "rec-0008"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-usr-0042",
+        "権限コード": "RECEIVABLES_COLLECTION_MANAGE",
+        "権限名": "未払い請求書督促・回収管理",
+        "説明": "未払い請求書の督促状況、回収進捗、顧客別債権残高の管理・確認を行う権限。督促メール送信、回収予定日の設定、回収完了の記録が可能。",
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00+09:00",
+        "更新日時": "2024-10-22T14:15:00+09:00",
+        "作成者": "rec-usr-0001",
+        "更新者": "rec-usr-0008"
+      },
+      {
+        "権限ID": "rec-001",
+        "ユーザーID": "rec-002",
+        "権限コード": "AUDIT_LOG_VIEW_SALES_BILLING",
+        "権限名": "営業・請求プロセス監査ログ閲覧",
+        "説明": "監査役が全営業活動および請求プロセスに関する監査ログの閲覧と監査レポート作成を行うための権限",
+        "有効フラグ": true,
+        "作成日時": "2024-04-15T09:30:00+09:00",
+        "更新日時": "2025-01-20T14:15:00+09:00",
+        "作成者": "rec-003",
+        "更新者": "rec-004"
+      }
+    ],
+    "データ検証ルール": [
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "顧客コード必須入力チェック",
+        "ルール説明": "顧客マスタに登録する全ての顧客について、顧客コードは必ず入力される必要があります。空値は許可されません。",
+        "対象テーブル": "顧客マスタ",
+        "対象カラム": "顧客コード",
+        "検証タイプ": "必須チェック",
+        "検証条件": "顧客コード IS NOT NULL AND 顧客コード != ''",
+        "エラーメッセージ": "顧客コードは必須項目です。入力してください。",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-04-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-03-15T10:30:00Z",
+        "作成者": "rec-u-0001",
+        "更新日時": "2024-03-15T10:30:00Z",
+        "更新者": "rec-u-0001"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "請求金額の負数チェック",
+        "ルール説明": "請求金額は0以上の値のみを許可し、負数の入力を防止する",
+        "対象テーブル": "請求書",
+        "対象カラム": "請求金額",
+        "検証タイプ": "範囲チェック",
+        "検証条件": "請求金額 >= 0",
+        "エラーメッセージ": "請求金額は負数を入力することはできません。0以上の値を入力してください。",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-01-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-01-15T09:30:00Z",
+        "作成者": "rec-u-001",
+        "更新日時": "2024-11-20T14:15:00Z",
+        "更新者": "rec-u-002"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "メールアドレス形式妥当性チェック",
+        "ルール説明": "ユーザーテーブルのメールアドレスカラムに対して、RFC 5322準拠の形式妥当性を検証し、不正なメールアドレス形式の登録を防止する",
+        "対象テーブル": "ユーザー",
+        "対象カラム": "メールアドレス",
+        "検証タイプ": "形式チェック",
+        "検証条件": "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+        "エラーメッセージ": "入力されたメールアドレスの形式が不正です。正しい形式で入力してください。",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-04-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-03-15T10:30:00Z",
+        "作成者": "rec-usr-001",
+        "更新日時": "2024-11-20T14:45:00Z",
+        "更新者": "rec-usr-002"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "営業担当者ID参照整合性検証",
+        "ルール説明": "売上伝票の営業担当者IDが営業マスタに実在することを確認する検証ルール。不正な担当者IDの登録を防止し、売上データの信頼性を確保する。",
+        "対象テーブル": "売上伝票",
+        "対象カラム": "営業担当者ID",
+        "検証タイプ": "参照整合性チェック",
+        "検証条件": "売上伝票.営業担当者ID IN (SELECT 営業担当者ID FROM 営業マスタ WHERE 退職日 IS NULL)",
+        "エラーメッセージ": "営業担当者IDが営業マスタに存在しません。正しい担当者を選択してください。",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-04-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-03-15T10:30:00Z",
+        "作成者": "rec-u001",
+        "更新日時": "2024-12-20T14:15:00Z",
+        "更新者": "rec-u002"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "請求日の日付妥当性チェック",
+        "ルール説明": "請求日が契約開始日以降であることを確認し、契約前の請求発生を防止",
+        "対象テーブル": "請求",
+        "対象カラム": "請求日",
+        "検証タイプ": "範囲チェック",
+        "検証条件": "請求.請求日 >= 契約.契約開始日",
+        "エラーメッセージ": "請求日は契約開始日以降である必要があります",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-01-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-01-15T09:30:00Z",
+        "作成者": "rec-u-0001",
+        "更新日時": "2024-11-20T14:15:00Z",
+        "更新者": "rec-u-0002"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "同一顧客重複請求検出",
+        "ルール説明": "同一顧客に対して同一商品の請求が30日以内に複数回発生していないかを検証し、誤請求防止と顧客信頼維持を図る",
+        "対象テーブル": "請求",
+        "対象カラム": "顧客ID,商品ID,請求日",
+        "検証タイプ": "重複チェック",
+        "検証条件": "SELECT COUNT(*) FROM 請求 WHERE 顧客ID = ? AND 商品ID = ? AND 請求日 BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND CURDATE() HAVING COUNT(*) > 1",
+        "エラーメッセージ": "同一顧客への同一商品の重複請求が検出されました。請求内容を確認してください。",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-04-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-03-15T10:30:00Z",
+        "作成者": "rec-user-0042",
+        "更新日時": "2025-01-20T14:15:00Z",
+        "更新者": "rec-user-0089"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "商品コード参照整合性チェック",
+        "ルール説明": "注文テーブルの商品コードが商品マスタに存在することを確認する参照整合性検証",
+        "対象テーブル": "注文明細",
+        "対象カラム": "商品コード",
+        "検証タイプ": "参照整合性チェック",
+        "検証条件": "注文明細.商品コード IN (SELECT 商品コード FROM 商品マスタ WHERE 削除フラグ = false)",
+        "エラーメッセージ": "指定された商品コードが商品マスタに存在しません。正しい商品コードを入力してください。",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-04-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-03-15T10:30:00Z",
+        "作成者": "user-0001",
+        "更新日時": "2024-12-10T14:20:00Z",
+        "更新者": "user-0002"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "消費税率範囲チェック",
+        "ルール説明": "販売伝票の消費税率が現行の適用税率(8%または10%)の範囲内であることを検証",
+        "対象テーブル": "sales_details",
+        "対象カラム": "tax_rate",
+        "検証タイプ": "範囲チェック",
+        "検証条件": "tax_rate IN (8, 10)",
+        "エラーメッセージ": "消費税率は8%または10%である必要があります。入力値を確認してください。",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-01-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-01-15T09:30:00Z",
+        "作成者": "rec-u001",
+        "更新日時": "2024-11-20T14:15:00Z",
+        "更新者": "rec-u002"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "支払期限の妥当性チェック",
+        "ルール説明": "請求日から支払期限までが30日以内であることを確認する論理チェック。期限超過は与信管理上のリスク",
+        "対象テーブル": "請求",
+        "対象カラム": "支払期限",
+        "検証タイプ": "範囲チェック",
+        "検証条件": "DATEDIFF(day, 請求日, 支払期限) <= 30 AND 支払期限 > 請求日",
+        "エラーメッセージ": "支払期限が請求日から30日を超えています。期限を確認してください",
+        "警告レベル": "エラー",
+        "有効フラグ": true,
+        "適用開始日": "2024-04-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-03-15T10:30:00Z",
+        "作成者": "rec-u-0001",
+        "更新日時": "2024-12-20T14:45:00Z",
+        "更新者": "rec-u-0002"
+      },
+      {
+        "検証ルールID": "rec-001",
+        "ルール名": "売上計上額の見積金額乖離チェック",
+        "ルール説明": "売上計上時に、計上額が対応する見積金額の±10%以内に収まっているかを検証し、乖離がある場合は警告を発行する",
+        "対象テーブル": "売上計上",
+        "対象カラム": "計上額",
+        "検証タイプ": "範囲チェック",
+        "検証条件": "ABS((計上額 - 見積金額) / 見積金額) <= 0.10",
+        "エラーメッセージ": "売上計上額が見積金額の±10%を超過しています。見積金額との差異を確認してください。",
+        "警告レベル": "警告",
+        "有効フラグ": true,
+        "適用開始日": "2024-04-01T00:00:00Z",
+        "適用終了日": null,
+        "作成日時": "2024-03-15T10:30:00Z",
+        "作成者": "rec-u-0042",
+        "更新日時": "2024-09-20T14:15:00Z",
+        "更新者": "rec-u-0089"
+      }
+    ],
+    "異常検知ログ": [
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2024-11-15T09:30:00+09:00",
+        "異常タイプ": "データ不整合",
+        "重要度": "高",
+        "対象テーブル": "売上計上",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "売上計上日（2024-11-10）が請求日（2024-11-08）より後になっており、会計ルール違反",
+        "期待値": "売上計上日 ≤ 請求日",
+        "実際値": "売上計上日：2024-11-10、請求日：2024-11-08",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2024-11-15T10:45:00+09:00",
+        "対応コメント": "営業部に確認中。請求日の入力誤りの可能性あり",
+        "作成日時": "2024-11-15T09:30:00+09:00",
+        "作成者ID": "rec-005",
+        "更新日時": "2024-11-15T10:45:00+09:00",
+        "更新者ID": "rec-004"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2024-11-15T14:32:00+09:00",
+        "異常タイプ": "金額異常",
+        "重要度": "高",
+        "対象テーブル": "請求明細",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "請求金額が契約上限額を250,000円超過しています",
+        "期待値": "5,000,000円以下",
+        "実際値": "5,250,000円",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2024-11-15T15:45:00+09:00",
+        "対応コメント": "顧客A社との追加作業分を確認。契約変更手続き中",
+        "作成日時": "2024-11-15T14:32:00+09:00",
+        "作成者ID": "rec-005",
+        "更新日時": "2024-11-15T15:45:00+09:00",
+        "更新者ID": "rec-004"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2025-01-15T09:30:00+09:00",
+        "異常タイプ": "期限超過",
+        "重要度": "高",
+        "対象テーブル": "案件",
+        "対象レコードID": "rec-2847",
+        "検証ルールID": "rule-092",
+        "異常内容": "営業案件の期限が30日以上超過しており、割り当て営業担当者が未設定のまま放置されている状態が検出されました。",
+        "期待値": "期限内に営業担当者が割り当てられ、案件が進捗している",
+        "実際値": "期限2024年10月20日、割り当て担当者なし、ステータス未対応のまま87日経過",
+        "ステータス": "未対応",
+        "対応者ID": null,
+        "対応日時": null,
+        "対応コメント": null,
+        "作成日時": "2025-01-15T09:30:00+09:00",
+        "作成者ID": "rec-sys-001",
+        "更新日時": "2025-01-15T09:30:00+09:00",
+        "更新者ID": "rec-sys-001"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2024-11-15T09:30:00Z",
+        "異常タイプ": "データ不整合",
+        "重要度": "高",
+        "対象テーブル": "顧客マスタ",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "顧客マスタの住所情報が請求書に記載された住所と一致していません",
+        "期待値": "〒100-0005 東京都千代田区丸の内1-1-1 ビジネスビル5階",
+        "実際値": "〒100-0006 東京都千代田区丸の内2-2-2 オフィスタワー3階",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2024-11-15T14:20:00Z",
+        "対応コメント": "顧客に確認中。請求書の住所が最新版と判明。マスタ更新予定",
+        "作成日時": "2024-11-15T09:30:00Z",
+        "作成者ID": "rec-005",
+        "更新日時": "2024-11-15T14:20:00Z",
+        "更新者ID": "rec-004"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2025-01-15T09:32:00+09:00",
+        "異常タイプ": "ルール違反",
+        "重要度": "高",
+        "対象テーブル": "売上請求",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "消費税率10%の適用対象品目に対して8%の税率で計算されていた",
+        "期待値": "消費税額: 10,000円（税抜金額100,000円×10%）",
+        "実際値": "消費税額: 8,000円（税抜金額100,000円×8%）",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2025-01-15T10:45:00+09:00",
+        "対応コメント": "請求書再発行手配中。顧客への差額2,000円返金処理を予定",
+        "作成日時": "2025-01-15T09:32:00+09:00",
+        "作成者ID": "rec-005",
+        "更新日時": "2025-01-15T10:45:00+09:00",
+        "更新者ID": "rec-004"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2025-01-15T09:30:00+09:00",
+        "異常タイプ": "期限超過",
+        "重要度": "高",
+        "対象テーブル": "請求書",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "支払期限を30日以上超過している未入金請求が検知されました",
+        "期待値": "支払期限から30日以内に入金済みまたは督促完了",
+        "実際値": "支払期限2024年11月15日、現在未入金で61日超過",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2025-01-15T14:20:00+09:00",
+        "対応コメント": "取引先A社に電話で督促実施。1月末までの入金予定を確認",
+        "作成日時": "2025-01-15T09:30:00+09:00",
+        "作成者ID": "rec-005",
+        "更新日時": "2025-01-15T14:20:00+09:00",
+        "更新者ID": "rec-004"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2024-11-15T09:32:00+09:00",
+        "異常タイプ": "データ不整合",
+        "重要度": "高",
+        "対象テーブル": "請求",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "顧客ID:cust-5847に対して2024年11月の同一月内で同一金額の請求が2件検出されました",
+        "期待値": "同一顧客・同一月における請求件数は1件",
+        "実際値": "請求件数2件（請求ID:inv-28941、inv-28952、金額各¥150,000）",
+        "ステータス": "対応中",
+        "対応者ID": "user-156",
+        "対応日時": "2024-11-15T10:15:00+09:00",
+        "対応コメント": "顧客に確認中。システム側の重複登録の可能性を調査中",
+        "作成日時": "2024-11-15T09:32:00+09:00",
+        "作成者ID": "system-auto",
+        "更新日時": "2024-11-15T10:15:00+09:00",
+        "更新者ID": "user-156"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2024-11-15T14:32:00+09:00",
+        "異常タイプ": "ルール違反",
+        "重要度": "高",
+        "対象テーブル": "営業案件",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "案件「A社システム導入プロジェクト」が承認フローをスキップして契約段階に進行",
+        "期待値": "部長承認→営業部長承認→経営承認を完了後に契約段階へ移行",
+        "実際値": "部長承認のみで営業部長承認をスキップして契約段階に遷移",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2024-11-15T15:45:00+09:00",
+        "対応コメント": "営業部長・山田花子に確認中。案件金額2500万円のため経営承認必須",
+        "作成日時": "2024-11-15T14:32:00+09:00",
+        "作成者ID": "rec-005",
+        "更新日時": "2024-11-15T15:45:00+09:00",
+        "更新者ID": "rec-004"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2024-11-15T09:23:45Z",
+        "異常タイプ": "ルール違反",
+        "重要度": "高",
+        "対象テーブル": "請求明細",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "商品コード「X9999」は請求対象外商品として登録されているため請求できません",
+        "期待値": "請求対象商品コード（A1000～Z8999範囲の除外リスト外）",
+        "実際値": "X9999（請求対象外フラグ=true）",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2024-11-15T10:15:30Z",
+        "対応コメント": "請求レコード削除予定。営業部に確認中",
+        "作成日時": "2024-11-15T09:23:45Z",
+        "作成者ID": "rec-005",
+        "更新日時": "2024-11-15T10:15:30Z",
+        "更新者ID": "rec-004"
+      },
+      {
+        "異常検知ログID": "rec-001",
+        "検知日時": "2024-11-15T14:32:00+09:00",
+        "異常タイプ": "金額異常",
+        "重要度": "高",
+        "対象テーブル": "受注明細",
+        "対象レコードID": "rec-002",
+        "検証ルールID": "rec-003",
+        "異常内容": "契約基本割引率5%を超える8%の割引が適用されています",
+        "期待値": "割引率 5% 以下（割引額上限 50,000円）",
+        "実際値": "割引率 8%（割引額 80,000円）",
+        "ステータス": "対応中",
+        "対応者ID": "rec-004",
+        "対応日時": "2024-11-15T15:45:00+09:00",
+        "対応コメント": "営業部の特別承認により妥当性を確認中。顧客との契約更新予定のため例外処理を検討",
+        "作成日時": "2024-11-15T14:32:00+09:00",
+        "作成者ID": "rec-005",
+        "更新日時": "2024-11-15T15:45:00+09:00",
+        "更新者ID": "rec-004"
+      }
+    ]
+  },
+  "shellHtml": "<!doctype html>\n<html lang=\"ja\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>MySF - 営業プロセス・請求データ統合管理システム</title>\n  <style>\n:root {\n  --primary: #0070d2;\n  --primary-hover: #0056b3;\n  --bg-main: #f7f9fc;\n  --bg-card: #ffffff;\n  --bg-sidebar: #f3f6fb;\n  --border: #d3dce6;\n  --border-width: 1px;\n  --text: #16325c;\n  --text-muted: #576d7b;\n  --top-bar-bg: #0b5394;\n  --top-bar-border: #054098;\n  --top-bar-text: #ffffff;\n  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Salesforce Sans', sans-serif;\n  --radius-card: 4px;\n  --radius-control: 3px;\n  --shadow-card: 0 2px 4px rgba(11, 83, 148, 0.08), 0 1px 2px rgba(11, 83, 148, 0.04);\n  --control-height: 32px;\n  --space-unit: 8px;\n  --motion-duration: 200ms;\n  --surface-texture: linear-gradient(90deg, rgba(0, 112, 210, 0.02) 1px, transparent 1px),\n                     linear-gradient(rgba(0, 112, 210, 0.02) 1px, transparent 1px);\n  --surface-texture-size: 16px 16px;\n  --surface-texture-position: 0 0;\n}\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nhtml, body {\n  height: 100%;\n}\n\nbody {\n  font-family: var(--font-family);\n  background-color: var(--bg-main);\n  color: var(--text);\n  font-size: 14px;\n  line-height: 1.5;\n}\n\n[data-aivic-shell-pattern] {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n  overflow: hidden;\n}\n\n.shell-header {\n  height: 56px;\n  background-color: var(--top-bar-bg);\n  border-bottom: 1px solid var(--top-bar-border);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 24px;\n  flex-shrink: 0;\n  box-shadow: var(--shadow-card);\n}\n\n.shell-header-left {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n}\n\n.shell-logo {\n  font-size: 16px;\n  font-weight: 700;\n  color: var(--top-bar-text);\n  letter-spacing: -0.3px;\n}\n\n.shell-logo-system {\n  font-size: 12px;\n  font-weight: 400;\n  color: rgba(255, 255, 255, 0.7);\n  margin-top: 2px;\n}\n\n.shell-header-right {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.user-avatar {\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background-color: rgba(255, 255, 255, 0.2);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  font-weight: 600;\n  color: var(--top-bar-text);\n}\n\n.user-name {\n  font-size: 13px;\n  color: var(--top-bar-text);\n  font-weight: 500;\n}\n\n.user-logout {\n  font-size: 12px;\n  color: rgba(255, 255, 255, 0.8);\n  text-decoration: none;\n  transition: color var(--motion-duration);\n}\n\n.user-logout:hover {\n  color: var(--top-bar-text);\n}\n\n.shell-body {\n  display: flex;\n  flex: 1;\n  overflow: hidden;\n}\n\n.shell-sidebar {\n  width: 240px;\n  background-color: var(--bg-sidebar);\n  border-right: 1px solid var(--border);\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n  overflow-y: auto;\n}\n\n.sidebar-nav {\n  flex: 1;\n  padding: 16px 0;\n}\n\n.nav-section {\n  padding: 0 8px 16px 8px;\n}\n\n.nav-section-title {\n  font-size: 11px;\n  font-weight: 700;\n  color: var(--text-muted);\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  padding: 8px 12px;\n  margin-bottom: 4px;\n}\n\n.nav-item {\n  display: block;\n  padding: 10px 12px;\n  margin: 2px 0;\n  border-radius: var(--radius-control);\n  color: var(--text);\n  text-decoration: none;\n  font-size: 13px;\n  font-weight: 500;\n  cursor: pointer;\n  transition: background-color var(--motion-duration), color var(--motion-duration);\n  border-left: 3px solid transparent;\n}\n\n.nav-item:hover {\n  background-color: rgba(0, 112, 210, 0.06);\n}\n\n.nav-item.aivic-active {\n  background-color: rgba(0, 112, 210, 0.1);\n  color: var(--primary);\n  border-left-color: var(--primary);\n}\n\n.content-area {\n  flex: 1;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  background-color: var(--bg-main);\n}\n\n[data-aivic-panel] {\n  flex: 1;\n  overflow-y: auto;\n  overflow-x: hidden;\n  padding: 24px;\n}\n\n@media (max-width: 1024px) {\n  .shell-sidebar {\n    width: 200px;\n  }\n  [data-aivic-panel] {\n    padding: 16px;\n  }\n}\n\n@media (max-width: 768px) {\n  .shell-body {\n    flex-direction: column;\n  }\n  .shell-sidebar {\n    width: 100%;\n    height: auto;\n    border-right: none;\n    border-bottom: 1px solid var(--border);\n    max-height: 60px;\n    overflow-y: hidden;\n    overflow-x: auto;\n  }\n  .sidebar-nav {\n    display: flex;\n    gap: 8px;\n    padding: 8px 16px;\n  }\n  .nav-section {\n    display: flex;\n    gap: 4px;\n    padding: 0;\n  }\n  .nav-section-title {\n    display: none;\n  }\n  .nav-item {\n    margin: 0;\n    white-space: nowrap;\n  }\n  [data-aivic-panel] {\n    padding: 12px;\n  }\n}\n\n::-webkit-scrollbar {\n  width: 8px;\n  height: 8px;\n}\n\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n\n::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 112, 210, 0.2);\n  border-radius: 4px;\n}\n\n::-webkit-scrollbar-thumb:hover {\n  background-color: rgba(0, 112, 210, 0.4);\n}\n  </style>\n</head>\n<body>\n  <div data-aivic-shell-pattern=\"sidebar\" data-aivic-nav-position=\"left\" data-aivic-density=\"balanced\">\n    <header class=\"shell-header\">\n      <div class=\"shell-header-left\">\n        <div>\n          <div class=\"shell-logo\">MySF</div>\n          <div class=\"shell-logo-system\">営業プロセス・請求管理</div>\n        </div>\n      </div>\n      <div class=\"shell-header-right\">\n        <div class=\"user-avatar\">U</div>\n        <div class=\"user-name\">ユーザー</div>\n        <a href=\"./login.html\" class=\"user-logout\">ログアウト</a>\n      </div>\n    </header>\n    <div class=\"shell-body\">\n      <aside class=\"shell-sidebar\">\n        <nav class=\"sidebar-nav\">\n          <div class=\"nav-section\">\n            <div class=\"nav-section-title\">メイン</div>\n            <a class=\"nav-item aivic-active\" data-aivic-nav=\"scr-1791354337614\" onclick=\"window.showScreen('scr-1791354337614')\">ダッシュボード</a>\n            <a class=\"nav-item\" data-aivic-nav=\"scr-1791354351333\" onclick=\"window.showScreen('scr-1791354351333')\">商談・請求管理</a>\n            <a class=\"nav-item\" data-aivic-nav=\"scr-1791354364933\" onclick=\"window.showScreen('scr-1791354364933')\">営業活動実績入力</a>\n            <a class=\"nav-item\" data-aivic-nav=\"scr-1791354379354\" onclick=\"window.showScreen('scr-1791354379354')\">顧客・取引先管理</a>\n          </div>\n        </nav>\n      </aside>\n      <main class=\"content-area\">\n        <div data-aivic-panel=\"scr-1791354337614\"></div>\n        <div data-aivic-panel=\"scr-1791354351333\"></div>\n        <div data-aivic-panel=\"scr-1791354364933\"></div>\n        <div data-aivic-panel=\"scr-1791354379354\"></div>\n      </main>\n    </div>\n  </div>\n  <!--AIVIC_GLOBALS-->\n  <!--AIVIC_RUNTIME-->\n</body>\n</html>",
+  "screenTaste": "Salesforceカラー"
+}

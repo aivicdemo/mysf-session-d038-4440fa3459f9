@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MySF - Salesforce移行・機能マッピング支援システム</title>
+  <style>
+:root {
+  --primary: #0070d2;
+  --primary-hover: #0056b3;
+  --bg-main: #f7f9fc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f3f6fb;
+  --border: #d3dce6;
+  --border-width: 1px;
+  --text: #16325c;
+  --text-muted: #576d7b;
+  --top-bar-bg: #0b5394;
+  --top-bar-border: #054098;
+  --top-bar-text: #ffffff;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Salesforce Sans', sans-serif;
+  --radius-card: 4px;
+  --radius-control: 3px;
+  --shadow-card: 0 2px 4px rgba(11, 83, 148, 0.08), 0 1px 2px rgba(11, 83, 148, 0.04);
+  --control-height: 32px;
+  --space-unit: 8px;
+  --motion-duration: 200ms;
+  --surface-texture: linear-gradient(90deg, rgba(0, 112, 210, 0.02) 1px, transparent 1px),
+                     linear-gradient(rgba(0, 112, 210, 0.02) 1px, transparent 1px);
+  --surface-texture-size: 16px 16px;
+  --surface-texture-position: 0 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-main);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+[data-aivic-shell-pattern] {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.shell-header {
+  height: 56px;
+  background-color: var(--top-bar-bg);
+  border-bottom: 1px solid var(--top-bar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-card);
+}
+
+.shell-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.shell-logo {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--top-bar-text);
+  letter-spacing: -0.3px;
+}
+
+.shell-logo-system {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2px;
+}
+
+.shell-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--top-bar-text);
+}
+
+.user-name {
+  font-size: 13px;
+  color: var(--top-bar-text);
+  font-weight: 500;
+}
+
+.user-logout {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color var(--motion-duration);
+}
+
+.user-logout:hover {
+  color: var(--top-bar-text);
+}
+
+.shell-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.shell-sidebar {
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+  background-position: var(--surface-texture-position);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 0;
+}
+
+.nav-section {
+  padding: 0 8px 16px 8px;
+}
+
+.nav-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+}
+
+.nav-item {
+  display: block;
+  padding: 10px 12px;
+  margin: 2px 0;
+  border-radius: var(--radius-control);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--motion-duration), color var(--motion-duration);
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  background-color: rgba(0, 112, 210, 0.06);
+}
+
+.nav-item.aivic-active {
+  background-color: rgba(0, 112, 210, 0.1);
+  color: var(--primary);
+  border-left-color: var(--primary);
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--bg-main);
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+  background-position: var(--surface-texture-position);
+}
+
+[data-aivic-panel] {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 112, 210, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 112, 210, 0.4);
+}
+
+@media (max-width: 1024px) {
+  .shell-sidebar {
+    width: 200px;
+  }
+  [data-aivic-panel] {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .shell-body {
+    flex-direction: column;
+  }
+  .shell-sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: 60px;
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
+  .sidebar-nav {
+    display: flex;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+  .nav-section {
+    display: flex;
+    gap: 4px;
+    padding: 0;
+  }
+  .nav-section-title {
+    display: none;
+  }
+  .nav-item {
+    margin: 0;
+    white-space: nowrap;
+  }
+  [data-aivic-panel] {
+    padding: 12px;
+  }
+}
+  </style>
+<script>
+window.AIVIC_API_URL = "https://jqykrkgdvngp7qvmavufg5tohq0xwdzb.lambda-url.us-east-1.on.aws/";
+window.AIVIC_APP_ID = "session-d038b63d-48c8-4bc4-8922-bd33c55dc9b3";
+window.AIVIC_APPLICATION_NAME = "MySF";
+window.AIVIC_SYSTEM_NAME = "Salesforce移行・機能マッピング支援システム";
+window.AIVIC_TABLES = [{"tableName":"操作履歴","purpose":"ユーザーによるシステム操作の全履歴を記録し、監査証跡、不正検知、データ変更追跡を実現するトランザクションテーブル","columns":[{"name":"操作履歴ID","type":"uuid","required":true,"description":"操作履歴レコードの一意識別子"},{"name":"ユーザーID","type":"uuid","required":true,"description":"操作を実行したユーザーの識別子、ユーザーテーブルへの外部キー"},{"name":"操作種別","type":"varchar(100)","required":true,"description":"実行された操作の種類（作成、更新、削除、参照、ログイン、ログアウト等）"},{"name":"対象テーブル名","type":"varchar(100)","required":true,"description":"操作の対象となったテーブル名"},{"name":"対象レコードID","type":"uuid","required":false,"description":"操作の対象となったレコードの識別子"},{"name":"変更前値","type":"text","required":false,"description":"更新操作の場合の変更前の値、複数フィールドはカンマ区切りまたは構造化テキスト形式"},{"name":"変更後値","type":"text","required":false,"description":"更新操作の場合の変更後の値、複数フィールドはカンマ区切りまたは構造化テキスト形式"},{"name":"操作内容詳細","type":"text","required":false,"description":"操作の詳細説明、検索条件やフィルタ条件等の追加情報"},{"name":"IPアドレス","type":"varchar(100)","required":false,"description":"操作を実行したクライアントのIPアドレス"},{"name":"セッションID","type":"varchar(100)","required":false,"description":"操作が実行されたセッションの識別子"},{"name":"操作ステータス","type":"varchar(100)","required":true,"description":"操作の実行結果（成功、失敗、エラー等）"},{"name":"エラーメッセージ","type":"text","required":false,"description":"操作失敗時のエラーメッセージ"},{"name":"操作実行日時","type":"timestamp","required":true,"description":"操作が実行された日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"この操作履歴レコードが作成された日時"}]},{"tableName":"ログインユーザー","purpose":"Salesforce移行・機能マッピング支援システムにおけるユーザー認証・アクセス管理を行い、ログインユーザーの基本情報と認証状態を一元管理する","columns":[{"name":"ユーザーID","type":"uuid","required":true,"description":"ログインユーザーの一意識別子"},{"name":"メールアドレス","type":"varchar(100)","required":true,"description":"ユーザーのメールアドレス、ログイン時の識別に使用"},{"name":"ユーザー名","type":"varchar(100)","required":true,"description":"ユーザーの表示名"},{"name":"パスワードハッシュ","type":"varchar(100)","required":true,"description":"ユーザーのパスワードをハッシュ化した値"},{"name":"ロール","type":"varchar(100)","required":true,"description":"ユーザーに割り当てられたロール（管理者、ユーザー等）"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"ユーザーのステータス（有効、無効、一時停止等）"},{"name":"最終ログイン日時","type":"timestamp","required":false,"description":"ユーザーが最後にログインした日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"ユーザーレコードが作成された日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ユーザーレコードが最後に更新された日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"ユーザーレコードを作成したユーザーID"}]},{"tableName":"Salesforce移行プロジェクト","purpose":"Salesforce移行プロジェクトの基本情報、ステータス、スケジュール、および移行対象システムの詳細を管理するマスタテーブル","columns":[{"name":"プロジェクトID","type":"uuid","required":true,"description":"Salesforce移行プロジェクトの一意識別子"},{"name":"プロジェクト名","type":"varchar(100)","required":true,"description":"移行プロジェクトの名称"},{"name":"説明","type":"text","required":false,"description":"プロジェクトの詳細説明および背景情報"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"プロジェクトの現在のステータス(計画中/進行中/完了/中止等)"},{"name":"開始予定日","type":"timestamp","required":true,"description":"プロジェクト開始予定日時"},{"name":"終了予定日","type":"timestamp","required":true,"description":"プロジェクト終了予定日時"},{"name":"実開始日","type":"timestamp","required":false,"description":"プロジェクト実際の開始日時"},{"name":"実終了日","type":"timestamp","required":false,"description":"プロジェクト実際の終了日時"},{"name":"移行元システム","type":"varchar(100)","required":true,"description":"Salesforceへ移行するソースシステムの名称"},{"name":"プロジェクトマネージャー","type":"varchar(100)","required":true,"description":"プロジェクト責任者の名前またはユーザーID"},{"name":"進捗率","type":"integer","required":false,"description":"プロジェクトの進捗率(0-100)"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"カスタムオブジェクト定義","purpose":"Salesforce移行プロジェクトにおいて、既存システムのカスタムオブジェクトの構造・仕様を定義・管理し、Salesforce標準オブジェクトへのマッピング対象となるメタデータを一元管理するマスタテーブル","columns":[{"name":"カスタムオブジェクト定義ID","type":"uuid","required":true,"description":"カスタムオブジェクト定義の一意識別子"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"所属するSalesforce移行プロジェクトの外部キー"},{"name":"オブジェクト名","type":"varchar(100)","required":true,"description":"既存システムにおけるカスタムオブジェクトの名称"},{"name":"オブジェクト説明","type":"text","required":false,"description":"カスタムオブジェクトの機能・用途に関する説明"},{"name":"マッピング対象Salesforceオブジェクト","type":"varchar(100)","required":true,"description":"マッピング先となるSalesforce標準オブジェクト名またはカスタムオブジェクト名"},{"name":"レコード件数","type":"integer","required":false,"description":"既存システムにおける当該オブジェクトの総レコード数"},{"name":"移行ステータス","type":"varchar(100)","required":true,"description":"移行進捗状況（未開始/分析中/マッピング完了/移行実行中/完了/保留等）"},{"name":"優先度","type":"integer","required":false,"description":"移行実行時の優先順位（1-10、数字が小さいほど優先度が高い）"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"レコード作成者のログインユーザーID"},{"name":"更新者ID","type":"uuid","required":true,"description":"レコード最終更新者のログインユーザーID"}]},{"tableName":"請求書オブジェクト","purpose":"Salesforce移行プロジェクトにおいて、既存システムの請求書データをマッピング・変換・検証するための中間テーブル。請求書の基本情報、金額、ステータス、Salesforce連携状況を管理する。","columns":[{"name":"請求書ID","type":"uuid","required":true,"description":"請求書オブジェクトの一意識別子"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"Salesforce移行プロジェクトテーブルへの外部キー"},{"name":"請求書番号","type":"varchar(100)","required":true,"description":"既存システムの請求書番号"},{"name":"顧客ID","type":"varchar(100)","required":true,"description":"請求先顧客の識別子"},{"name":"顧客名","type":"varchar(100)","required":true,"description":"請求先顧客の名称"},{"name":"請求日","type":"timestamp","required":true,"description":"請求書の発行日"},{"name":"支払期限日","type":"timestamp","required":true,"description":"支払い期限日"},{"name":"請求金額","type":"integer","required":true,"description":"請求書の合計金額（単位：円）"},{"name":"税金額","type":"integer","required":false,"description":"税金額（単位：円）"},{"name":"請求ステータス","type":"varchar(100)","required":true,"description":"請求書のステータス（未送付、送付済、支払済、キャンセル等）"},{"name":"Salesforce連携ステータス","type":"varchar(100)","required":true,"description":"Salesforceへの連携状況（未連携、連携済、連携失敗、検証中等）"},{"name":"SalesforceレコードID","type":"varchar(100)","required":false,"description":"Salesforceに作成されたレコードのID"},{"name":"マッピング検証結果","type":"text","required":false,"description":"データマッピング時の検証結果やエラーメッセージ"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"ログインユーザーテーブルへの外部キー"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者ID","type":"uuid","required":true,"description":"最終更新を行ったログインユーザーのID"}]},{"tableName":"請求明細オブジェクト","purpose":"Salesforce移行プロジェクトにおいて、請求書に紐付く個別の請求明細行を管理し、金額・数量・商品情報などの詳細データを記録・追跡するトランザクションテーブル","columns":[{"name":"請求明細ID","type":"uuid","required":true,"description":"請求明細オブジェクトの一意識別子"},{"name":"請求書ID","type":"uuid","required":true,"description":"親となる請求書オブジェクトへの外部キー参照"},{"name":"商品コード","type":"varchar(100)","required":true,"description":"請求対象の商品またはサービスを識別するコード"},{"name":"商品名","type":"varchar(100)","required":true,"description":"請求対象の商品またはサービスの名称"},{"name":"数量","type":"integer","required":true,"description":"請求明細の数量"},{"name":"単価","type":"integer","required":true,"description":"商品またはサービスの単価（金額は整数で管理）"},{"name":"金額","type":"integer","required":true,"description":"請求明細の合計金額（数量×単価）"},{"name":"税率","type":"integer","required":false,"description":"適用される税率（パーセンテージ）"},{"name":"税額","type":"integer","required":false,"description":"計算された税額"},{"name":"説明","type":"text","required":false,"description":"請求明細に関する補足説明やメモ"},{"name":"行番号","type":"integer","required":true,"description":"請求書内での明細行の表示順序"},{"name":"作成日時","type":"timestamp","required":true,"description":"請求明細レコードが作成された日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"請求明細レコードが最後に更新された日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"請求明細を作成したログインユーザーへの外部キー参照"},{"name":"更新者ID","type":"uuid","required":true,"description":"請求明細を最後に更新したログインユーザーへの外部キー参照"}]},{"tableName":"オブジェクト間参照関係","purpose":"Salesforce移行プロジェクト内で、カスタムオブジェクト定義間の参照関係を管理し、オブジェクト間の依存性や関連性を追跡するためのマスタテーブル","columns":[{"name":"参照関係ID","type":"uuid","required":true,"description":"オブジェクト間参照関係の一意識別子"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"所属するSalesforce移行プロジェクトの外部キー"},{"name":"ソースオブジェクトID","type":"uuid","required":true,"description":"参照元のカスタムオブジェクト定義の外部キー"},{"name":"ターゲットオブジェクトID","type":"uuid","required":true,"description":"参照先のカスタムオブジェクト定義の外部キー"},{"name":"参照フィールド名","type":"varchar(100)","required":true,"description":"ソースオブジェクト内で参照を行うフィールド名"},{"name":"参照タイプ","type":"varchar(100)","required":true,"description":"参照の種類（ルックアップ、マスター詳細、外部キー等）"},{"name":"カーディナリティ","type":"varchar(100)","required":false,"description":"参照関係の多重度（1対1、1対多、多対多等）"},{"name":"削除時の動作","type":"varchar(100)","required":false,"description":"参照先削除時の処理方法（制限、カスケード削除等）"},{"name":"必須フラグ","type":"boolean","required":false,"description":"参照フィールドが必須項目かどうか"},{"name":"説明","type":"text","required":false,"description":"参照関係の詳細説明やビジネスロジック"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"レコード作成者のログインユーザーID"},{"name":"更新者ID","type":"uuid","required":true,"description":"レコード最終更新者のログインユーザーID"}]},{"tableName":"計算ロジック定義","purpose":"Salesforce移行時に請求書・請求明細などのオブジェクト間で使用される計算ロジック（フィールド計算式、ワークフロー、プロセスビルダーなど）の定義と移行マッピング情報を管理する","columns":[{"name":"計算ロジックID","type":"uuid","required":true,"description":"計算ロジック定義の一意識別子"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"所属するSalesforce移行プロジェクトへの外部キー"},{"name":"ロジック名","type":"varchar(100)","required":true,"description":"計算ロジックの名称（例：請求金額合計計算、税金計算）"},{"name":"ロジック種別","type":"varchar(100)","required":true,"description":"ロジックの種類（フィールド計算式、ワークフロー、プロセスビルダー、フロー等）"},{"name":"対象オブジェクトID","type":"uuid","required":true,"description":"このロジックが適用されるカスタムオブジェクト定義への外部キー"},{"name":"対象フィールド名","type":"varchar(100)","required":false,"description":"計算対象となるフィールド名"},{"name":"ロジック説明","type":"text","required":false,"description":"計算ロジックの詳細説明"},{"name":"既存システムロジック","type":"text","required":false,"description":"既存システムでの計算ロジック定義（数式、条件分岐等）"},{"name":"Salesforceロジック","type":"text","required":false,"description":"Salesforceでの計算ロジック定義（数式、フロー定義等）"},{"name":"参照フィールド一覧","type":"text","required":false,"description":"このロジックで参照される全フィールド名のカンマ区切りリスト"},{"name":"依存ロジックID","type":"varchar(100)","required":false,"description":"このロジックが依存する他の計算ロジックのID（カンマ区切り）"},{"name":"移行ステータス","type":"varchar(100)","required":true,"description":"移行状況（未検討、検討中、マッピング完了、テスト中、本番反映済み等）"},{"name":"移行難易度","type":"varchar(100)","required":false,"description":"移行の難易度評価（低、中、高）"},{"name":"移行リスク","type":"text","required":false,"description":"移行時の潜在的なリスク・注意点"},{"name":"テスト結果","type":"text","required":false,"description":"Salesforce環境でのテスト結果・検証内容"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"レコード作成者のログインユーザーID"},{"name":"更新者ID","type":"uuid","required":true,"description":"レコード最終更新者のログインユーザーID"}]},{"tableName":"標準機能マッピング","purpose":"Salesforce標準機能と既存システム機能の対応関係を管理し、移行時の機能要件定義と検証を支援するマスタテーブル","columns":[{"name":"マッピングID","type":"uuid","required":true,"description":"標準機能マッピングレコードの一意識別子"},{"name":"既存システム機能名","type":"varchar(100)","required":true,"description":"移行前の既存システムにおける機能の名称"},{"name":"既存システム機能説明","type":"text","required":false,"description":"既存システム機能の詳細な説明と仕様"},{"name":"Salesforce標準機能名","type":"varchar(100)","required":true,"description":"対応するSalesforce標準機能の名称"},{"name":"Salesforce標準機能説明","type":"text","required":false,"description":"Salesforce標準機能の詳細な説明と仕様"},{"name":"マッピング対応状況","type":"varchar(100)","required":true,"description":"マッピング状況を示す値（完全対応、部分対応、カスタマイズ必要、代替案検討中等）"},{"name":"カスタマイズ必要性","type":"boolean","required":true,"description":"Salesforce標準機能のカスタマイズが必要かどうかを示すフラグ"},{"name":"カスタマイズ内容","type":"text","required":false,"description":"必要なカスタマイズの具体的な内容と実装方針"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"このマッピングが属するSalesforce移行プロジェクトの識別子"},{"name":"優先度","type":"integer","required":false,"description":"移行実装の優先度を示す数値（1が最高優先度）"},{"name":"リスク評価","type":"varchar(100)","required":false,"description":"マッピング実装に関するリスク評価（高、中、低）"},{"name":"備考","type":"text","required":false,"description":"マッピングに関する追加情報や特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"マッピングレコードが作成された日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"マッピングレコードを作成したユーザーの識別子"},{"name":"更新日時","type":"timestamp","required":true,"description":"マッピングレコードが最後に更新された日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"マッピングレコードを最後に更新したユーザーの識別子"}]},{"tableName":"機能マッピング詳細","purpose":"Salesforce移行プロジェクトにおいて、既存システムの機能とSalesforceの標準・カスタム機能のマッピング関係を詳細に管理し、移行対象機能の実装方針と検証状況を追跡する。","columns":[{"name":"機能マッピング詳細ID","type":"uuid","required":true,"description":"機能マッピング詳細レコードの一意識別子"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"所属するSalesforce移行プロジェクトへの外部キー参照"},{"name":"既存機能名","type":"varchar(100)","required":true,"description":"既存システムにおける機能の名称"},{"name":"既存機能説明","type":"text","required":false,"description":"既存システムの機能詳細説明"},{"name":"マッピング対象オブジェクトID","type":"uuid","required":false,"description":"マッピング先のカスタムオブジェクト定義またはSalesforce標準オブジェクトへの参照"},{"name":"マッピング方式","type":"varchar(100)","required":true,"description":"マッピング方式の分類（標準機能利用、カスタム開発、ワークフロー、フロー等）"},{"name":"実装方針","type":"text","required":true,"description":"Salesforceでの実装方法と技術的アプローチの詳細"},{"name":"移行ステータス","type":"varchar(100)","required":true,"description":"マッピングの進捗状態（未着手、設計中、開発中、テスト中、完了等）"},{"name":"優先度","type":"integer","required":false,"description":"移行実装の優先順位（1-5の数値、1が最高優先度）"},{"name":"複雑度","type":"varchar(100)","required":false,"description":"実装の複雑度レベル（低、中、高）"},{"name":"依存関係","type":"text","required":false,"description":"他の機能マッピングとの依存関係の説明"},{"name":"検証方法","type":"text","required":false,"description":"移行後の機能検証方法とテスト項目"},{"name":"検証ステータス","type":"varchar(100)","required":false,"description":"検証の進捗状態（未実施、実施中、完了、不合格等）"},{"name":"備考","type":"text","required":false,"description":"その他の注記事項や特殊な対応が必要な情報"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者のログインユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者","type":"uuid","required":true,"description":"レコード最終更新者のログインユーザーID"}]},{"tableName":"移行対象システム","purpose":"Salesforce移行プロジェクトにおいて、移行対象となるレガシーシステムの基本情報を管理し、移行スコープ、システム特性、依存関係を記録するマスタテーブル","columns":[{"name":"システムID","type":"uuid","required":true,"description":"移行対象システムを一意に識別するプライマリキー"},{"name":"システム名","type":"varchar(100)","required":true,"description":"移行対象システムの名称"},{"name":"システム説明","type":"text","required":false,"description":"移行対象システムの概要や機能説明"},{"name":"システムタイプ","type":"varchar(100)","required":true,"description":"システムの種類（例：ERP、CRM、会計システム、基幹業務システム等）"},{"name":"現行プラットフォーム","type":"varchar(100)","required":true,"description":"現在のシステムが構築されているプラットフォーム（例：Oracle、SAP、カスタム開発等）"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"このシステムが属するSalesforce移行プロジェクトへの外部キー"},{"name":"移行ステータス","type":"varchar(100)","required":true,"description":"移行の進捗状況（例：計画中、分析中、設計中、実装中、テスト中、本番移行済み）"},{"name":"優先度","type":"integer","required":true,"description":"移行優先度を示す数値（1=最高、数値が大きいほど優先度が低い）"},{"name":"ユーザー数","type":"integer","required":false,"description":"このシステムの利用ユーザー数"},{"name":"データ件数","type":"integer","required":false,"description":"移行対象となるマスタデータやトランザクションデータの概算件数"},{"name":"移行予定開始日","type":"timestamp","required":false,"description":"このシステムの移行予定開始日時"},{"name":"移行予定完了日","type":"timestamp","required":false,"description":"このシステムの移行予定完了日時"},{"name":"実移行開始日","type":"timestamp","required":false,"description":"実際の移行開始日時"},{"name":"実移行完了日","type":"timestamp","required":false,"description":"実際の移行完了日時"},{"name":"責任者","type":"varchar(100)","required":false,"description":"このシステム移行の責任者名またはユーザーID"},{"name":"備考","type":"text","required":false,"description":"移行に関する特記事項や注意点"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"移行対象システム標準機能","purpose":"移行対象システムが保有する標準機能を管理し、Salesforceへのマッピング対象となる機能を一元管理するマスタテーブル","columns":[{"name":"機能ID","type":"uuid","required":true,"description":"移行対象システム標準機能の一意識別子"},{"name":"移行対象システムID","type":"uuid","required":true,"description":"移行対象システムテーブルへの外部キー参照"},{"name":"機能名","type":"varchar(100)","required":true,"description":"移行対象システムにおける標準機能の名称"},{"name":"機能説明","type":"text","required":false,"description":"機能の詳細説明および仕様内容"},{"name":"機能カテゴリ","type":"varchar(100)","required":true,"description":"機能の分類カテゴリ（例：営業管理、顧客管理、請求管理等）"},{"name":"マッピング対象フラグ","type":"boolean","required":true,"description":"Salesforceへのマッピング対象かどうかを示すフラグ"},{"name":"マッピング状態","type":"varchar(100)","required":true,"description":"マッピング状態（未マッピング、マッピング済み、マッピング不可等）"},{"name":"複雑度レベル","type":"integer","required":false,"description":"機能の複雑度を示す数値（1-5段階等）"},{"name":"依存機能ID","type":"uuid","required":false,"description":"この機能が依存する他の機能のID"},{"name":"備考","type":"text","required":false,"description":"マッピング時の注意事項や特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザー識別子"},{"name":"更新者","type":"varchar(100)","required":true,"description":"レコード最終更新者のユーザー識別子"}]},{"tableName":"マッピング検証結果","purpose":"Salesforce移行プロジェクトにおいて、既存システムの機能とSalesforceの標準・カスタム機能のマッピング検証結果を記録し、検証ステータス、検出された問題、推奨事項を管理するテーブル","columns":[{"name":"マッピング検証結果ID","type":"uuid","required":true,"description":"マッピング検証結果の一意識別子"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"Salesforce移行プロジェクトテーブルへの外部キー"},{"name":"機能マッピング詳細ID","type":"uuid","required":true,"description":"機能マッピング詳細テーブルへの外部キー"},{"name":"検証ステータス","type":"varchar(100)","required":true,"description":"検証結果のステータス（未検証、検証中、検証完了、要修正、承認済み等）"},{"name":"検証日時","type":"timestamp","required":true,"description":"検証が実施された日時"},{"name":"検証者ID","type":"uuid","required":true,"description":"検証を実施したユーザーの識別子"},{"name":"検出問題","type":"text","required":false,"description":"検証時に検出された問題や不適合の詳細説明"},{"name":"推奨事項","type":"text","required":false,"description":"検証結果に基づく改善や対応の推奨事項"},{"name":"リスクレベル","type":"varchar(100)","required":false,"description":"検出された問題に関連するリスクレベル（低、中、高、極高等）"},{"name":"対応状況","type":"varchar(100)","required":false,"description":"推奨事項への対応状況（未対応、対応中、対応完了等）"},{"name":"備考","type":"text","required":false,"description":"その他の補足情報やコメント"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者ID","type":"uuid","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"移行リスク評価","purpose":"Salesforce移行プロジェクトにおける各種リスク要因を評価・管理し、移行の成功確度を定量的に把握するための評価記録を保持する","columns":[{"name":"リスク評価ID","type":"uuid","required":true,"description":"リスク評価レコードの一意識別子"},{"name":"移行プロジェクトID","type":"uuid","required":true,"description":"Salesforce移行プロジェクトテーブルへの外部キー参照"},{"name":"リスク分類","type":"varchar(100)","required":true,"description":"リスクの分類カテゴリ（技術的リスク、運用リスク、データリスク、組織リスク等）"},{"name":"リスク項目名","type":"varchar(100)","required":true,"description":"具体的なリスク項目の名称"},{"name":"リスク説明","type":"text","required":false,"description":"リスク内容の詳細説明"},{"name":"発生可能性レベル","type":"varchar(100)","required":true,"description":"リスク発生の可能性度合い（高・中・低等）"},{"name":"影響度レベル","type":"varchar(100)","required":true,"description":"リスク発生時の影響度合い（高・中・低等）"},{"name":"リスク評価スコア","type":"integer","required":true,"description":"発生可能性と影響度から算出されたリスク総合スコア（0-100）"},{"name":"対応方針","type":"varchar(100)","required":false,"description":"リスク対応の方針（回避、軽減、受容、転嫁等）"},{"name":"対応策","type":"text","required":false,"description":"具体的なリスク対応策の内容"},{"name":"責任者","type":"varchar(100)","required":false,"description":"リスク対応の責任者名"},{"name":"対応状況","type":"varchar(100)","required":false,"description":"対応策の実施状況（未実施、実施中、完了等）"},{"name":"評価日時","type":"timestamp","required":true,"description":"リスク評価を実施した日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":true,"description":"レコード最終更新者のユーザーID"}]}];
+window.AIVIC_PRESET_SEED = {"操作履歴":[{"操作履歴ID":"rec-001","ユーザーID":"usr-0847","操作種別":"ログイン","対象テーブル名":"ユーザーセッション","対象レコードID":"ses-2024-11-15-001","変更前値":null,"変更後値":null,"操作内容詳細":"Salesforce移行マッピングプロジェクト管理画面へのログイン。多要素認証による認証成功。","IPアドレス":"203.0.113.45","セッションID":"sess_7f8e9d2c1b4a6e3f","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2024-11-15 09:23:47","作成日時":"2024-11-15 09:23:48"},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-0042","操作種別":"更新","対象テーブル名":"顧客マスタ","対象レコードID":"rec-cust-5821","変更前値":"電話番号:090-1234-5678,メール:tanaka@example.com,住所:東京都渋谷区道玄坂1-2-3","変更後値":"電話番号:090-9876-5432,メール:tanaka.new@example.com,住所:東京都渋谷区渋谷2-5-8","操作内容詳細":"顧客田中商事の連絡先情報を更新。転居に伴う住所変更と新しい携帯番号への変更を実施。","IPアドレス":"203.0.113.45","セッションID":"sess-20250117-a7f2e9c1","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-01-17T14:32:18+09:00","作成日時":"2025-01-17T14:32:19+09:00"},{"操作履歴ID":"rec-001","ユーザーID":"rec-usr-0847","操作種別":"削除","対象テーブル名":"カスタムフィールド","対象レコードID":"rec-cf-2156","変更前値":"フィールド名:顧客分類,フィールドタイプ:選択肢,選択肢:VIP顧客|通常顧客|新規顧客","変更後値":"削除済み","操作内容詳細":"顧客管理システムのカスタムフィールド「顧客分類」を削除。関連するデータ20件は自動的にクリアされました。","IPアドレス":"192.168.1.105","セッションID":"sess-20250115-8a3f2c9e","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-01-15T14:32:47+09:00","作成日時":"2025-01-15T14:32:48+09:00"},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-0042","操作種別":"作成","対象テーブル名":"項目対応表","対象レコードID":"rec-map-0156","変更前値":null,"変更後値":"旧システム項目名:顧客名、新システム項目名:customer_name、データ型:varchar(100)、対応ステータス:確認済み","操作内容詳細":"旧システムの顧客マスタから新システムへの項目マッピング表を新規作成。初期100項目のうち56項目を対応済みとして登録","IPアドレス":"192.168.1.105","セッションID":"sess-20250115-8f7a2c","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-01-15T14:23:47+09:00","作成日時":"2025-01-15T14:23:48+09:00"},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-042","操作種別":"参照","対象テーブル名":"売上レポート","対象レコードID":"rec-r-2024-12","変更前値":null,"変更後値":null,"操作内容詳細":"2024年12月の月間売上レポートを参照。部門別売上集計、顧客別売上ランキング、商品カテゴリ別構成比を確認。","IPアドレス":"192.168.1.105","セッションID":"sess-20250115-a7f2e9c1","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-01-15 09:32:47","作成日時":"2025-01-15 09:32:48"},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-045","操作種別":"一括更新","対象テーブル名":"顧客マスタ","対象レコードID":"rec-batch-2025-001","変更前値":"ステータス:有効、更新日時:2024-12-15 10:30:00","変更後値":"ステータス:移行済、更新日時:2025-01-20 14:45:00","操作内容詳細":"データ移行タスク実行。対象レコード1000件をCSVファイルから一括インポート更新。バッチ処理ID:BATCH-2025-001。","IPアドレス":"192.168.1.105","セッションID":"sess-7a8b9c2d1e4f5g6h","操作ステータス":"失敗","エラーメッセージ":"一括更新処理中に整合性制約エラーが発生。対象レコード1000件中998件が正常に更新されましたが、2件で外部キー参照エラーが発生しました。トランザクションがロールバックされました。","操作実行日時":"2025-01-20 14:47:33","作成日時":"2025-01-20 14:47:35"},{"操作履歴ID":"rec-20250215-0847","ユーザーID":"rec-user-0234","操作種別":"復元","対象テーブル名":"取引先","対象レコードID":"rec-client-1567","変更前値":"削除状態","変更後値":"有効状態","操作内容詳細":"誤削除した取引先レコード（株式会社佐藤物流）を管理者権限で復元。削除日時は2025-02-14 16:32。","IPアドレス":"192.168.1.105","セッションID":"sess-8f3c2e9d1a4b7","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-02-15 08:47:23","作成日時":"2025-02-15 08:47:24"},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-042","操作種別":"参照","対象テーブル名":"操作履歴","対象レコードID":null,"変更前値":null,"変更後値":null,"操作内容詳細":"期間2024-01-01～2025-01-31の全ユーザー操作ログをCSV形式でダウンロード。対象件数：15,847件","IPアドレス":"192.168.10.45","セッションID":"sess-20250115-7f3a2b","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-01-15 14:32:18","作成日時":"2025-01-15 14:32:19"},{"操作履歴ID":"rec-001","ユーザーID":"rec-usr-0042","操作種別":"更新","対象テーブル名":"API認証トークン","対象レコードID":"rec-token-0158","変更前値":"token_key=sk_live_8f2c9d4e1b5a7c3f, 有効期限=2025-06-15","変更後値":"token_key=sk_live_a9e3f1c7d2b4g8h5, 有効期限=2026-06-15","操作内容詳細":"ERP連携用の本番環境APIトークンを再生成。セキュリティ定期更新ポリシーに基づく計画的な更新。","IPアドレス":"203.0.113.45","セッションID":"sess_20250115_admin_001","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-01-15T10:32:18+09:00","作成日時":"2025-01-15T10:32:19+09:00"},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-0042","操作種別":"ログアウト","対象テーブル名":"ユーザーセッション","対象レコードID":"rec-s-0156","変更前値":"ステータス:アクティブ","変更後値":"ステータス:終了","操作内容詳細":"セッションタイムアウト（無操作時間30分超過）により自動ログアウト","IPアドレス":"192.168.1.105","セッションID":"sess-20250115-7a9c2f","操作ステータス":"成功","エラーメッセージ":null,"操作実行日時":"2025-01-15T14:32:18+09:00","作成日時":"2025-01-15T14:32:19+09:00"}],"ログインユーザー":[{"ユーザーID":"rec-001","メールアドレス":"tanaka.taro@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ロール":"管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-11-20T14:15:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"system"},{"ユーザーID":"rec-001","メールアドレス":"tanaka.taro@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQ","ロール":"営業マネージャー","ステータス":"有効","最終ログイン日時":"2025-01-15 09:30:00","作成日時":"2024-04-01 10:00:00","更新日時":"2025-01-10 14:20:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.taro@company.co.jp","ユーザー名":"鈴木太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890","ロール":"IT管理者","ステータス":"有効","最終ログイン日時":"2025-01-15 09:30:00","作成日時":"2024-04-10 14:20:00","更新日時":"2025-01-15 09:30:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.consultant@example.com","ユーザー名":"鈴木健一","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890","ロール":"コンサルタント","ステータス":"一時停止予定","最終ログイン日時":"2025-01-15T14:32:00+09:00","作成日時":"2024-12-10T09:15:00+09:00","更新日時":"2025-01-15T14:32:00+09:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"yamada.taro@company.jp","ユーザー名":"山田太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz123456789","ロール":"管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-10T14:20:00+09:00","更新日時":"2025-01-10T16:45:00+09:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@company.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ロール":"ユーザー","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2025-01-10T14:20:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"yamada.hanako@company.jp","ユーザー名":"山田花子","パスワードハッシュ":"$2b$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36P4/R1K","ロール":"ユーザー","ステータス":"一時停止","最終ログイン日時":"2024-12-15 14:30:00","作成日時":"2024-01-10 09:15:00","更新日時":"2025-01-08 10:45:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"yamada.hanako@company.jp","ユーザー名":"山田花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890","ロール":"なし","ステータス":"無効","最終ログイン日時":"2024-11-15 17:30:00","作成日時":"2023-04-01 09:00:00","更新日時":"2025-01-20 14:45:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"tanaka.taro@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","ロール":"管理者","ステータス":"有効","最終ログイン日時":"2025-01-15 09:30:00","作成日時":"2024-03-20 14:15:00","更新日時":"2025-01-10 16:45:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"yamada.hanako@company.jp","ユーザー名":"山田花子","パスワードハッシュ":"$2b$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36P4/LYm","ロール":"ユーザー","ステータス":"有効","最終ログイン日時":"2025-01-15 09:32:00","作成日時":"2024-03-20 14:15:00","更新日時":"2025-01-14 16:45:00","作成者":"rec-admin-001"}],"Salesforce移行プロジェクト":[{"プロジェクトID":"rec-001","プロジェクト名":"基幹システム営業管理機能Salesforce移行プロジェクト","説明":"既存の基幹システムで運用している営業管理機能（顧客情報、商談管理、見積管理等）をSalesforceへ統合移行し、営業効率化と顧客情報の一元化を実現する。","ステータス":"進行中","開始予定日":"2024-10-01T09:00:00","終了予定日":"2025-03-31T17:00:00","実開始日":"2024-10-07T09:00:00","実終了日":null,"移行元システム":"COMS基幹システム","プロジェクトマネージャー":"山田花子","進捗率":62,"作成日時":"2024-09-15T14:30:00","更新日時":"2025-01-20T10:15:00","作成者":"admin_001","更新者":"yamada_hanako"},{"プロジェクトID":"rec-001","プロジェクト名":"レガシー顧客管理システム Salesforce移行プロジェクト","説明":"既存の顧客管理システムから Salesforce Cloud への完全移行。データ連携、ユーザー教育、運用体制構築を含む。","ステータス":"進行中","開始予定日":"2024-10-01T09:00:00+09:00","終了予定日":"2025-03-31T17:00:00+09:00","実開始日":"2024-10-07T09:00:00+09:00","実終了日":null,"移行元システム":"顧客管理システム Ver 3.2","プロジェクトマネージャー":"山田花子","進捗率":62,"作成日時":"2024-09-15T14:30:00+09:00","更新日時":"2025-01-22T16:45:00+09:00","作成者":"user-admin-001","更新者":"user-yamada-hanako"},{"プロジェクトID":"rec-001","プロジェクト名":"グループ顧客データ統一移行プロジェクト","説明":"A社、B社、C社の3子会社が保有する顧客マスタデータ約50万件を統一Salesforce環境へ統合移行。既存システムからのETL処理と重複排除を実施。","ステータス":"進行中","開始予定日":"2024-10-01T09:00:00","終了予定日":"2025-03-31T17:00:00","実開始日":"2024-10-15T09:00:00","実終了日":null,"移行元システム":"レガシー顧客管理システム（A社・B社・C社各システム）","プロジェクトマネージャー":"山田太郎","進捗率":58,"作成日時":"2024-09-20T14:30:00","更新日時":"2025-01-15T16:45:00","作成者":"suzuki_hanako","更新者":"yamada_taro"},{"プロジェクトID":"rec-001","プロジェクト名":"ERP-Salesforce営業マーケティング統合移行プロジェクト","説明":"オンプレミスERP系統の営業・マーケティング機能をSalesforce Cloudへ段階的に移行し、営業効率化とデータ統一を実現する","ステータス":"進行中","開始予定日":"2024-04-01T09:00:00Z","終了予定日":"2025-03-31T18:00:00Z","実開始日":"2024-04-08T09:00:00Z","実終了日":null,"移行元システム":"Oracle ERP On-Premise","プロジェクトマネージャー":"山田太郎","進捗率":62,"作成日時":"2024-03-15T14:30:00Z","更新日時":"2024-12-10T16:45:00Z","作成者":"user-0892","更新者":"user-0892"},{"プロジェクトID":"rec-001","プロジェクト名":"グローバル顧客データ多言語移行プロジェクト","説明":"アジア太平洋地域への事業拡大に伴い、既存CRMシステムから多言語対応したSalesforceへ顧客データを移行","ステータス":"進行中","開始予定日":"2024-10-01T09:00:00+09:00","終了予定日":"2025-03-31T17:00:00+09:00","実開始日":"2024-10-15T09:00:00+09:00","実終了日":null,"移行元システム":"Oracle CRM Suite","プロジェクトマネージャー":"佐藤美咲","進捗率":62,"作成日時":"2024-09-20T14:30:00+09:00","更新日時":"2025-01-22T10:15:00+09:00","作成者":"user-0847","更新者":"user-0847"},{"プロジェクトID":"rec-001","プロジェクト名":"経理・請求システムSalesforce連携移行","説明":"既存の経理・請求システムからSalesforceへの顧客データ・取引記録の統合移行。月次請求処理の自動化を実現。","ステータス":"進行中","開始予定日":"2024-10-01T09:00:00","終了予定日":"2025-03-31T18:00:00","実開始日":"2024-10-07T10:30:00","実終了日":null,"移行元システム":"SAP Business One","プロジェクトマネージャー":"山田花子","進捗率":62,"作成日時":"2024-09-15T14:20:00","更新日時":"2025-01-22T11:45:00","作成者":"suzuki_taro","更新者":"yamada_hanako"},{"プロジェクトID":"rec-001","プロジェクト名":"営業支援ツール統一化プロジェクト","説明":"現在運用中の複数営業支援ツール(SFA、顧客管理、案件管理)をSalesforceプラットフォームに統合し、営業プロセスの一元化と効率化を実現する。","ステータス":"進行中","開始予定日":"2024-04-01T09:00:00+09:00","終了予定日":"2025-03-31T17:00:00+09:00","実開始日":"2024-04-15T09:00:00+09:00","実終了日":null,"移行元システム":"複数営業支援ツール(SalesLogic、Kintone、独自開発CRM)","プロジェクトマネージャー":"山田花子","進捗率":58,"作成日時":"2024-02-20T14:30:00+09:00","更新日時":"2024-12-10T16:45:00+09:00","作成者":"佐藤次郎","更新者":"山田花子"},{"プロジェクトID":"rec-001","プロジェクト名":"ABC社システム統合移行プロジェクト","説明":"2024年7月のM&A完了に伴い、買収企業ABC社の基幹システムを親会社Salesforce環境へ統合移行する。顧客データ、営業機会、契約情報の一元管理を実現。","ステータス":"進行中","開始予定日":"2024-08-01T09:00:00","終了予定日":"2025-03-31T17:00:00","実開始日":"2024-08-05T10:30:00","実終了日":null,"移行元システム":"ABC社独自CRMシステム","プロジェクトマネージャー":"山田花子","進捗率":62,"作成日時":"2024-07-15T14:20:00","更新日時":"2025-01-20T16:45:00","作成者":"佐藤次郎","更新者":"山田花子"},{"プロジェクトID":"rec-001","プロジェクト名":"モバイル営業支援システム廃止に伴うSalesforce移行","説明":"レガシーモバイル営業支援システムの機能をSalesforceに統合し、営業プロセスの一元化を実現","ステータス":"進行中","開始予定日":"2024-04-01T09:00:00+09:00","終了予定日":"2024-12-31T18:00:00+09:00","実開始日":"2024-04-08T09:00:00+09:00","実終了日":null,"移行元システム":"モバイル営業支援システムv3.2","プロジェクトマネージャー":"佐藤花子","進捗率":62,"作成日時":"2024-03-15T14:30:00+09:00","更新日時":"2024-10-18T16:45:00+09:00","作成者":"山田次郎","更新者":"鈴木美咲"},{"プロジェクトID":"rec-001","プロジェクト名":"データウェアハウス連携Salesforce分析機能構築","説明":"既存のオンプレミスデータウェアハウスとSalesforceを連携し、リアルタイム分析ダッシュボード機能を新規構築する移行プロジェクト","ステータス":"進行中","開始予定日":"2024-10-01T09:00:00Z","終了予定日":"2025-03-31T18:00:00Z","実開始日":"2024-10-07T10:30:00Z","実終了日":null,"移行元システム":"オンプレミスデータウェアハウス(Teradata)","プロジェクトマネージャー":"山田花子","進捗率":62,"作成日時":"2024-09-15T14:20:00Z","更新日時":"2025-01-22T16:45:00Z","作成者":"佐藤次郎","更新者":"山田花子"}],"カスタムオブジェクト定義":[{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"顧客マスタ","オブジェクト説明":"既存システムの顧客基本情報を管理するマスタオブジェクト。顧客ID、名称、住所、連絡先等を保持。","マッピング対象Salesforceオブジェクト":"Account","レコード件数":15800,"移行ステータス":"マッピング完了","優先度":1,"作成日時":"2024-10-15T09:30:00","更新日時":"2025-01-22T14:45:00","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"営業機会追跡","オブジェクト説明":"既存システムにおける営業案件の進捗状況、顧客接触履歴、受注予測を一元管理するカスタムオブジェクト","マッピング対象Salesforceオブジェクト":"Opportunity","レコード件数":3847,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-09-15T10:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-user-0847","更新者ID":"rec-user-0523"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"契約マスタ","オブジェクト説明":"既存システムにおける顧客との契約情報を一元管理するオブジェクト。契約番号、契約金額、契約期間、更新日などを保持。","マッピング対象Salesforceオブジェクト":"Contract","レコード件数":2847,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-08-15T09:30:00+09:00","更新日時":"2025-01-22T14:15:00+09:00","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-042","オブジェクト名":"プロジェクト","オブジェクト説明":"既存プロジェクト管理システムの案件情報。プロジェクトコード、名称、期間、予算、ステータスを管理","マッピング対象Salesforceオブジェクト":"Project__c","レコード件数":287,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-08-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-user-015","更新者ID":"rec-user-028"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"サポートチケット","オブジェクト説明":"既存システムにおける顧客からの問い合わせ・障害報告を管理するチケットシステム。優先度、ステータス、割当担当者などの情報を保有。","マッピング対象Salesforceオブジェクト":"Case","レコード件数":28500,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-06-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"見積レコード","オブジェクト説明":"既存見積管理システムの見積書データ。顧客ごとの見積内容、金額、有効期限などを管理","マッピング対象Salesforceオブジェクト":"Quote","レコード件数":15847,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-09-15T10:30:00Z","更新日時":"2025-01-08T14:45:00Z","作成者ID":"rec-user-0012","更新者ID":"rec-user-0045"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"パートナー情報","オブジェクト説明":"既存パートナー管理システムの取引先パートナーの基本情報、契約条件、売上実績を管理するオブジェクト","マッピング対象Salesforceオブジェクト":"Account__c","レコード件数":1247,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-user-2024-001","更新者ID":"rec-user-2024-002"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"キャンペーン実績","オブジェクト説明":"既存キャンペーン管理システムで管理されているキャンペーン施策の実績データ（売上、顧客数、コンバージョン率等）","マッピング対象Salesforceオブジェクト":"Campaign","レコード件数":2847,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ID":"rec-user-0001","更新者ID":"rec-user-0003"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-042","オブジェクト名":"製品マスタ","オブジェクト説明":"既存システムの製品情報を管理するマスタオブジェクト。商品コード、名称、仕様、価格等を保持。","マッピング対象Salesforceオブジェクト":"Product2","レコード件数":3850,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-10-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ID":"rec-user-156","更新者ID":"rec-user-089"},{"カスタムオブジェクト定義ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","オブジェクト名":"営業活動ログ","オブジェクト説明":"営業担当者の訪問、電話、メール等の活動記録を管理するシステム","マッピング対象Salesforceオブジェクト":"Task","レコード件数":28500,"移行ステータス":"マッピング完了","優先度":2,"作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-user-0342","更新者ID":"rec-user-0156"}],"請求書オブジェクト":[{"請求書ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","請求書番号":"INV-2024-12-0847","顧客ID":"CUST-0234","顧客名":"株式会社テクノロジー・ソリューションズ","請求日":"2024-12-01T09:00:00Z","支払期限日":"2024-12-31T23:59:59Z","請求金額":2850000,"税金額":285000,"請求ステータス":"送付済","Salesforce連携ステータス":"連携済","SalesforceレコードID":"a0A8X00000KmB4QUAV","マッピング検証結果":"全項目の検証完了。顧客マスタとの紐付け確認済み。","作成日時":"2024-12-01T08:30:00Z","作成者ID":"rec-user-0156","更新日時":"2024-12-02T14:22:00Z","更新者ID":"rec-user-0198"},{"請求書ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","請求書番号":"INV-2024-1205-001","顧客ID":"CUST-00847","顧客名":"株式会社ウェブソリューション","請求日":"2024-12-05T09:30:00Z","支払期限日":"2025-01-05T23:59:59Z","請求金額":1250000,"税金額":125000,"請求ステータス":"送付済","Salesforce連携ステータス":"連携失敗","SalesforceレコードID":"","マッピング検証結果":"金額計算エラー：請求金額(1,250,000)と税金額(125,000)の合計が税抜き金額と一致しません。期待値:1,136,364、実績値:1,125,000。システム間の計算ロジック相違により連携不可。","作成日時":"2024-12-05T10:15:00Z","作成者ID":"rec-user-0042","更新日時":"2024-12-05T14:22:00Z","更新者ID":"rec-user-0089"},{"請求書ID":"rec-001","移行プロジェクトID":"rec-proj-001","請求書番号":"INV-2024-001523","顧客ID":"CUST-00456","顧客名":"株式会社ソリューション企画","請求日":"2024-11-15T09:00:00Z","支払期限日":"2024-12-15T23:59:59Z","請求金額":2500000,"税金額":250000,"請求ステータス":"送付済","Salesforce連携ステータス":"連携中","SalesforceレコードID":"a06xx0000001234","マッピング検証結果":"顧客マスタとの紐付け確認中。金額項目の検証完了。","作成日時":"2024-11-15T10:30:00Z","作成者ID":"rec-user-001","更新日時":"2025-01-08T14:22:00Z","更新者ID":"rec-user-002"},{"請求書ID":"rec-001","移行プロジェクトID":"rec-002","請求書番号":"INV-2024-08-0547","顧客ID":"CUST-0089","顧客名":"株式会社ハイテック工業","請求日":"2024-08-15T09:30:00Z","支払期限日":"2024-09-15T23:59:59Z","請求金額":850000,"税金額":85000,"請求ステータス":"キャンセル","Salesforce連携ステータス":"検証中","SalesforceレコードID":"a04Dn000000IZ9HIAW","マッピング検証結果":"キャンセル理由フィールドがSalesforce側で未入力。顧客マスタとの紐付けに不整合あり。","作成日時":"2024-08-15T10:45:00Z","作成者ID":"rec-003","更新日時":"2024-12-10T14:20:00Z","更新者ID":"rec-004"},{"請求書ID":"rec-001-inv-20250115-001","移行プロジェクトID":"rec-001-proj-salesforce-2024","請求書番号":"INV-2025-00847","顧客ID":"CUST-SG-20240601","顧客名":"シンガポール子会社 Tanaka Asia Pte Ltd","請求日":"2025-01-15T09:30:00Z","支払期限日":"2025-02-15T23:59:59Z","請求金額":2500000,"税金額":250000,"請求ステータス":"送付済","Salesforce連携ステータス":"連携失敗","SalesforceレコードID":"","マッピング検証結果":"通貨換算レート不整合：JPY→SGDの換算値がシステム設定値と異なる。請求金額2,500,000円に対して適用レート1.0（エラー）。正常値は1.0付近ですが、通貨コード未設定により連携処理が中断。","作成日時":"2025-01-15T10:45:00Z","作成者ID":"rec-001-user-yamada-taro","更新日時":"2025-01-16T14:20:00Z","更新者ID":"rec-001-user-suzuki-hanako"},{"請求書ID":"rec-001-inv-2024-0847","移行プロジェクトID":"rec-001-proj-sf-2024","請求書番号":"INV-2024-001847","顧客ID":"CUST-5234","顧客名":"株式会社テクノロジーソリューション","請求日":"2024-11-15T09:00:00Z","支払期限日":"2024-12-15T23:59:59Z","請求金額":2850000,"税金額":285000,"請求ステータス":"支払済","Salesforce連携ステータス":"連携失敗","SalesforceレコードID":"a02Xx000001ABCDE","マッピング検証結果":"ステータス値の不一致により連携失敗。既存システム「支払済」がSalesforce「Paid」に正しくマッピングされていません。再マッピング後の再連携が必要です。","作成日時":"2024-11-15T10:30:00Z","作成者ID":"rec-001-user-tanaka","更新日時":"2024-12-10T14:22:00Z","更新者ID":"rec-001-user-suzuki"},{"請求書ID":"rec-001-inv-20250115","移行プロジェクトID":"rec-001-proj-sfdc","請求書番号":"INV-2025-00847","顧客ID":"CUST-NEW-20250110","顧客名":"株式会社ハイテック工業","請求日":"2025-01-15T09:30:00Z","支払期限日":"2025-02-15T23:59:59Z","請求金額":2850000,"税金額":285000,"請求ステータス":"送付済","Salesforce連携ステータス":"連携保留","SalesforceレコードID":null,"マッピング検証結果":"顧客マスタが未登録のため連携待機中。顧客マスタ登録後に再連携予定。","作成日時":"2025-01-15T10:15:00Z","作成者ID":"rec-001-user-yamada","更新日時":"2025-01-15T10:15:00Z","更新者ID":"rec-001-user-yamada"},{"請求書ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","請求書番号":"INV-2024-0847","顧客ID":"CUST-5432","顧客名":"株式会社テクノロジーソリューション","請求日":"2024-11-15T09:30:00Z","支払期限日":"2024-12-15T23:59:59Z","請求金額":2850000,"税金額":285000,"請求ステータス":"送付済","Salesforce連携ステータス":"連携失敗","SalesforceレコードID":"","マッピング検証結果":"部門別配分データの合計が請求金額と不一致。営業部門1,200,000円、製造部門950,000円、管理部門650,000円の合計が2,800,000円となり50,000円の差異が発生。","作成日時":"2024-11-16T10:15:00Z","作成者ID":"rec-user-2024-156","更新日時":"2024-11-16T14:45:00Z","更新者ID":"rec-user-2024-089"},{"請求書ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","請求書番号":"INV-2024-08-0045","顧客ID":"CUST-00892","顧客名":"株式会社ハイテックソリューション","請求日":"2024-08-15T09:30:00Z","支払期限日":"2024-09-15T23:59:59Z","請求金額":850000,"税金額":85000,"請求ステータス":"支払済","Salesforce連携ステータス":"連携済","SalesforceレコードID":"0015g00000XyZaBAAV","マッピング検証結果":"支払確認により自動更新。金額・顧客情報の整合性確認済み。","作成日時":"2024-08-15T10:00:00Z","作成者ID":"rec-user-0087","更新日時":"2024-10-02T14:25:00Z","更新者ID":"rec-system-auto"},{"請求書ID":"rec-001-inv-2024-1847","移行プロジェクトID":"rec-001-proj-sf-2024","請求書番号":"INV-2024/12#001","顧客ID":"CUST-00847","顧客名":"株式会社山田商事","請求日":"2024-12-15T09:30:00Z","支払期限日":"2025-01-15T23:59:59Z","請求金額":385000,"税金額":38500,"請求ステータス":"送付済","Salesforce連携ステータス":"連携失敗","SalesforceレコードID":null,"マッピング検証結果":"請求書番号形式エラー：スラッシュ・ハイフン・シャープを含む複合形式は標準フォーマットに未対応。手動修正待ち。","作成日時":"2024-12-16T14:22:00Z","作成者ID":"rec-001-user-tanaka","更新日時":"2024-12-16T14:22:00Z","更新者ID":"rec-001-user-tanaka"}],"請求明細オブジェクト":[{"請求明細ID":"rec-001","請求書ID":"inv-2024-0847","商品コード":"SVC-MONTHLY-001","商品名":"クラウドストレージ利用料（月次）","数量":1,"単価":150000,"金額":150000,"税率":10,"税額":15000,"説明":"2025年1月分 ユーザー数50名、容量500GB","行番号":1,"作成日時":"2025-01-05 09:30:00","更新日時":"2025-01-05 09:30:00","作成者ID":"user-0521","更新者ID":"user-0521"},{"請求明細ID":"rec-001","請求書ID":"rec-inv-2024-001","商品コード":"PRD-A1200","商品名":"オフィスチェア（メッシュ素材）","数量":5,"単価":12000,"金額":60000,"税率":10,"税額":6000,"説明":"営業部門用オフィスチェア、納期2025年1月15日予定","行番号":1,"作成日時":"2024-12-10 09:30:00","更新日時":"2024-12-10 09:30:00","作成者ID":"usr-001","更新者ID":"usr-001"},{"請求明細ID":"rec-001","請求書ID":"rec-002","商品コード":"PRD-2024-001","商品名":"プレミアム会計ソフト年間ライセンス","数量":1,"単価":120000,"金額":96000,"税率":10,"税額":9600,"説明":"新規顧客キャンペーン20%割引適用（通常価格120,000円→96,000円）","行番号":1,"作成日時":"2024-12-15 09:30:00","更新日時":"2024-12-15 09:30:00","作成者ID":"usr-001","更新者ID":"usr-001"},{"請求明細ID":"rec-001","請求書ID":"rec-002","商品コード":"SUB-CLOUD-PRO","商品名":"クラウドストレージ Pro 月額プラン","数量":1,"単価":5000,"金額":5000,"税率":10,"税額":500,"説明":"2025年1月分のサブスクリプション利用料。自動更新による月次請求","行番号":1,"作成日時":"2025-01-01T09:00:00","更新日時":"2025-01-01T09:00:00","作成者ID":"rec-003","更新者ID":"rec-003"},{"請求明細ID":"rec-001","請求書ID":"rec-002","商品コード":"SKU-2024-0847","商品名":"オフィスチェア（ハイバック）","数量":-1,"単価":28000,"金額":-28000,"税率":10,"税額":-2800,"説明":"2024年11月納品分の返品対応。座面の破損により交換要望","行番号":1,"作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-15T09:30:00","作成者ID":"usr-0156","更新者ID":"usr-0156"},{"請求明細ID":"rec-001","請求書ID":"rec-002","商品コード":"PRD-2024-0847","商品名":"業務用複合機レンタル（月額）","数量":1,"単価":45000,"金額":45000,"税率":10,"税額":4500,"説明":"2025年1月分のレンタル料金。保守費用を含む。","行番号":1,"作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-15T09:30:00","作成者ID":"usr-001","更新者ID":"usr-001"},{"請求明細ID":"rec-001","請求書ID":"rec-inv-2024-0847","商品コード":"SVC-CUSTOM-001","商品名":"ECサイト機能カスタマイズ追加作業","数量":16,"単価":8500,"金額":136000,"税率":10,"税額":13600,"説明":"決済機能の仕様変更対応、テスト・本番環境デプロイ含む","行番号":2,"作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T09:30:00","作成者ID":"user-0234","更新者ID":"user-0234"},{"請求明細ID":"rec-001","請求書ID":"rec-inv-2024-0847","商品コード":"SVC-WEB-001","商品名":"Webシステム開発（第1段階：要件定義・基本設計）","数量":1,"単価":1500000,"金額":1500000,"税率":10,"税額":150000,"説明":"プロジェクト型案件における成果物納品完了に伴う段階的請求（第1段階分）","行番号":1,"作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者ID":"rec-user-0523","更新者ID":"rec-user-0523"},{"請求明細ID":"rec-001","請求書ID":"rec-inv-2024-0847","商品コード":"SVC-EXP-001","商品名":"クラウドシステム利用料（月額）","数量":1,"単価":120000,"金額":120000,"税率":10,"税額":12000,"説明":"USD換算レート: 1USD=150円を適用、現地税務対応済み","行番号":1,"作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 09:30:00","作成者ID":"usr-001","更新者ID":"usr-001"},{"請求明細ID":"rec-001","請求書ID":"rec-002","商品コード":"MNT-SRV-2024","商品名":"システム保守契約（月次按分）","数量":1,"単価":45000,"金額":45000,"税率":10,"税額":4500,"説明":"年間保守契約540万円を12ヶ月で按分した2025年1月分","行番号":1,"作成日時":"2024-12-20 09:30:00","更新日時":"2024-12-20 09:30:00","作成者ID":"rec-003","更新者ID":"rec-003"}],"オブジェクト間参照関係":[{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-案件-001","ターゲットオブジェクトID":"rec-obj-顧客-001","参照フィールド名":"顧客ID","参照タイプ":"ルックアップ関連リスト","カーディナリティ":"1対多","削除時の動作":"制限","必須フラグ":true,"説明":"営業案件は必ず1社の顧客に紐づく。顧客削除時は関連案件があれば削除不可。","作成日時":"2024-06-15T09:30:00Z","更新日時":"2024-11-20T14:15:00Z","作成者ID":"rec-user-田中太郎","更新者ID":"rec-user-佐藤花子"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-invoice-001","ターゲットオブジェクトID":"rec-obj-opportunity-001","参照フィールド名":"関連営業案件","参照タイプ":"ルックアップ","カーディナリティ":"1対1","削除時の動作":"制限","必須フラグ":true,"説明":"請求書の作成時に紐づく営業案件を必須で指定。案件削除時は参照制限により保護される。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-11-15T09:30:00Z","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-tanaka-001"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-contract-001","ターゲットオブジェクトID":"rec-obj-customer-product-001","参照フィールド名":"顧客_製品複合参照","参照タイプ":"ルックアップ関連リスト","カーディナリティ":"1対多","削除時の動作":"制限","必須フラグ":true,"説明":"契約書は顧客と製品の両者に紐づき、契約内容の追跡と請求管理に必要な複合参照","作成日時":"2024-06-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ID":"rec-user-yamada-001","更新者ID":"rec-user-suzuki-002"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-task-001","ターゲットオブジェクトID":"rec-obj-project-001","参照フィールド名":"プロジェクト__c","参照タイプ":"マスター詳細","カーディナリティ":"1対多","削除時の動作":"カスケード削除","必須フラグ":true,"説明":"プロジェクトが削除されると紐づくタスクも自動削除される親子関係","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-11-15T09:30:00Z","作成者ID":"rec-user-001","更新者ID":"rec-user-001"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-quotation-detail","ターゲットオブジェクトID":"rec-obj-quotation","参照フィールド名":"QuotationId","参照タイプ":"マスター詳細","カーディナリティ":"1対多","削除時の動作":"カスケード削除","必須フラグ":true,"説明":"見積書に紐づく見積明細行の親子関係。見積書が削除された場合、関連する全ての明細行も削除される。","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-12-20T14:15:00+09:00","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-invoice-001","ターゲットオブジェクトID":"rec-obj-billing-001","参照フィールド名":"BillingDocumentID__c","参照タイプ":"外部キー","カーディナリティ":"多対1","削除時の動作":"制限","必須フラグ":true,"説明":"納品書から請求書への参照。請求書が削除されると納品書の削除は制限される。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-suzuki-001"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-customer-001","ターゲットオブジェクトID":"rec-obj-user-001","参照フィールド名":"担当営業","参照タイプ":"ルックアップ","カーディナリティ":"1対多","削除時の動作":"制限","必須フラグ":true,"説明":"顧客マスタから営業ユーザーへの参照。1人の営業が複数顧客を担当可能。営業削除時は担当顧客が存在する場合は削除不可。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-20T14:15:00Z","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-suzuki-002"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-product-001","ターゲットオブジェクトID":"rec-obj-category-001","参照フィールド名":"ProductCategory__c","参照タイプ":"ルックアップ関連リスト","カーディナリティ":"多対1","削除時の動作":"制限","必須フラグ":true,"説明":"個別製品が所属する製品カテゴリへの参照。カテゴリ削除時は配下製品が存在すれば削除を制限。","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-12-20T14:15:00+09:00","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-suzuki-001"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-0847","ソースオブジェクトID":"rec-obj-support-ticket","ターゲットオブジェクトID":"rec-obj-account-opportunity","参照フィールド名":"関連顧客案件","参照タイプ":"マスター詳細","カーディナリティ":"多対多","削除時の動作":"制限","必須フラグ":false,"説明":"サポートチケットが複数の顧客と案件に関連付けられる中間テーブル構造で、チケット解決時に顧客満足度と案件進捗を同時に追跡する","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ID":"rec-user-yamada-hanako","更新者ID":"rec-user-suzuki-taro"},{"参照関係ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ソースオブジェクトID":"rec-obj-contract-001","ターゲットオブジェクトID":"rec-obj-template-001","参照フィールド名":"契約条件テンプレートID","参照タイプ":"ルックアップ関係","カーディナリティ":"多対1","削除時の動作":"制限","必須フラグ":true,"説明":"実契約が契約条件テンプレートを参照し、テンプレートの条件項目を継承・適用する関係","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-10T14:22:00Z","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-suzuki-001"}],"計算ロジック定義":[{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"請求書合計金額計算","ロジック種別":"フィールド計算式","対象オブジェクトID":"rec-obj-invoice-001","対象フィールド名":"TotalAmount","ロジック説明":"請求書の合計金額を明細行の単価×数量の合算で自動計算するロジック","既存システムロジック":"SUM(明細行.単価 * 明細行.数量) WHERE 請求書ID = 対象請求書ID","Salesforceロジック":"SUMPRODUCT(InvoiceLineItems__r.UnitPrice__c, InvoiceLineItems__r.Quantity__c)","参照フィールド一覧":"UnitPrice__c,Quantity__c,InvoiceLineItems__r","依存ロジックID":"rec-002,rec-003","移行ステータス":"テスト中","移行難易度":"中","移行リスク":"明細行の削除時の合計金額の再計算タイミング、小数点以下の丸め処理の既存システムとの差異","テスト結果":"単価・数量の変更時に合計金額が正常に更新されることを確認。100件のテストデータで精度検証完了。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-suzuki-002"},{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"請求金額の消費税自動計算","ロジック種別":"フィールド計算式","対象オブジェクトID":"rec-obj-invoice-detail","対象フィールド名":"税金額","ロジック説明":"請求明細の税抜金額に現在の消費税率を乗じて税金額を自動計算するロジック","既存システムロジック":"税金額 = 税抜金額 × 消費税率（10%固定）","Salesforceロジック":"Tax_Amount__c = Untaxed_Amount__c * Tax_Rate__c","参照フィールド一覧":"税抜金額,消費税率","依存ロジックID":"","移行ステータス":"マッピング完了","移行難易度":"低","移行リスク":"消費税率の変更時にフィールド計算式の更新が必要。既存システムとの税率差異の確認が必須。","テスト結果":"税抜金額100,000円×10%=税金額10,000円で正常動作確認。複数レコード一括計算も問題なし。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-12-20T14:45:00Z","作成者ID":"rec-user-tanaka-t","更新者ID":"rec-user-suzuki-h"},{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"請求書確定時売上計上フラグ自動ON","ロジック種別":"ワークフロー","対象オブジェクトID":"rec-obj-invoice-001","対象フィールド名":"売上計上フラグ","ロジック説明":"請求書ステータスが確定状態に遷移した際に、売上計上フラグを自動的にONに設定する","既存システムロジック":"請求書テーブルのステータスが「確定」に更新された時点で、売上計上フラグを1に更新するトリガー処理","Salesforceロジック":"請求書オブジェクトのステータスフィールドが「確定」に変更された際、ワークフロー規則により売上計上フラグをTrueに設定","参照フィールド一覧":"ステータス,売上計上フラグ,更新日時","依存ロジックID":"","移行ステータス":"テスト中","移行難易度":"低","移行リスク":"既存システムとの日時ズレによる売上計上タイミングのズレ、バッチ処理との競合可能性","テスト結果":"Sandbox環境で確定ステータス遷移時にフラグONを確認。複数同時更新時の動作検証中","作成日時":"2024-11-15T10:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-suzuki-001"},{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"月次請求金額合計計算","ロジック種別":"フィールド計算式","対象オブジェクトID":"rec-obj-invoice-001","対象フィールド名":"請求金額合計","ロジック説明":"請求対象期間内の全請求明細行の税抜金額を合計し、消費税を加算して請求金額合計を算出","既存システムロジック":"SELECT SUM(明細金額) FROM 請求明細 WHERE 請求ID=@請求ID AND 対象年月>=@対象年月_開始 AND 対象年月<=@対象年月_終了; 合計金額 × 1.10（消費税率10%）","Salesforceロジック":"ROUND(SUM(請求明細__r.明細金額__c) * 1.10, 0)","参照フィールド一覧":"請求明細__r.明細金額__c,対象年月_開始__c,対象年月_終了__c,消費税率__c","依存ロジックID":"rec-002,rec-003","移行ステータス":"テスト中","移行難易度":"中","移行リスク":"既存システムの消費税率計算ロジックとの差異確認が必要。複数通貨対応時の丸め処理の精度検証が必要","テスト結果":"単一通貨テストケース5件で既存システムとの金額一致を確認。複数通貨テストは実施予定","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-10T14:45:00Z","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"},{"計算ロジックID":"rec-001","移行プロジェクトID":"prj-2024-001","ロジック名":"割引額自動計算","ロジック種別":"フィールド計算式","対象オブジェクトID":"obj-invoice-001","対象フィールド名":"割引額","ロジック説明":"割引コード入力時に割引率マスタを参照し、請求金額に割引率を乗じて割引額を自動計算する","既存システムロジック":"IF(割引コード<>\"\", 請求金額 * VLOOKUP(割引コード, 割引率テーブル, 2, FALSE), 0)","Salesforceロジック":"IF(NOT(ISBLANK(割引コード__c)), 請求金額__c * 割引コード__r.割引率__c, 0)","参照フィールド一覧":"割引コード,請求金額,割引率","依存ロジックID":"rec-002","移行ステータス":"テスト中","移行難易度":"中","移行リスク":"既存システムの割引率マスタとSalesforceのカスタムメタデータの同期タイミング、小数点以下の丸め処理の差異に注意が必要","テスト結果":"複数の割引コードで計算結果を検証済み。営業部との精度確認待ち","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-10T14:20:00Z","作成者ID":"usr-tanaka-001","更新者ID":"usr-suzuki-002"},{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"支払期限自動計算","ロジック種別":"フィールド計算式","対象オブジェクトID":"rec-obj-invoice-001","対象フィールド名":"支払期限日","ロジック説明":"請求日に取引先マスタの支払条件日数を加算して支払期限を自動設定するロジック","既存システムロジック":"請求日 + 取引先.支払条件日数 = 支払期限日（月末締め対応含む）","Salesforceロジック":"DATE(YEAR(請求日__c), MONTH(請求日__c) + FLOOR((DAY(請求日__c) + 取引先.支払条件日数__c) / 31), MOD((DAY(請求日__c) + 取引先.支払条件日数__c), 31))","参照フィールド一覧":"請求日,取引先ID,支払条件日数","依存ロジックID":"","移行ステータス":"テスト中","移行難易度":"中","移行リスク":"月末締めロジックの実装が複雑。既存システムの月末対応ルールとSalesforceの日付演算の差異を確認要","テスト結果":"標準ケース（30日条件）は正常動作確認。月末締めケースで計算ズレを検出、フロー実装への変更検討中","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"},{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"複数通貨請求金額の自動換算","ロジック種別":"フロー","対象オブジェクトID":"rec-obj-invoice-001","対象フィールド名":"換算後請求金額","ロジック説明":"請求書の元通貨金額に対して、実行日の為替レートを適用し、日本円への換算金額を自動計算するロジック","既存システムロジック":"日次バッチ処理で為替マスタを更新し、請求書レコード作成時に当日レートを適用して換算金額を計算","Salesforceロジック":"フロー内でHTTコールアウトで外部為替APIを呼び出し、リアルタイムレートを取得後に金額計算を実行","参照フィールド一覧":"元通貨コード,元通貨金額,請求日,為替レート,換算後金額","依存ロジックID":"rec-002,rec-003","移行ステータス":"テスト中","移行難易度":"中","移行リスク":"為替API連携の遅延時の処理分岐、レート更新タイミングの日中変動対応、複数通貨混在時の丸め誤差","テスト結果":"USD/JPY、EUR/JPYの主要通貨では精度確認済み。API応答時間が3秒超過時の例外処理を調整中","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"},{"計算ロジックID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","ロジック名":"請求明細税率自動適用","ロジック種別":"フィールド計算式","対象オブジェクトID":"obj-invoice-detail-001","対象フィールド名":"税率","ロジック説明":"商品カテゴリ別に消費税率を自動判定・適用するロジック。標準税率10%、軽減税率8%の2パターンに対応。","既存システムロジック":"IF(商品カテゴリ IN ('食品','医薬品','新聞'), 8%, 10%)","Salesforceロジック":"IF(OR(商品カテゴリ__c='食品', 商品カテゴリ__c='医薬品', 商品カテゴリ__c='新聞'), 0.08, 0.10)","参照フィールド一覧":"商品カテゴリ__c","依存ロジックID":"","移行ステータス":"マッピング完了","移行難易度":"低","移行リスク":"既存システムの軽減税率判定ルールとSalesforceロジックの同期確認が必要。カテゴリマスタ値の正規化を事前実施。","テスト結果":"食品・医薬品・新聞カテゴリで8%、その他で10%が正常に適用されることを確認。複合条件での動作も検証済み。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-12-10T14:20:00Z","作成者ID":"user-001","更新者ID":"user-002"},{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"合計請求額計算","ロジック種別":"フィールド計算式","対象オブジェクトID":"rec-obj-invoice-001","対象フィールド名":"合計請求額","ロジック説明":"前月繰越金が存在する場合、当月請求金額に加算して合計請求額を算出するロジック","既存システムロジック":"IF(前月繰越金 > 0, 当月請求金額 + 前月繰越金, 当月請求金額)","Salesforceロジック":"IF(前月繰越金__c > 0, 当月請求金額__c + 前月繰越金__c, 当月請求金額__c)","参照フィールド一覧":"前月繰越金__c,当月請求金額__c","依存ロジックID":"","移行ステータス":"テスト中","移行難易度":"低","移行リスク":"繰越金の初期値が不正な場合、請求額が異常値となる可能性あり。データ移行時の検証が必須。","テスト結果":"テスト環境にて5パターンのテストケース実施。繰越金あり・なしの両条件で期待値と一致を確認。","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ID":"rec-user-tanaka-001","更新者ID":"rec-user-suzuki-001"},{"計算ロジックID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","ロジック名":"督促フラグ自動判定","ロジック種別":"フロー","対象オブジェクトID":"rec-obj-invoice-001","対象フィールド名":"督促フラグ","ロジック説明":"請求書が未払い状態かつ支払期限を超過した場合に督促フラグを自動でONにするロジック","既存システムロジック":"IF(請求状態='未払い' AND 本日日付>支払期限日, 督促フラグ=1, 督促フラグ=0)","Salesforceロジック":"フロー実行トリガー：請求書レコード更新時、条件判定：Status='未払い' AND DueDate < TODAY()、アクション：IsReminderFlag__c=true","参照フィールド一覧":"請求状態,支払期限日,本日日付,督促フラグ","依存ロジックID":"rec-002","移行ステータス":"テスト中","移行難易度":"中","移行リスク":"既存システムとの日付処理の差異、スケジュール実行タイミングのズレによる判定誤り","テスト結果":"UAT環境で5件の未払い請求書でテスト実施、督促フラグが正常に自動ON。ただし時刻指定の精度確認が必要","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ID":"rec-user-tanaka","更新者ID":"rec-user-suzuki"}],"標準機能マッピング":[{"マッピングID":"rec-001","既存システム機能名":"顧客マスタ管理","既存システム機能説明":"既存システムにおける顧客基本情報の登録・更新・削除機能。顧客ID、名称、住所、電話番号、メールアドレス、業種、売上規模等を一元管理。","Salesforce標準機能名":"Account オブジェクト","Salesforce標準機能説明":"Salesforceの標準的な取引先管理機能。顧客基本情報、取引履歴、関連連絡先、商談情報を統合管理。","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"既存システムの顧客分類体系をAccountの業種・規模フィールドに対応。カスタム項目として既存の顧客ランク、契約形態等を追加実装。","移行プロジェクトID":"prj-2024-sf-001","優先度":1,"リスク評価":"中","備考":"既存システムの顧客ID体系の保持が必要。マイグレーション時のデータ重複排除処理が重要。","作成日時":"2024-11-15T09:30:00+09:00","作成者":"田中太郎","更新日時":"2025-01-22T14:45:00+09:00","更新者":"鈴木花子"},{"マッピングID":"rec-001","既存システム機能名":"営業機会追跡機能","既存システム機能説明":"既存システムにおける営業案件の進捗管理と顧客接点の履歴追跡機能","Salesforce標準機能名":"Opportunityパイプライン","Salesforce標準機能説明":"Salesforceの標準Opportunityオブジェクトを用いた営業機会の段階管理と予測分析機能","マッピング対応状況":"完全対応","カスタマイズ必要性":false,"カスタマイズ内容":"カスタマイズは不要。ただし営業段階の定義を既存システムの5段階から標準の4段階へ統一","移行プロジェクトID":"rec-proj-2024-001","優先度":1,"リスク評価":"低","備考":"既存システムの営業段階とSalesforceの標準段階のマッピングは完了済み。データ移行予定日は2025年2月","作成日時":"2024-11-15T09:30:00Z","作成者":"山田花子","更新日時":"2024-12-20T14:15:00Z","更新者":"佐藤次郎"},{"マッピングID":"rec-001","既存システム機能名":"受注登録・管理機能","既存システム機能説明":"既存システムにおける受注情報の登録、受注ステータス管理、納品スケジュール管理を統合的に行う機能","Salesforce標準機能名":"商品・契約管理（Opportunity・Contract）","Salesforce標準機能説明":"Salesforceの商品機能とContract機能を組み合わせ、商品情報の管理と契約条件の記録を実施","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"納品スケジュール管理項目の追加カスタマイズフィールド実装、既存システムの受注ステータス値のSalesforce標準値へのマッピング変換ロジック構築","移行プロジェクトID":"proj-2024-sf-001","優先度":1,"リスク評価":"中","備考":"既存システムの納品日管理がSalesforce標準機能では限定的なため、カスタムオブジェクト連携検討が必要","作成日時":"2024-11-15T09:30:00+09:00","作成者":"山田花子","更新日時":"2024-12-10T14:20:00+09:00","更新者":"鈴木太郎"},{"マッピングID":"rec-001","既存システム機能名":"サポートチケット管理システム","既存システム機能説明":"顧客からの問い合わせを受け付け、チケット番号を付与して対応状況を管理する機能","Salesforce標準機能名":"Case（ケース）","Salesforce標準機能説明":"顧客からの問い合わせや依頼を一元管理し、ステータス追跡や解決履歴を記録するオブジェクト","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"既存システムの優先度レベル（S/A/B/C）をSalesforceの優先度フィールドにマッピング。エスカレーション履歴を履歴追跡フィールドで管理。","移行プロジェクトID":"proj-2024-sf-001","優先度":1,"リスク評価":"中","備考":"既存システムの内部メモ機能がSalesforceでは制限あり。コメント機能で代替予定。","作成日時":"2024-11-15T09:30:00+09:00","作成者":"山田花子","更新日時":"2025-01-22T14:45:00+09:00","更新者":"佐藤次郎"},{"マッピングID":"rec-001","既存システム機能名":"営業活動記録","既存システム機能説明":"営業担当者が顧客訪問、電話対応、メール送付などの営業活動を時系列で記録し、活動内容、対応者、実施日時を管理する機能","Salesforce標準機能名":"Activity（アクティビティ）/ Task（タスク）","Salesforce標準機能説明":"Salesforceのアクティビティ機能は、Task、Event、Call、Emailなどの営業活動を一元管理し、CRMレコードに紐付けて顧客対応履歴を記録する標準機能","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"既存システムの訪問報告書フォーマットをSalesforce Taskの標準フィールド（Subject、Description、ActivityDate、Priority）にマッピング。訪問目的、訪問成果などの項目はカスタムフィールドとして追加実装。","移行プロジェクトID":"prj-2024-salesforce-migration","優先度":2,"リスク評価":"中","備考":"既存システムの活動分類が細分化されているため、Salesforce標準のタイプ分類との対応ルール策定が必要。データ移行時の件数は約15,000件を予定。","作成日時":"2024-11-15T09:30:00+09:00","作成者":"田中太郎","更新日時":"2024-12-20T14:15:00+09:00","更新者":"鈴木花子"},{"マッピングID":"rec-001-2024-0847","既存システム機能名":"顧客接触履歴記録機能","既存システム機能説明":"既存CRMシステムにおける顧客との電話・メール・訪問等の接触内容を日時・種別・担当者とともに記録・管理する機能","Salesforce標準機能名":"Event及び活動関連リスト","Salesforce標準機能説明":"SalesforceのEventオブジェクトを用いて会議・通話・タスク等の活動を記録し、取引先・商談に関連付けて管理する標準機能","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"既存システムの接触種別（電話・メール・訪問・FAX等）をSalesforce標準のEvent Type値にマッピング。既存の自由記述フィールドは長文テキスト項目へ移行。添付ファイルはFiles機能で対応。","移行プロジェクトID":"proj-2024-sf-migration-001","優先度":2,"リスク評価":"中","備考":"既存システムの接触履歴件数が月平均3,000件のため、データ移行パフォーマンスに注意が必要。Eventの関連リスト表示順序は最新順とする。","作成日時":"2024-11-15T09:30:00","作成者":"田中太郎","更新日時":"2025-01-22T14:15:00","更新者":"鈴木花子"},{"マッピングID":"rec-001","既存システム機能名":"見積・提案書作成機能","既存システム機能説明":"営業担当者が顧客情報と商品情報から見積書・提案書を自動生成し、PDF出力・メール送付が可能な機能","Salesforce標準機能名":"Salesforce Quote + Document管理","Salesforce標準機能説明":"Quote機能で見積書を生成し、Document管理またはFiles機能でテンプレート・生成済みドキュメントを一元管理","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"既存システムの独自レイアウト・帳票形式をSalesforce Quote標準形式に統一。日本式の見積書フォーマット（印鑑欄・摘要欄の拡張）をカスタムフィールドで実装。承認フロー連携は別途Flow設定。","移行プロジェクトID":"proj-2024-sf-001","優先度":2,"リスク評価":"中","備考":"既存システムの複雑な割引ロジックと税計算がQuote標準では非対応のため、Apex実装検討中。","作成日時":"2024-11-15T09:30:00","作成者":"山田花子","更新日時":"2025-01-22T14:15:00","更新者":"佐藤次郎"},{"マッピングID":"rec-001","既存システム機能名":"顧客ランク管理","既存システム機能説明":"既存システムでは顧客をゴールド・シルバー・ブロンズの3段階でランク付けし、購買実績と契約期間に基づいて自動判定していた。ランク情報は顧客マスタの専用フィールドに保持されていた。","Salesforce標準機能名":"カスタムフィールド（顧客ランク）+ リスト表示","Salesforce標準機能説明":"Accountオブジェクトにカスタムフィールド「顧客ランク」をピックリスト形式で追加し、Salesforceのリスト表示機能を使用して顧客をランク別に表示・フィルタリングする。","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"Accountオブジェクトにピックリストフィールド「顧客ランク」を作成。既存ランク判定ロジックをFlow/数式フィールドで再実装し、年間売上と契約年数に基づいて自動更新する仕組みを構築。","移行プロジェクトID":"proj-2024-sf-migration-001","優先度":2,"リスク評価":"中","備考":"既存システムの自動判定ロジックの再現に時間要するが、ビジネスロジックの検証完了後は実装可能。移行後の運用ルール確認が必要。","作成日時":"2024-11-15T09:30:00+09:00","作成者":"鈴木花子","更新日時":"2025-01-10T14:20:00+09:00","更新者":"佐藤次郎"},{"マッピングID":"rec-001","既存システム機能名":"月次売上レポート・ダッシュボード","既存システム機能説明":"既存システムで営業部門向けに月次の売上実績、目標達成率、顧客別売上内訳をまとめたレポートとダッシュボード機能","Salesforce標準機能名":"Salesforceレポート・ダッシュボード","Salesforce標準機能説明":"Salesforceの標準レポートビルダーおよびダッシュボード機能を用いた営業KPI可視化ツール","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"既存システムの独自集計ロジック（加重平均計算）をSalesforceカスタム項目とロールアップサマリで実装。レポート出力形式の調整とダッシュボードレイアウト最適化が必要","移行プロジェクトID":"proj-2024-sf-001","優先度":2,"リスク評価":"中","備考":"既存システムの手動調整部分が自動化可能か要検証。ユーザー権限設定の見直しが必須","作成日時":"2024-11-15T09:30:00Z","作成者":"山田花子","更新日時":"2025-01-22T14:15:00Z","更新者":"佐藤次郎"},{"マッピングID":"rec-001","既存システム機能名":"在庫・納期確認照会","既存システム機能説明":"既存の基幹システムで管理されている在庫数量と納期情報をリアルタイムで照会し、営業担当者が顧客への回答に利用する機能","Salesforce標準機能名":"外部オブジェクト連携（OData/REST API）","Salesforce標準機能説明":"SalesforceのOData接続またはREST APIを通じて基幹システムの在庫・納期データを外部オブジェクトとして参照可能にする標準機能","マッピング対応状況":"部分対応","カスタマイズ必要性":true,"カスタマイズ内容":"Middleware（MuleSoft）を導入し、既存基幹システムのAPI仕様に合わせたアダプタ開発とSalesforce側のカスタムフィールド追加が必要","移行プロジェクトID":"proj-2024-sf-001","優先度":2,"リスク評価":"中","備考":"基幹システムのAPI仕様が未確定のため、ベンダーとの調整が必須。レスポンス時間が営業対応に影響するため性能検証が重要","作成日時":"2024-10-15T09:30:00+09:00","作成者":"山田花子","更新日時":"2024-12-20T14:15:00+09:00","更新者":"佐藤次郎"}],"機能マッピング詳細":[{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","既存機能名":"顧客マスタ","既存機能説明":"既存システムの顧客基本情報管理機能。顧客ID、企業名、住所、電話番号、担当者情報を一元管理。","マッピング対象オブジェクトID":"obj-sf-account","マッピング方式":"標準機能利用","実装方針":"既存システムの顧客マスタをSalesforce標準Accountオブジェクトに直接マッピング。企業名はAccount Name、住所はBilling Address、電話はPhone に割り当て。既存システムの顧客IDはExternal ID として保持。","移行ステータス":"開発中","優先度":1,"複雑度":"低","依存関係":"取引先責任者マッピング(rec-002)の前提条件。顧客マスタの完成後に担当者情報の紐付けを実施。","検証方法":"既存システムから抽出した顧客データ100件をSalesforceに移行後、企業名・住所・電話の正確性確認。データ型変換エラーの有無確認。","検証ステータス":"未実施","備考":"既存システムの郵便番号形式（ハイフンなし）をSalesforceの標準形式（ハイフンあり）に変換する前処理が必要。","作成日時":"2024-11-15T09:30:00Z","作成者":"user-tanaka-001","更新日時":"2024-12-10T14:20:00Z","更新者":"user-suzuki-002"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","既存機能名":"受注管理機能","既存機能説明":"既存システムにおける受注の登録、ステータス管理、納期管理、請求情報の一元管理機能","マッピング対象オブジェクトID":"rec-obj-opportunity-001","マッピング方式":"カスタム開発","実装方針":"Opportunity標準オブジェクトに商品表カスタムオブジェクトをリレーション構築し、OpportunityLineItemで数量・金額を管理。納期・ステータスはカスタム項目で拡張実装。","移行ステータス":"開発中","優先度":1,"複雑度":"高","依存関係":"顧客マスタ（Account）の移行完了が前提。請求管理機能と連携必須。","検証方法":"既存システムより50件の受注データをテスト移行し、金額・ステータス・納期の整合性を確認。ユーザー受入テストで業務フロー検証。","検証ステータス":"未実施","備考":"既存システムの複数ステータス値をSalesforceの標準ステージに統一。納期遅延アラート機能はフロー自動化で実装予定。","作成日時":"2024-11-15T09:30:00Z","作成者":"rec-user-tanaka-001","更新日時":"2024-12-10T14:20:00Z","更新者":"rec-user-suzuki-001"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","既存機能名":"営業活動履歴自動記録","既存機能説明":"既存CRMシステムに記録された営業担当者の訪問、電話、メール等の活動履歴をSalesforceへ同期","マッピング対象オブジェクトID":"rec-obj-task-001","マッピング方式":"カスタム開発","実装方針":"既存DB抽出→REST API経由でSalesforce Task/Eventオブジェクトへ自動連携。Salesforce Flow + Apex統合で日次バッチ処理を実装。タイムゾーン変換とレコードID紐付けを考慮。","移行ステータス":"開発中","優先度":2,"複雑度":"高","依存関係":"取引先・商談マッピング完了後に実装。ユーザーID対応表の整備が前提条件。","検証方法":"既存システム100件の活動履歴とSalesforce同期データの突合。日付・ユーザー・活動タイプの正確性確認。パフォーマンステスト（1000件以上）実施。","検証ステータス":"未実施","備考":"既存システムのタイムゾーン（JST固定）からSalesforceへの自動変換処理が必要。重複排除ロジック要検討。","作成日時":"2024-11-15T09:30:00Z","作成者":"rec-user-tanaka-001","更新日時":"2024-12-10T14:45:00Z","更新者":"rec-user-suzuki-002"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","既存機能名":"契約書管理システム","既存機能説明":"既存システムにおける契約書の登録、更新、検索、承認フロー管理機能","マッピング対象オブジェクトID":"rec-obj-contract-001","マッピング方式":"カスタム開発","実装方針":"Salesforceカスタムオブジェクト『契約』を新規作成し、契約種別、契約金額、契約期間等の標準項目を定義。承認プロセスはSalesforceのフロー機能で実装。","移行ステータス":"設計中","優先度":1,"複雑度":"中","依存関係":"取引先オブジェクトへの参照が必須。営業機会との連携も検討中。","検証方法":"既存システムからの契約データ100件をテスト移行し、データ整合性と検索機能を確認。承認フロー5パターンの動作検証。","検証ステータス":"未実施","備考":"既存システムの契約添付ファイルはSalesforceファイル機能へ移行予定。レガシーID保持フィールドが必要。","作成日時":"2024-11-15T09:30:00","作成者":"rec-user-tanaka","更新日時":"2024-11-20T14:15:00","更新者":"rec-user-suzuki"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","既存機能名":"請求書自動発行システム","既存機能説明":"月次売上データから請求書を自動生成し、顧客別にPDF出力する機能","マッピング対象オブジェクトID":"obj-invoice-001","マッピング方式":"フロー","実装方針":"Salesforce Flowで請求書生成トリガーを設定し、Apex統合でPDF生成APIを呼び出してFileオブジェクトに保存","移行ステータス":"開発中","優先度":1,"複雑度":"中","依存関係":"売上データ同期機能（rec-002）、顧客マスタ連携（rec-003）の完了が前提","検証方法":"テスト請求書100件の生成・PDF出力確認、顧客別の正確性検証、エラーハンドリング動作確認","検証ステータス":"未実施","備考":"既存システムのPDF帳票仕様をSalesforceテンプレートに移行済み。大量発行時の処理時間監視が必要","作成日時":"2024-11-15T09:30:00Z","作成者":"user-001","更新日時":"2025-01-08T14:20:00Z","更新者":"user-002"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","既存機能名":"顧客満足度調査集計機能","既存機能説明":"既存システムで実施した顧客満足度調査のアンケート回答を集計し、スコア別の統計分析を行う機能","マッピング対象オブジェクトID":"rec-obj-csat-001","マッピング方式":"カスタム開発","実装方針":"カスタムオブジェクト「顧客満足度調査」を新規作成し、既存データをAPI経由で一括移行。集計ロジックはApexクラスで実装し、レポートはLightningコンポーネントで可視化","移行ステータス":"開発中","優先度":2,"複雑度":"中","依存関係":"顧客マスタオブジェクトの移行完了後に実施。既存の顧客ID体系との対応付けが必須","検証方法":"既存システムの集計結果と新システムの集計結果を比較検証。サンプル500件のデータで精度確認","検証ステータス":"未実施","備考":"既存システムのCSV出力データに一部文字化け対象があるため、事前クリーニングが必要","作成日時":"2024-11-15T09:30:00Z","作成者":"rec-user-tanaka","更新日時":"2024-12-10T14:45:00Z","更新者":"rec-user-suzuki"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","既存機能名":"営業報告書作成機能","既存機能説明":"営業担当者が日次の活動実績、顧客訪問記録、受注情報を入力して月次報告書を自動生成する機能","マッピング対象オブジェクトID":"rec-obj-report-2024","マッピング方式":"標準機能利用","実装方針":"Salesforce Report Builderの標準レポート機能を活用し、Activity、Opportunity、Account オブジェクトのデータを集計。既存システムの帳票レイアウトはダッシュボード化して代替実装","移行ステータス":"開発中","優先度":2,"複雑度":"中","依存関係":"顧客マスタ同期機能（rec-002）、商談オブジェクト構築（rec-003）の完了が前提条件","検証方法":"既存システムの月次報告書サンプル3件とSalesforceレポート出力結果の数値照合、帳票項目の網羅性確認","検証ステータス":"実施中","備考":"既存システムの手動集計項目は計算項目で自動化予定。PDF出力はScheduled Actionsで自動配信対応","作成日時":"2024-11-15T09:30:00Z","作成者":"rec-user-tanaka","更新日時":"2024-12-20T14:45:00Z","更新者":"rec-user-suzuki"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","既存機能名":"在庫連携機能","既存機能説明":"既存システムの在庫数量をリアルタイムで外部の流通管理システムと同期する機能","マッピング対象オブジェクトID":"rec-obj-inventory-001","マッピング方式":"API連携","実装方針":"Salesforce REST APIとWebhookを使用して既存在庫管理システムとの双方向連携を実現。毎時間のバッチ処理と在庫変動時の即時同期を組み合わせた実装","移行ステータス":"開発中","優先度":1,"複雑度":"高","依存関係":"商品マスタ同期機能の完了後に開始。注文管理機能と並行実装可能","検証方法":"テスト環境での在庫増減シナリオ検証、API応答時間測定、エラーハンドリング確認、本番環境での24時間安定性テスト","検証ステータス":"未実施","備考":"既存システムのAPI仕様書は別途確認済み。接続タイムアウト値は30秒で設定予定","作成日時":"2024-10-15T09:30:00","作成者":"rec-user-001","更新日時":"2025-01-20T14:45:00","更新者":"rec-user-002"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","既存機能名":"稟議・承認フロー管理","既存機能説明":"部門長・経営層による段階的な承認プロセス。予算申請、契約承認、購買依頼の3種類の承認フローを管理。","マッピング対象オブジェクトID":"rec-obj-approval-001","マッピング方式":"標準機能利用","実装方針":"Salesforce Approval Processを活用し、既存の3つの承認フロー（予算申請・契約・購買）をそれぞれ個別に構築。承認者はロールベースで動的に決定。","移行ステータス":"開発中","優先度":1,"複雑度":"中","依存関係":"ユーザーマスタの移行完了が前提。ロール階層の設定が必須。","検証方法":"各承認フロータイプで承認・却下・差戻のシナリオテスト。メール通知の到達確認。既存システムとの承認結果の一致性検証。","検証ステータス":"未実施","備考":"既存システムでは承認者の手動設定があるため、移行時に承認者マッピング表の作成が必要。","作成日時":"2024-11-15T09:30:00Z","作成者":"rec-user-tanaka","更新日時":"2024-12-20T14:45:00Z","更新者":"rec-user-suzuki"},{"機能マッピング詳細ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","既存機能名":"顧客ランク付けロジック","既存機能説明":"購買実績と取引期間に基づいて顧客をS/A/B/Cの4段階にランク付けするバッチ処理","マッピング対象オブジェクトID":"obj-account-001","マッピング方式":"カスタム開発、ワークフロー","実装方針":"Account オブジェクトにカスタム項目「顧客ランク」を追加し、Apex クラスで月次バッチ処理を実装。ランク変更時に Workflow で営業チームへ通知メール送信","移行ステータス":"開発中","優先度":2,"複雑度":"中","依存関係":"Opportunity オブジェクトの金額集計が完了していることが前提条件","検証方法":"テスト用顧客データで月次バッチ実行、ランク判定結果と通知メール送信の確認","検証ステータス":"未実施","備考":"既存システムとの判定基準の差異を確認中。ランク昇格時のみ通知とするよう要件調整予定","作成日時":"2024-11-15T09:30:00Z","作成者":"user-佐藤花子","更新日時":"2025-01-08T14:20:00Z","更新者":"user-鈴木次郎"}],"移行対象システム":[{"システムID":"rec-001","システム名":"Oracle ERP 販売・購買・在庫統合モジュール","システム説明":"既存Oracle ERPの販売管理、購買管理、在庫管理の3モジュールをSalesforceプラットフォームに統合移行するプロジェクト","システムタイプ":"ERP","現行プラットフォーム":"Oracle","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"実装中","優先度":1,"ユーザー数":250,"データ件数":850000,"移行予定開始日":"2024-06-01T09:00:00Z","移行予定完了日":"2025-03-31T18:00:00Z","実移行開始日":"2024-06-15T09:00:00Z","実移行完了日":null,"責任者":"山田花子","備考":"Oracle SOAとSalesforce連携のカスタム開発が必要。既存データクレンジング完了済み。","作成日時":"2024-05-10T14:30:00Z","更新日時":"2024-11-20T16:45:00Z","作成者":"佐藤次郎","更新者":"鈴木美咲"},{"システムID":"rec-001","システム名":"レガシー会計システム","システム説明":"売上・経費データを一元管理する基幹会計システム。月次決算処理と予算管理機能を備える。","システムタイプ":"会計システム","現行プラットフォーム":"カスタム開発（Cobol/DB2）","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"分析中","優先度":1,"ユーザー数":45,"データ件数":2500000,"移行予定開始日":"2024-10-01T09:00:00","移行予定完了日":"2025-03-31T18:00:00","実移行開始日":null,"実移行完了日":null,"責任者":"山田花子","備考":"過去5年分の売上・経費マスタ移行が必須。月次決算プロセスの並行運用期間は2ヶ月を予定。","作成日時":"2024-08-15T10:30:00","更新日時":"2024-09-10T14:22:00","作成者":"suzuki-taro","更新者":"yamada-hanako"},{"システムID":"rec-001","システム名":"営業支援システム（SFA）","システム説明":"顧客情報、営業案件、活動履歴を一元管理する営業支援プラットフォーム","システムタイプ":"SFA","現行プラットフォーム":"カスタム開発（Java/Oracle）","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"実装中","優先度":1,"ユーザー数":150,"データ件数":45000,"移行予定開始日":"2024-10-15T09:00:00","移行予定完了日":"2025-02-28T17:00:00","実移行開始日":"2024-10-20T08:30:00","実移行完了日":null,"責任者":"山田花子","備考":"顧客マスタ40000件、案件5000件の移行予定。既存システムとの並行運用は2025年3月末まで。","作成日時":"2024-09-10T14:30:00","更新日時":"2024-11-05T16:45:00","作成者":"suzuki-taro","更新者":"yamada-hanako"},{"システムID":"rec-001","システム名":"生産管理システム（受注・製造指示・納期管理）","システム説明":"製造業向けの受注管理、製造指示、納期管理機能を統合した生産管理システム","システムタイプ":"生産管理システム","現行プラットフォーム":"SAP ERP","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"実装中","優先度":1,"ユーザー数":150,"データ件数":850000,"移行予定開始日":"2024-06-01T09:00:00Z","移行予定完了日":"2025-03-31T18:00:00Z","実移行開始日":"2024-06-15T09:00:00Z","実移行完了日":null,"責任者":"山田花子","備考":"過去3年分の受注・製造実績データを移行対象。既存システムとの並行運用期間は2ヶ月を予定。","作成日時":"2024-04-10T14:30:00Z","更新日時":"2024-11-20T11:15:00Z","作成者":"suzuki-taro","更新者":"yamada-hanako"},{"システムID":"rec-001","システム名":"人事給与システム","システム説明":"従業員マスタ、組織体系、給与計算データをSalesforceに連携するための移行","システムタイプ":"人事給与管理システム","現行プラットフォーム":"カスタム開発（Java/Oracle）","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"実装中","優先度":1,"ユーザー数":450,"データ件数":8500,"移行予定開始日":"2024-11-01T09:00:00+09:00","移行予定完了日":"2025-02-28T17:00:00+09:00","実移行開始日":"2024-11-15T08:30:00+09:00","実移行完了日":null,"責任者":"鈴木美咲","備考":"従業員マスタ約3,200件、組織体系約120部門、給与履歴データ約5,000件。既存システムの暗号化パスワード復号化が必須。","作成日時":"2024-10-20T14:22:00+09:00","更新日時":"2024-11-18T16:45:00+09:00","作成者":"田中太郎","更新者":"鈴木美咲"},{"システムID":"rec-001","システム名":"営業日報・売上報告統合システム","システム説明":"全国7拠点の営業担当者が日々の営業活動と売上実績を報告するシステム。現在は拠点ごとに異なるプラットフォームで運用されており、本社での集計に時間を要している。","システムタイプ":"営業支援システム","現行プラットフォーム":"カスタム開発（Excel VBA + オンプレミスDB）","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"実装中","優先度":1,"ユーザー数":180,"データ件数":450000,"移行予定開始日":"2024-10-01T09:00:00Z","移行予定完了日":"2025-03-31T17:00:00Z","実移行開始日":"2024-10-15T09:00:00Z","実移行完了日":null,"責任者":"鈴木美咲","備考":"過去3年分の営業日報データ（約45万件）をSalesforce Sales Cloudに移行。拠点別の既存ワークフローを統一化し、リアルタイム売上集計を実現予定。","作成日時":"2024-09-10T14:30:00Z","更新日時":"2025-01-20T10:15:00Z","作成者":"佐藤健一","更新者":"鈴木美咲"},{"システムID":"rec-001","システム名":"顧客サポートシステム（Zendesk）","システム説明":"チケット・案件履歴データをSalesforce Service Cloudに統合し、顧客対応履歴の一元管理を実現","システムタイプ":"カスタマーサポートシステム","現行プラットフォーム":"Zendesk","移行プロジェクトID":"proj-2024-sf-migration","移行ステータス":"実装中","優先度":2,"ユーザー数":45,"データ件数":185000,"移行予定開始日":"2024-10-15T09:00:00Z","移行予定完了日":"2025-02-28T17:00:00Z","実移行開始日":"2024-10-15T09:00:00Z","実移行完了日":null,"責任者":"鈴木花子","備考":"過去3年分のチケット履歴（約18万5千件）をマイグレーション。API連携により日次同期を予定。","作成日時":"2024-09-10T14:30:00Z","更新日時":"2024-11-20T16:45:00Z","作成者":"山田太郎","更新者":"佐藤次郎"},{"システムID":"rec-001","システム名":"サプライチェーン管理システム","システム説明":"仕入先管理、発注管理、納期管理、在庫管理を統合したカスタム開発システム","システムタイプ":"基幹業務システム","現行プラットフォーム":"カスタム開発（Java/Oracle）","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"実装中","優先度":2,"ユーザー数":45,"データ件数":125000,"移行予定開始日":"2024-11-15T09:00:00+09:00","移行予定完了日":"2025-03-31T17:00:00+09:00","実移行開始日":"2024-11-20T08:30:00+09:00","実移行完了日":null,"責任者":"山田花子","備考":"仕入先マスタ約800件、発注履歴50万件の移行。既存システムとの並行運用期間を設定予定。","作成日時":"2024-10-01T10:15:00+09:00","更新日時":"2024-11-22T14:30:00+09:00","作成者":"佐藤次郎","更新者":"鈴木美咲"},{"システムID":"rec-001","システム名":"旧CRMシステム（Microsoft Dynamics）","システム説明":"顧客情報、営業案件、取引履歴を一元管理する営業支援システム","システムタイプ":"CRM","現行プラットフォーム":"Microsoft Dynamics 365","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"実装中","優先度":1,"ユーザー数":150,"データ件数":45000,"移行予定開始日":"2024-11-01T09:00:00Z","移行予定完了日":"2025-02-28T18:00:00Z","実移行開始日":"2024-11-15T08:30:00Z","実移行完了日":null,"責任者":"山田花子","備考":"アカウント12000件、コンタクト18000件、商談15000件。レコードタイプマッピングとカスタムフィールドの変換ロジックが複雑。","作成日時":"2024-09-20T10:30:00Z","更新日時":"2024-11-20T14:15:00Z","作成者":"佐藤太郎","更新者":"鈴木美咲"},{"システムID":"rec-001","システム名":"統合契約管理・ドキュメント管理システム","システム説明":"営業、法務、調達部門が利用する契約書・ドキュメントの一元管理・承認ワークフロー対応システム","システムタイプ":"契約管理システム","現行プラットフォーム":"カスタム開発（Java/PostgreSQL）","移行プロジェクトID":"proj-2024-sf-001","移行ステータス":"設計中","優先度":1,"ユーザー数":180,"データ件数":45000,"移行予定開始日":"2025-04-01T09:00:00Z","移行予定完了日":"2025-09-30T17:00:00Z","実移行開始日":null,"実移行完了日":null,"責任者":"山田花子","備考":"Salesforce CPQ・契約管理機能を活用し、承認ルート・テンプレート・バージョン管理を統合実装予定。","作成日時":"2024-11-15T10:30:00Z","更新日時":"2024-12-08T14:45:00Z","作成者":"田中太郎","更新者":"佐藤次郎"}],"移行対象システム標準機能":[{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"営業案件進捗管理","機能説明":"営業案件のステージ遷移、進捗率の自動計算、売上予測金額の更新を統合管理する機能","機能カテゴリ":"営業管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":4,"依存機能ID":"rec-002","備考":"Salesforce OpportunitySobjectへのマッピング完了。案件金額の自動更新ロジックはワークフロー設定が必要。","作成日時":"2024-06-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者":"佐藤花子","更新者":"鈴木健一"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"顧客基本情報一元管理","機能説明":"顧客の氏名、住所、連絡先、業種等の基本情報を一箇所で管理し、営業・カスタマーサポート部門で共有される機能","機能カテゴリ":"顧客管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":2,"依存機能ID":"rec-002","備考":"Salesforce Account オブジェクトへマッピング完了。顧客コード体系の統一が必要","作成日時":"2024-06-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者":"山田花子","更新者":"佐藤次郎"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"請求書自動生成","機能説明":"受注データから請求書を自動生成し、PDF形式で出力。支払い条件に基づいた請求日の自動計算機能を搭載。","機能カテゴリ":"請求管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":3,"依存機能ID":"rec-002","備考":"Salesforce Billing連携時は請求書番号の採番ルール統一が必須。既存システムの連番形式との互換性確認済み。","作成日時":"2024-06-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者":"山田花子","更新者":"佐藤次郎"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"商品価格設定と在庫連動管理","機能説明":"商品マスタの価格体系と在庫数量をリアルタイムで連動させ、在庫状況に応じた動的価格設定と自動更新を実現する機能","機能カテゴリ":"商品管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":4,"依存機能ID":"rec-002","備考":"Salesforce Product2オブジェクトへのマッピング時は在庫同期タイミングの遅延許容値を要確認","作成日時":"2024-08-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者":"佐藤花子","更新者":"鈴木一郎"},{"機能ID":"rec-001","移行対象システムID":"sys-0042","機能名":"営業活動履歴管理","機能説明":"営業担当者の日々の活動（訪問、電話、メール等）と顧客との接触記録を一元管理する機能","機能カテゴリ":"営業管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":3,"依存機能ID":"rec-012","備考":"Salesforce ActivityでのTask/Event管理と連携。既存システムの活動種別コードはカスタム項目で保持が必要","作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者":"山田花子","更新者":"佐藤次郎"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"契約書管理と更新期限アラート","機能説明":"契約書の登録、更新、満期管理を一元化し、更新期限30日前から段階的なアラート通知を自動配信する機能","機能カテゴリ":"契約管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":4,"依存機能ID":"rec-002","備考":"Salesforce標準のContractオブジェクトにマッピング済み。アラート通知はFlow自動化で実装。既存システムの期限計算ロジックとの日数差異に注意。","作成日時":"2024-08-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者":"山田花子","更新者":"佐藤次郎"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"見積から受注への承認フロー","機能説明":"見積書作成後、営業部長による金額確認、営業副本部長による内容確認、経営層による最終承認を経て受注に進む多段階承認プロセス","機能カテゴリ":"営業管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":4,"依存機能ID":"rec-002","備考":"Salesforce Approvals機能で実装。条件付き承認ルートは金額帯別に設定必要。既存システムの承認履歴は移行時に記録として保持。","作成日時":"2024-08-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者":"山田花子","更新者":"鈴木健太"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"顧客サポートチケット管理","機能説明":"顧客からの問い合わせを一元管理し、チケット化して対応状況を追跡するシステム。優先度設定、担当者割り当て、ステータス管理、コメント履歴を備えている。","機能カテゴリ":"顧客管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":4,"依存機能ID":"rec-002","備考":"Salesforce Service Cloudへマッピング済み。既存システムのカスタムステータスは標準ステータスに統合。エスカレーション機能は別途カスタマイズ検討中。","作成日時":"2024-08-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者":"山田花子","更新者":"鈴木一郎"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"営業担当者KPI管理","機能説明":"営業担当者の売上目標、達成率、顧客満足度などのKPIを一元管理し、リアルタイムでパフォーマンス評価を行う機能","機能カテゴリ":"営業管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":4,"依存機能ID":"rec-002","備考":"Salesforce Sales Cloudの目標管理と連携。既存システムの月次評価ロジックをカスタマイズ必要","作成日時":"2024-08-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者":"山田花子","更新者":"佐藤次郎"},{"機能ID":"rec-001","移行対象システムID":"rec-sys-042","機能名":"複数拠点売上集計レポート","機能説明":"全国複数拠点の日次・月次売上データを自動集計し、拠点別・商品別・営業担当者別の売上分析レポートを生成する機能","機能カテゴリ":"営業管理","マッピング対象フラグ":true,"マッピング状態":"マッピング済み","複雑度レベル":4,"依存機能ID":"rec-002","備考":"Salesforce Reports機能でマッピング。既存システムのVBA集計ロジックをFlow/Process Builderで再実装済み。月次締め処理との連携確認要","作成日時":"2024-08-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者":"山田花子","更新者":"佐藤次郎"}],"マッピング検証結果":[{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-mapping-0847","検証ステータス":"要修正","検証日時":"2024-11-15T14:30:00+09:00","検証者ID":"rec-user-0234","検出問題":"標準取引先オブジェクトでは顧客ランク、与信額管理、請求書送付先の複数管理が未対応。既存システムの顧客マスタ機能をカバーできていない。","推奨事項":"カスタムオブジェクト「顧客拡張情報」を作成し、取引先と1対多関連付けで対応。または標準フィールド拡張を検討。","リスクレベル":"高","対応状況":"対応中","備考":"営業部門から複数請求先対応の要件が強く、11月末までに対応方針を確定予定。","作成日時":"2024-11-15T14:30:00+09:00","作成者ID":"rec-user-0234","更新日時":"2024-11-20T09:15:00+09:00","更新者ID":"rec-user-0156"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-sf-001","機能マッピング詳細ID":"rec-map-detail-0847","検証ステータス":"要修正","検証日時":"2024-11-15T14:30:00+09:00","検証者ID":"rec-user-yamada-001","検出問題":"既存システムの信用限度額は月次更新だが、Salesforceでは日次更新が想定されており、計算タイミングの不整合が発生する可能性がある。","推奨事項":"Salesforce側の更新頻度を月次に統一するか、既存システムの更新ロジックを日次に変更する必要がある。移行前に業務要件を確認し、どちらかに統一すること。","リスクレベル":"高","対応状況":"対応中","備考":"営業部門との調整が必要。次回検証予定は2024年12月1日。","作成日時":"2024-11-15T14:30:00+09:00","作成者ID":"rec-user-yamada-001","更新日時":"2024-11-20T10:15:00+09:00","更新者ID":"rec-user-suzuki-002"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-func-detail-042","検証ステータス":"要修正","検証日時":"2024-11-15T14:30:00+09:00","検証者ID":"rec-user-0087","検出問題":"既存システムの複合割引ルール（顧客等級+商品カテゴリ+注文金額による3段階割引）がSalesforce標準のVolume-based割引では完全に再現できない。条件分岐ロジックの複雑性が標準機能の制限を超過している。","推奨事項":"Salesforce Flow または Apex による カスタム割引計算エンジンの構築、もしくは既存ルールの簡略化による段階的な標準機能への適合化を検討。","リスクレベル":"高","対応状況":"対応中","備考":"営業部との要件再確認会議を12月中旬に予定。標準機能での実装可否の最終判定は会議後に決定予定。","作成日時":"2024-11-15T14:30:00+09:00","作成者ID":"rec-user-0087","更新日時":"2024-11-20T09:15:00+09:00","更新者ID":"rec-user-0045"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-func-detail-042","検証ステータス":"要修正","検証日時":"2024-11-15T10:30:00+09:00","検証者ID":"rec-user-0156","検出問題":"既存システムの言語別単価管理がマルチカレンシーでは言語毎の価格調整に非対応。通貨換算レートのみでは業務要件を満たさない。","推奨事項":"カスタム項目で言語別プレミアムを追加するか、CPQ連携による動的価格設定の導入を検討してください。","リスクレベル":"高","対応状況":"対応中","備考":"営業部との要件確認会議を12月上旬に予定。CPQコスト見積もり待ち中。","作成日時":"2024-11-15T10:30:00+09:00","作成者ID":"rec-user-0156","更新日時":"2024-11-20T14:15:00+09:00","更新者ID":"rec-user-0089"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-map-2024-015","検証ステータス":"要修正","検証日時":"2024-11-15T10:30:00+09:00","検証者ID":"rec-user-0042","検出問題":"既存帳票の複雑な集計ロジック（条件付き合計、階層集計）がダッシュボードウィジェットでは実現困難。レポートビルダーでも条件分岐が限定的。","推奨事項":"複雑集計はFlow/Apexで実装し、結果をカスタムオブジェクトに格納。ダッシュボードはそのオブジェクトを参照する構成に変更。","リスクレベル":"中","対応状況":"対応中","備考":"営業部門との要件再確認会議を12月中旬に予定。代替案の試作版は12月末までに完成予定。","作成日時":"2024-11-15T10:30:00+09:00","作成者ID":"rec-user-0042","更新日時":"2024-11-22T14:15:00+09:00","更新者ID":"rec-user-0051"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-map-0847","検証ステータス":"要修正","検証日時":"2024-11-15T14:30:00+09:00","検証者ID":"rec-user-0523","検出問題":"既存システムの3段階承認フロー（部長→役員→最高経営責任者）がSalesforce標準承認プロセスでは最大2段階までの制限があり、条件付き分岐ロジックも完全には再現できない","推奨事項":"Salesforce Flowカスタマイズまたはサードパーティ承認ツール導入により3段階以上の承認フローを実装するか、既存フローの簡素化を検討してください","リスクレベル":"高","対応状況":"対応中","備考":"営業部門の月次予算承認プロセスが最も影響を受ける。2024年12月までに対応方針を決定予定","作成日時":"2024-11-15T14:30:00+09:00","作成者ID":"rec-user-0523","更新日時":"2024-11-22T09:15:00+09:00","更新者ID":"rec-user-0891"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-map-2024-015","検証ステータス":"要修正","検証日時":"2024-11-22T14:30:00+09:00","検証者ID":"rec-user-2024-008","検出問題":"既存APIの認証方式がOAuth1.0だが、Salesforce標準APIはOAuth2.0のみ対応。レート制限の仕様も異なり、既存の60リクエスト/分では不足","推奨事項":"認証ロジックをOAuth2.0に刷新し、API統合フレームワークを導入してレート制限を管理する設計に変更を推奨","リスクレベル":"高","対応状況":"対応中","備考":"開発チーム（山田花子）と協議済み。2024年12月中旬の設計見直しを予定","作成日時":"2024-11-22T14:30:00+09:00","作成者ID":"rec-user-2024-008","更新日時":"2024-11-24T10:15:00+09:00","更新者ID":"rec-user-2024-009"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-map-2024-045","検証ステータス":"要修正","検証日時":"2024-11-15T14:30:00+09:00","検証者ID":"rec-user-0087","検出問題":"既存システムの部門長権限がSalesforceのマネージャプロファイルに一対一対応していない。複数部門兼任者の権限制御に対応できない設計。","推奨事項":"カスタムプロファイルの追加作成と権限セットの組み合わせで柔軟性を確保し、部門マスタとの連携ロジックを再設計すること。","リスクレベル":"高","対応状況":"対応中","備考":"移行前システムの権限テーブルを再分析中。2024年12月中の修正完了予定。","作成日時":"2024-11-15T14:30:00+09:00","作成者ID":"rec-user-0087","更新日時":"2024-11-20T09:15:00+09:00","更新者ID":"rec-user-0092"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-map-2024-015","検証ステータス":"要修正","検証日時":"2024-11-28T14:30:00+09:00","検証者ID":"rec-user-2024-042","検出問題":"在庫ロット管理がSalesforce標準機能では非対応。カスタムオブジェクト必須だが開発工数増加の懸念あり。","推奨事項":"カスタムオブジェクト「ロット情報」を追加設計し、既存の在庫トランザクション機能と統合するアーキテクチャ検討が必要。","リスクレベル":"中","対応状況":"対応中","備考":"営業推進部との要件確認予定。11月中に設計案をまとめる。","作成日時":"2024-11-28T14:30:00+09:00","作成者ID":"rec-user-2024-042","更新日時":"2024-12-01T09:15:00+09:00","更新者ID":"rec-user-2024-018"},{"マッピング検証結果ID":"rec-001","移行プロジェクトID":"rec-proj-2024-001","機能マッピング詳細ID":"rec-func-seg-001","検証ステータス":"要修正","検証日時":"2024-11-15T14:30:00+09:00","検証者ID":"rec-user-yamada","検出問題":"既存システムの顧客セグメンテーション条件（RFM分析＋業種別フィルタ）がSalesforceリスト機能では完全に再現できない。特に複合条件の動的更新が非対応。","推奨事項":"Salesforce Flow または Apex トリガーを用いた補助機能の開発、または既存セグメント定義の簡略化を検討。","リスクレベル":"高","対応状況":"対応中","備考":"営業部門との調整会議を12月上旬に予定。キャンペーン実行への影響大。","作成日時":"2024-11-15T14:30:00+09:00","作成者ID":"rec-user-yamada","更新日時":"2024-11-20T09:15:00+09:00","更新者ID":"rec-user-suzuki"}],"移行リスク評価":[{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-migration-001","リスク分類":"データリスク","リスク項目名":"レガシーシステムからのデータ品質低下及び整合性喪失","リスク説明":"既存システムの非正規化データ、重複レコード、未入力項目が多数存在し、Salesforceへの移行時にデータ品質が低下する可能性がある。特に顧客マスタと取引履歴の紐付けが不正確になるリスクが高い。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"移行前のデータクレンジング実施、マッピング検証ツール導入、移行後の整合性チェック自動化、段階的なパイロット移行で品質検証。","責任者":"山田花子","対応状況":"実施中","評価日時":"2024-11-15T10:30:00","作成日時":"2024-11-15T10:30:00","更新日時":"2025-01-08T14:45:00","作成者":"user-001","更新者":"user-002"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"技術的リスク","リスク項目名":"既存カスタマイズ機能の標準機能置き換え可否検証不足","リスク説明":"現行システムの独自カスタマイズ機能がSalesforce標準機能で実現可能か十分な技術検証が未実施のため、移行後に機能ギャップが発生する可能性がある。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"移行前に現行システムの全カスタマイズ機能を棚卸しし、Salesforce標準機能との適合性を詳細に検証。必要に応じてカスタマイズ開発またはワークフロー変更を検討する。","責任者":"山田花子","対応状況":"実施中","評価日時":"2024-11-15T10:30:00","作成日時":"2024-11-15T10:30:00","更新日時":"2024-12-08T14:20:00","作成者":"user-001","更新者":"user-002"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"運用リスク","リスク項目名":"移行後の運用体制・スキル不足による初期段階でのトラブル対応能力の低下","リスク説明":"Salesforce移行後の初期運用段階において、既存システムからの移行に伴う運用スタッフのスキル不足、引き継ぎ不足により、システムトラブルやユーザー問題への対応が遅延する可能性が高い。特に夜間・休日の緊急対応体制が未整備の場合、ビジネス継続性に大きな影響を与える。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"運用スタッフへの段階的トレーニング計画、ナレッジベース整備、24時間対応体制の構築、ベンダーサポート契約の拡充。","責任者":"鈴木美咲","対応状況":"実施中","評価日時":"2024-11-15T14:30:00","作成日時":"2024-11-15T14:30:00","更新日時":"2025-01-22T09:45:00","作成者":"user-0847","更新者":"user-0847"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"組織リスク","リスク項目名":"業務プロセス統一による現場抵抗と教育負荷","リスク説明":"営業部門と事務部門の業務プロセスを統一することで、既存の業務慣行からの変更が生じ、現場スタッフの抵抗感が高まる可能性がある。また、新しいプロセスと Salesforce システムの操作習得に要する教育時間が膨大になり、業務効率の低下が懸念される。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"段階的な導入スケジュール、部門別キーユーザーの育成、現場ヒアリングに基づくプロセス最適化、eラーニングと集合研修の併用","責任者":"山田花子","対応状況":"実施中","評価日時":"2024-11-15 14:30:00","作成日時":"2024-11-15 14:30:00","更新日時":"2024-12-10 10:15:00","作成者":"user-0042","更新者":"user-0042"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"データリスク","リスク項目名":"並行運用期間における二重入力・同期エラー","リスク説明":"既存システムとSalesforceの並行運用期間中、顧客データや営業機会の入力が両システムで重複発生し、同期ロジックの不具合により データ不整合が生じるリスク。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"入力ガイドラインの整備、自動同期ツール導入、日次データ検証レポート作成、運用チームへの教育実施。","責任者":"山田花子","対応状況":"実施中","評価日時":"2024-11-15T10:30:00","作成日時":"2024-10-20T14:15:00","更新日時":"2024-11-15T10:30:00","作成者":"suzuki-taro","更新者":"yamada-hanako"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"データリスク","リスク項目名":"顧客マスタ・取引履歴の機密データ漏洩","リスク説明":"Salesforce移行時に顧客マスタ（氏名、住所、電話番号）および取引履歴（購買金額、決済情報）などの個人情報・機密データが暗号化されない状態で転送される可能性があり、個人情報保護法およびGDPR違反のリスクがある。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":90,"対応方針":"軽減","対応策":"転送時のエンドツーエンド暗号化導入、移行前のデータマスキング実施、アクセス権限の最小化、監査ログの記録・監視体制構築。","責任者":"佐藤美咲","対応状況":"実施中","評価日時":"2024-11-15T10:30:00+09:00","作成日時":"2024-11-15T10:30:00+09:00","更新日時":"2024-12-10T14:45:00+09:00","作成者":"user-yamada-001","更新者":"user-sato-002"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"組織リスク","リスク項目名":"経営層期待値とのギャップ","リスク説明":"プロジェクト開始時の予定では2024年9月完了・予算5,000万円でしたが、データ品質問題とカスタマイズ追加要件により2025年3月延期・予算7,200万円に増加。経営層との合意形成が不十分なまま進行している状況。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"経営層向け進捗報告会を月1回開催し、スコープ変更の根拠と追加投資の必要性を説明。プロジェクト委員会で承認を得て、正式な予算・スケジュール変更を実行。","責任者":"山田花子","対応状況":"実施中","評価日時":"2024-11-15 10:30:00","作成日時":"2024-11-15 10:30:00","更新日時":"2024-12-10 14:20:00","作成者":"user-0042","更新者":"user-0042"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-SF-001","リスク分類":"技術的リスク","リスク項目名":"カスタム帳票実装の工数超過","リスク説明":"既存システムの複雑な帳票・レポート仕様がSalesforce標準機能では実現不可能であり、カスタマイズ開発が必要となる場合、予定工数を大幅に超過するリスク","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"移行前に帳票仕様の詳細分析を実施し、標準機能での実現可否を早期判定。必要に応じてFlow・LWCによる段階的実装計画を策定し、工数バッファを確保する。","責任者":"山田花子","対応状況":"実施中","評価日時":"2024-11-15T10:30:00","作成日時":"2024-11-15T10:30:00","更新日時":"2025-01-20T14:15:00","作成者":"user-0042","更新者":"user-0042"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"運用リスク","リスク項目名":"ベンダーロックインによる長期的なコスト増大","リスク説明":"Salesforce移行後、保守・運用をシステムインテグレーターに依存することで、契約更新時の価格交渉力が低下し、継続的なコスト増加が発生する可能性がある。","発生可能性レベル":"高","影響度レベル":"高","リスク評価スコア":85,"対応方針":"軽減","対応策":"保守運用体制の内製化計画を策定し、段階的に社内スキルを構築。複数ベンダーの競争環境を意図的に作出し、3年以内に運用コストを現在の60%に削減する目標を設定。","責任者":"山田花子","対応状況":"実施中","評価日時":"2024-11-15T10:30:00","作成日時":"2024-11-15T10:30:00","更新日時":"2025-01-20T14:45:00","作成者":"user-0342","更新者":"user-0342"},{"リスク評価ID":"rec-001","移行プロジェクトID":"proj-2024-sf-001","リスク分類":"データリスク","リスク項目名":"検証期間不足によるデータ不整合の顕在化","リスク説明":"本番運用開始前の検証期間が計画より短縮された場合、データ移行後の隠れた不整合や論理エラーが本番環境で顕在化し、業務停止や顧客への影響が生じるリスク","発生可能性レベル":"中","影響度レベル":"高","リスク評価スコア":72,"対応方針":"軽減","対応策":"検証計画の前倒し実施、自動テストスクリプトの事前構築、段階的なカットオーバー方式の採用、本番直前の抜き打ち検証の強化","責任者":"佐藤花子","対応状況":"実施中","評価日時":"2024-11-15T10:30:00","作成日時":"2024-11-15T10:30:00","更新日時":"2025-01-08T14:20:00","作成者":"user-0042","更新者":"user-0042"}]};
+window.AIVIC_PAGE_SCREEN_ID = "scr-1791354749663";
+window.AIVIC_PAGE_INIT_JS = "function(container,apiUrl,tables){const projectSelect=container.querySelector('#project-select');const systemSelect=container.querySelector('#system-select');const mappingSearch=container.querySelector('#mapping-search');const generateBtn=container.querySelector('#generate-mapping-btn');const refreshBtn=container.querySelector('#refresh-btn');const vizRefBtn=container.querySelector('#viz-ref-btn');const logicTbody=container.querySelector('#logic-tbody');const systemFeaturesTbody=container.querySelector('#system-features-tbody');const mappingTbody=container.querySelector('#mapping-tbody');let allCalculationLogics=[];let allSystemFeatures=[];let allMappingDetails=[];let allValidationResults=[];let allRiskAssessments=[];async function loadData(){try{allCalculationLogics=await window.aivicApi.list(7)||[];allSystemFeatures=await window.aivicApi.list(10)||[];allMappingDetails=await window.aivicApi.list(9)||[];allValidationResults=await window.aivicApi.list(13)||[];allRiskAssessments=await window.aivicApi.list(14)||[];renderCalculationLogics();renderSystemFeatures();renderMappingDetails();updateKPIs();}catch(e){console.error('Data loading error:',e);}}function renderCalculationLogics(){const filtered=projectSelect.value?allCalculationLogics.filter(l=>l['移行プロジェクトID']===projectSelect.value):allCalculationLogics.slice(0,5);if(filtered.length===0){logicTbody.innerHTML='<tr><td colspan=\"5\" style=\"text-align: center; padding: 16px; color: var(--text-muted);\">データがありません</td></tr>';return;}logicTbody.innerHTML=filtered.map(row=>`<tr><td>${row['ロジック名']||'-'}</td><td>${row['ロジック種別']||'-'}</td><td>${row['対象オブジェクトID']?row['対象オブジェクトID'].substring(0,8):'-'}</td><td><span class=\"status-badge ${row['移行ステータス']||'未開始'}\">${row['移行ステータス']||'未開始'}</span></td><td>${row['移行難易度']||'-'}</td></tr>`).join('');}function renderSystemFeatures(){const filtered=systemSelect.value?allSystemFeatures.filter(f=>f['移行対象システムID']===systemSelect.value):allSystemFeatures.slice(0,5);if(filtered.length===0){systemFeaturesTbody.innerHTML='<tr><td colspan=\"4\" style=\"text-align: center; padding: 16px; color: var(--text-muted);\">データがありません</td></tr>';return;}systemFeaturesTbody.innerHTML=filtered.map(row=>`<tr><td>${row['機能名']||'-'}</td><td>${row['機能カテゴリ']||'-'}</td><td><span class=\"status-badge ${row['マッピング状態']||'未マッピング'}\">${row['マッピング状態']||'未マッピング'}</span></td><td>${row['複雑度レベル']||'-'}</td></tr>`).join('');}function renderMappingDetails(searchTerm=''){let filtered=allMappingDetails;if(projectSelect.value){filtered=filtered.filter(m=>m['移行プロジェクトID']===projectSelect.value);}if(searchTerm){const term=searchTerm.toLowerCase();filtered=filtered.filter(m=>(m['既存機能名']||'').toLowerCase().includes(term)||(m['マッピング方式']||'').toLowerCase().includes(term));}if(filtered.length===0){mappingTbody.innerHTML='<tr><td colspan=\"8\" style=\"text-align: center; padding: 20px; color: var(--text-muted);\">該当するマッピングがありません</td></tr>';return;}mappingTbody.innerHTML=filtered.slice(0,10).map(row=>{const riskLevel=row['複雑度']==='高'?'high':row['複雑度']==='中'?'medium':'low';return`<tr><td>${row['既存機能名']||'-'}</td><td>${row['マッピング方式']||'-'}</td><td style=\"font-size: 11px; color: var(--text-muted);\">${row['実装方針']?row['実装方針'].substring(0,30)+'...':'-'}</td><td><span class=\"status-badge ${row['移行ステータス']||'未着手'}\">${row['移行ステータス']||'未着手'}</span></td><td>${row['優先度']||'-'}</td><td>${row['複雑度']||'-'}</td><td><span class=\"status-badge ${row['検証ステータス']||'未実施'}\">${row['検証ステータス']||'未実施'}</span></td><td><span class=\"risk-${riskLevel}\">${row['複雑度']||'-'}</span></td></tr>`}).join('');}function updateKPIs(){const verified=(allValidationResults.filter(v=>v['検証ステータス']==='検証完了')||[]).length;const needsFix=(allValidationResults.filter(v=>v['検証ステータス']==='要修正')||[]).length;const approved=(allValidationResults.filter(v=>v['検証ステータス']==='承認済み')||[]).length;const riskHigh=(allRiskAssessments.filter(r=>r['リスク評価スコア']>=70)||[]).length;const riskMedium=(allRiskAssessments.filter(r=>r['リスク評価スコア']>=40&&r['リスク評価スコア']<70)||[]).length;const riskLow=(allRiskAssessments.filter(r=>r['リスク評価スコア']<40)||[]).length;container.querySelector('#kpi-verified').textContent=verified;container.querySelector('#kpi-needs-fix').textContent=needsFix;container.querySelector('#kpi-approved').textContent=approved;container.querySelector('#kpi-risk-high').textContent=riskHigh;container.querySelector('#kpi-risk-medium').textContent=riskMedium;container.querySelector('#kpi-risk-low').textContent=riskLow;}projectSelect.addEventListener('change',()=>{renderCalculationLogics();renderMappingDetails(mappingSearch.value);});systemSelect.addEventListener('change',()=>{renderSystemFeatures();});mappingSearch.addEventListener('input',(e)=>{renderMappingDetails(e.target.value);});generateBtn.addEventListener('click',()=>{renderMappingDetails(mappingSearch.value);});refreshBtn.addEventListener('click',()=>{loadData();});vizRefBtn.addEventListener('click',()=>{alert('オブジェクト間参照関係の詳細: 請求書(1) → 請求明細(多)\\nカーディナリティ: 1対多\\nタイプ: ルックアップ\\n削除時の動作: カスケード削除');});const treeToggles=container.querySelectorAll('.tree-item-toggle');treeToggles.forEach(toggle=>{toggle.addEventListener('click',()=>{const parentId=toggle.getAttribute('data-toggle');const children=container.querySelector(`.tree-child[data-parent=\"${parentId}\"]`);if(children){children.classList.toggle('expanded');toggle.textContent=children.classList.contains('expanded')?'▼':'▶';}});});loadData();}";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav data-aivic-system-switcher style="position:sticky;top:0;z-index:2147483000;display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg);color:var(--top-bar-text);border-bottom:1px solid var(--top-bar-border,var(--border));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--top-bar-text);white-space:nowrap;">MySF</span><a href="./scr-1791354749663.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:1;border-bottom:2px solid currentColor;font-weight:600;">Salesforce移行・機能マッピング支援システム</a><a href="./scr-1791354872866.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">移行期間データ整合性検証・監視システム</a><a href="./scr-1791354337614.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">営業プロセス・請求データ統合管理システム</a></nav>
+  <div data-aivic-shell-pattern="sidebar" data-aivic-nav-position="left" data-aivic-density="balanced">
+    <header class="shell-header">
+      <div class="shell-header-left">
+        <div>
+          <div class="shell-logo">MySF</div>
+          <div class="shell-logo-system">Salesforce移行・機能マッピング</div>
+        </div>
+      </div>
+      <div class="shell-header-right">
+        <div class="user-avatar">U</div>
+        <div class="user-name">ユーザー</div>
+        <a href="./login.html" class="user-logout">ログアウト</a>
+      </div>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-sidebar">
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <div class="nav-section-title">メイン</div>
+            <a class="nav-item aivic-active" data-aivic-nav="scr-1791354749663" href="./scr-1791354749663.html">機能マッピング管理</a>
+          </div>
+        </nav>
+      </aside>
+      <main class="content-area">
+        <div data-aivic-panel="scr-1791354749663" style="display:block">
+  <style>
+    [data-aivic-panel="scr-1791354749663"] {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .header-section {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      flex-wrap: wrap;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .header-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] select {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+      border: 1px solid rgba(211, 220, 230, 0.5);
+      border-radius: 3px;
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 112, 210, 0.08);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .content-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .panel-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .section-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-main);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .section-content {
+      padding: 12px 16px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .object-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .tree-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .tree-item:hover {
+      background: rgba(0, 112, 210, 0.05);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .tree-item-toggle {
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .tree-item-content {
+      flex: 1;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .tree-child {
+      margin-left: 24px;
+      display: none;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .tree-child.expanded {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .reference-diagram {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg-main);
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .ref-box {
+      padding: 12px 16px;
+      border: 2px solid var(--primary);
+      border-radius: 4px;
+      background: var(--bg-card);
+      font-weight: 600;
+      min-width: 120px;
+      text-align: center;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .ref-arrow {
+      flex: 1;
+      height: 2px;
+      background: var(--primary);
+      position: relative;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .ref-arrow::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 8px solid var(--primary);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .table-wrap {
+      overflow-x: auto;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] table {
+      width: 100%;
+      font-size: 12px;
+      border-collapse: collapse;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] th {
+      background: var(--bg-main);
+      color: var(--text);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] tr:last-child td {
+      border-bottom: none;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .status-badge.未開始 {
+      background: rgba(87, 109, 123, 0.1);
+      color: var(--text-muted);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .status-badge.分析中 {
+      background: rgba(0, 112, 210, 0.1);
+      color: var(--primary);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .status-badge.マッピング完了 {
+      background: rgba(76, 156, 79, 0.1);
+      color: #2f8e42;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .status-badge.完了 {
+      background: rgba(76, 156, 79, 0.1);
+      color: #2f8e42;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .status-badge.要修正 {
+      background: rgba(218, 76, 66, 0.1);
+      color: #da4c42;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .status-badge.承認済み {
+      background: rgba(76, 156, 79, 0.1);
+      color: #2f8e42;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .search-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .search-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid rgba(211, 220, 230, 0.5);
+      border-radius: 3px;
+      font-size: 13px;
+      background: var(--bg-card);
+      color: var(--text);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 112, 210, 0.08);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .button-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .action-btn {
+      padding: 8px 16px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background var(--motion-duration);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .action-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .action-btn.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(211, 220, 230, 0.5);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .action-btn.secondary:hover {
+      background: rgba(0, 112, 210, 0.05);
+      border-color: var(--primary);
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .kpi-card {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .kpi-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 8px 0;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .kpi-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .risk-high {
+      color: #da4c42;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .risk-medium {
+      color: #f5a623;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .risk-low {
+      color: #2f8e42;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .filter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .filter-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .filter-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .filter-checkbox input[type="checkbox"] {
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .mini-table {
+      font-size: 12px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .mini-table th {
+      padding: 8px 12px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .mini-table td {
+      padding: 8px 12px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .scrollable-section {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .bottom-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .loading-spinner {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    [data-aivic-panel="scr-1791354749663"] .empty-state {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+
+  <div class="header-section">
+    <label class="header-label">プロジェクト</label>
+    <select id="project-select" data-testid="project-select">
+      <option value="">選択してください</option>
+      <option value="proj-001">プロジェクト001</option>
+      <option value="proj-002">プロジェクト002</option>
+      <option value="proj-003">プロジェクト003</option>
+    </select>
+
+    <label class="header-label">移行対象システム</label>
+    <select id="system-select" data-testid="system-select">
+      <option value="">選択してください</option>
+      <option value="sys-001">システムA</option>
+      <option value="sys-002">システムB</option>
+      <option value="sys-003">システムC</option>
+    </select>
+
+    <div class="button-group">
+      <button class="action-btn" id="generate-mapping-btn" data-testid="generate-mapping-btn">マッピング表生成</button>
+      <button class="action-btn secondary" id="refresh-btn" data-testid="refresh-btn">更新</button>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Salesforceオブジェクト構造パネル -->
+    <div class="panel-section" style="flex: 0 0 auto; height: 180px;">
+      <div class="section-header">
+        <span>Salesforceオブジェクト構造</span>
+        <button class="action-btn secondary" style="padding: 4px 8px; font-size: 11px;" id="viz-ref-btn" data-testid="viz-ref-btn">参照関係を可視化</button>
+      </div>
+      <div class="section-content">
+        <div class="object-tree" id="object-tree">
+          <div class="tree-item">
+            <span class="tree-item-toggle" data-toggle="0">▼</span>
+            <span class="tree-item-content">請求書オブジェクト</span>
+          </div>
+          <div class="tree-child expanded" data-parent="0">
+            <div class="tree-item" style="margin-left: 16px; padding-left: 0;">
+              <span style="color: var(--text-muted); font-size: 11px;">ID: 請求書ID</span>
+            </div>
+            <div class="tree-item" style="margin-left: 16px; padding-left: 0;">
+              <span style="color: var(--text-muted); font-size: 11px;">顧客ID → 顧客名</span>
+            </div>
+            <div class="tree-item" style="margin-left: 16px; padding-left: 0;">
+              <span style="color: var(--text-muted); font-size: 11px;">金額集計（請求明細の合計）</span>
+            </div>
+          </div>
+
+          <div class="tree-item">
+            <span class="tree-item-toggle" data-toggle="1">▼</span>
+            <span class="tree-item-content">請求明細オブジェクト</span>
+          </div>
+          <div class="tree-child expanded" data-parent="1">
+            <div class="tree-item" style="margin-left: 16px; padding-left: 0;">
+              <span style="color: var(--text-muted); font-size: 11px;">ID: 請求明細ID</span>
+            </div>
+            <div class="tree-item" style="margin-left: 16px; padding-left: 0;">
+              <span style="color: var(--text-muted); font-size: 11px;">請求書ID（ルックアップ）</span>
+            </div>
+            <div class="tree-item" style="margin-left: 16px; padding-left: 0;">
+              <span style="color: var(--text-muted); font-size: 11px;">商品コード、単価、数量</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 計算ロジック定義一覧 -->
+    <div class="panel-section" style="flex: 0 0 auto; height: 140px;">
+      <div class="section-header">計算ロジック定義一覧</div>
+      <div class="scrollable-section">
+        <div class="table-wrap">
+          <table class="mini-table" data-testid="logic-table">
+            <thead>
+              <tr>
+                <th>ロジック名</th>
+                <th>種別</th>
+                <th>対象オブジェクト</th>
+                <th>移行ステータス</th>
+                <th>難易度</th>
+              </tr>
+            </thead>
+            <tbody id="logic-tbody">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 20px; color: var(--text-muted);">読込中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- オブジェクト間参照関係図 -->
+    <div class="panel-section" style="flex: 0 0 auto; height: 100px;">
+      <div class="section-header">オブジェクト間参照関係</div>
+      <div class="section-content">
+        <div class="reference-diagram">
+          <div class="ref-box">請求書</div>
+          <div class="ref-arrow" title="1対多関係"></div>
+          <div class="ref-box">請求明細</div>
+          <span style="margin-left: 8px; font-size: 11px; color: var(--text-muted);">1対多 (カスケード削除)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 移行対象システム標準機能一覧 -->
+    <div class="panel-section" style="flex: 0 0 auto; height: 120px;">
+      <div class="section-header">移行対象システム標準機能一覧</div>
+      <div class="scrollable-section">
+        <div class="table-wrap">
+          <table class="mini-table" data-testid="system-features-table">
+            <thead>
+              <tr>
+                <th>機能名</th>
+                <th>カテゴリ</th>
+                <th>マッピング状態</th>
+                <th>複雑度</th>
+              </tr>
+            </thead>
+            <tbody id="system-features-tbody">
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 20px; color: var(--text-muted);">読込中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 機能マッピング詳細テーブル -->
+    <div class="panel-section" style="flex: 0 0 auto; height: 200px;">
+      <div class="section-header">
+        <span>機能マッピング詳細</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input class="search-input" id="mapping-search" data-testid="mapping-search" placeholder="検索..." style="width: 200px; padding: 4px 8px; font-size: 12px;">
+        </div>
+      </div>
+      <div class="scrollable-section">
+        <div class="table-wrap">
+          <table data-testid="mapping-table">
+            <thead>
+              <tr>
+                <th>既存機能名</th>
+                <th>マッピング方式</th>
+                <th>実装方針</th>
+                <th>移行ステータス</th>
+                <th>優先度</th>
+                <th>複雑度</th>
+                <th>検証</th>
+                <th>リスク</th>
+              </tr>
+            </thead>
+            <tbody id="mapping-tbody">
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 24px; color: var(--text-muted);">読込中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- サマリーパネル -->
+    <div class="bottom-summary">
+      <div class="panel-section">
+        <div class="section-header">マッピング検証結果</div>
+        <div class="section-content">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">検証完了</div>
+              <div class="kpi-value" id="kpi-verified">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">要修正</div>
+              <div class="kpi-value" id="kpi-needs-fix">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">承認済み</div>
+              <div class="kpi-value" id="kpi-approved">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-header">移行リスク評価</div>
+        <div class="section-content">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label risk-high">高リスク</div>
+              <div class="kpi-value risk-high" id="kpi-risk-high">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label risk-medium">中リスク</div>
+              <div class="kpi-value risk-medium" id="kpi-risk-medium">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label risk-low">低リスク</div>
+              <div class="kpi-value risk-low" id="kpi-risk-low">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </main>
+    </div>
+  </div>
+  
+  
+<script>
+(function() {
+  var TABLE_DEFS = window.AIVIC_TABLES || [];
+  var PRESET_SEED = window.AIVIC_PRESET_SEED || {};
+  var SYSTEM_NAME = window.AIVIC_SYSTEM_NAME || "";
+  var APP_ID = window.AIVIC_APP_ID || "";
+  var API_URL = (window.AIVIC_API_URL && window.AIVIC_API_URL !== "REPLACE_WITH_API_URL")
+    ? window.AIVIC_API_URL : window.location.origin;
+
+  // 通知 helper ( SPA 版と同じ )
+  window.aivicNotify = (function() {
+    function ensureContainer() {
+      var c = document.getElementById("aivic-toast-container");
+      if (c) return c;
+      c = document.createElement("div");
+      c.id = "aivic-toast-container";
+      c.style.cssText = "position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:360px;";
+      document.body.appendChild(c);
+      return c;
+    }
+    function show(msg, type) {
+      var c = ensureContainer();
+      var el = document.createElement("div");
+      el.textContent = msg;
+      el.style.cssText = "padding:10px 16px;border-radius:8px;font-size:13px;line-height:1.4;pointer-events:auto;color:#fff;background:" + (type === "error" ? "#dc2626" : "#d97706");
+      c.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = "opacity .3s";
+        el.style.opacity = "0";
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+      }, type === "error" ? 6000 : 4500);
+    }
+    return {
+      error: function(msg) { show("❌ " + msg, "error"); },
+      warn:  function(msg) { show("⚠️ " + msg, "warn"); },
+    };
+  })();
+
+  // CRUD API ( SPA 版と同じ )
+  window.aivicApi = (function() {
+    function dbErr(op) { window.aivicNotify.error("データベースエラー ( " + op + " ): APIサーバーに接続できません。"); }
+    function newId() { return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2); }
+    function q(i) {
+      var t = TABLE_DEFS[i];
+      var dbP = (window.AIVIC_DB_TYPE && window.AIVIC_DB_TYPE !== "dynamodb") ? "&db=" + encodeURIComponent(window.AIVIC_DB_TYPE) : "";
+      return "?app=" + encodeURIComponent(APP_ID) + "&system=" + encodeURIComponent(SYSTEM_NAME) + "&table=" + encodeURIComponent(t ? t.tableName : "table" + i) + dbP;
+    }
+    return {
+      list: async function(tableIndex) {
+        if (!API_URL) return [];
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex)); var d = await r.json(); return Array.isArray(d) ? d : (d.items || []); }
+        catch(e) { dbErr("データ取得"); return []; }
+      },
+      save: async function(tableIndex, item) {
+        if (!API_URL) { dbErr("保存"); return null; }
+        var now = new Date().toISOString();
+        var rec = Object.assign({}, item, { id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now });
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex), { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(rec) }); return await r.json(); }
+        catch(e) { dbErr("保存"); return null; }
+      },
+      update: async function(tableIndex, id, changes) {
+        if (!API_URL) { dbErr("更新"); return null; }
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.assign({}, changes, {updatedAt: new Date().toISOString()})) }); return await r.json(); }
+        catch(e) { dbErr("更新"); return null; }
+      },
+      delete: async function(tableIndex, id) {
+        if (!API_URL) { dbErr("削除"); return {deleted:false}; }
+        try { await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), {method:"DELETE"}); return {deleted:true}; }
+        catch(e) { dbErr("削除"); return {deleted:false}; }
+      },
+    };
+  })();
+
+  // showScreen はマルチページ構成ではページ遷移として動く。
+  var _aivicNavLastTime = 0;
+  var _aivicNavLastTarget = "";
+  var _aivicReady = false;
+  window.showScreen = function(screenId) {
+    if (!screenId) return;
+    if (screenId === window.AIVIC_PAGE_SCREEN_ID) return;
+    var targetPath = './' + encodeURIComponent(screenId) + '.html';
+    var currentName = (window.location.pathname.split('/').pop() || '');
+    if (currentName === (encodeURIComponent(screenId) + '.html') ||
+        currentName === (screenId + '.html')) {
+      return;
+    }
+    var now = Date.now();
+    if (_aivicNavLastTarget === targetPath && (now - _aivicNavLastTime) < 100) {
+      console.warn('[aivic] showScreen 連続呼び出し検知。 無限ループ防止のため抑制:', screenId);
+      return;
+    }
+    if (!_aivicReady) {
+      console.warn('[aivic] DOMContentLoaded 前の showScreen 呼び出し。 抑制:', screenId);
+      return;
+    }
+    _aivicNavLastTime = now;
+    _aivicNavLastTarget = targetPath;
+    window.location.href = targetPath;
+  };
+
+  function seedAllIfEmpty() {
+    if (!API_URL) return Promise.resolve();
+    return Promise.all(TABLE_DEFS.map(function(t, i) {
+      var preset = PRESET_SEED[t.tableName];
+      if (!Array.isArray(preset) || preset.length === 0) return Promise.resolve();
+      return window.aivicApi.list(i).then(function(existing) {
+        if (existing && existing.length > 0) return;
+        return Promise.all(preset.map(function(row) { return window.aivicApi.save(i, row); }));
+      }).catch(function() {});
+    }));
+  }
+
+  // ── 初期表示: このページ専用の panel に initFn を実行 ──
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() { _aivicReady = true; }, 1500);
+    var pageScreenId = window.AIVIC_PAGE_SCREEN_ID;
+    if (!pageScreenId) return;
+
+    // AI シェルが SPA 用の初期表示処理を持っていても、マルチページでは
+    // このファイルに割り当てられた画面だけを表示する。
+    document.querySelectorAll('[data-aivic-panel]').forEach(function(panel) {
+      var isCurrent = panel.getAttribute('data-aivic-panel') === pageScreenId;
+      panel.style.display = isCurrent ? 'block' : 'none';
+    });
+
+    document.querySelectorAll('[data-aivic-nav]').forEach(function(btn) {
+      var isActive = btn.getAttribute("data-aivic-nav") === pageScreenId;
+      btn.classList.toggle("aivic-active", isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    var container = document.querySelector('[data-aivic-panel="' + pageScreenId + '"]');
+    if (!container) return;
+
+    // content 要素の hidden 強制除去 ( 2026-05-24 Playwright 大量 fail 対応 )
+    var isModalLike = function(el) {
+      if (!el || !el.classList) return false;
+      var cn = String(el.className || "");
+      if (/\bmodal\b|\bdialog\b|\boverlay\b|\bpopup\b|\bdropdown\b|\btooltip\b/i.test(cn)) return true;
+      var role = el.getAttribute && el.getAttribute("role");
+      if (role === "dialog" || role === "alertdialog" || role === "tooltip" || role === "menu") return true;
+      if (el.hasAttribute && (el.hasAttribute("data-modal") || el.hasAttribute("data-dropdown") || el.hasAttribute("data-popup") || el.hasAttribute("data-aivic-overlay"))) return true;
+      // 【2026-06-25】 class/role が無くても inline で画面を覆う overlay ( position:fixed ) は modal 扱いにして、
+      //  content 強制可視化が誤ってダイアログをロード時に表示してしまわないようにする。
+      if (el.style && el.style.position === "fixed") return true;
+      return false;
+    };
+    var unhideContentElements = function(root) {
+      var all = root.querySelectorAll('.hidden, [hidden], [style*="display:none"], [style*="display: none"]');
+      for (var k = 0; k < all.length; k++) {
+        var el = all[k];
+        if (isModalLike(el)) continue;
+        var p = el.parentElement;
+        var insideModal = false;
+        while (p && p !== root) {
+          if (isModalLike(p)) { insideModal = true; break; }
+          p = p.parentElement;
+        }
+        if (insideModal) continue;
+        el.classList.remove('hidden');
+        el.removeAttribute('hidden');
+        if (el.style && el.style.display === 'none') el.style.display = '';
+      }
+    };
+    try { unhideContentElements(container); } catch (e) { console.warn('[aivic] unhideContent failed:', e); }
+
+    var initJsSource = window.AIVIC_PAGE_INIT_JS;
+    if (!initJsSource) {
+      seedAllIfEmpty();
+      return;
+    }
+    var initFn = null;
+    try {
+      initFn = (new Function("return (" + initJsSource + ")"))();
+    } catch (e) {
+      console.error("[aivic] initJs compile error:", pageScreenId, e);
+      return;
+    }
+    if (typeof initFn !== "function") return;
+
+    seedAllIfEmpty().then(function() {
+      return Promise.all(TABLE_DEFS.map(function(t, i) {
+        return window.aivicApi.list(i)
+          .then(function(records) { return Object.assign({}, t, { records: records }); })
+          .catch(function() { return Object.assign({}, t, { records: [] }); });
+      }));
+    }).then(function(tables) {
+      try { initFn(container, API_URL, tables); } catch (e) { console.error("[aivic] initFn error:", pageScreenId, e); }
+      _aivicReady = true;
+    });
+  });
+
+  // 【2026-06-27 強化・必ず閉じられる保証】 モーダル/ダイアログを確実に閉じる安全網。
+  //  旧版は Esc のみ + セレクタ .overlay が class="modal-overlay" にマッチせず ( クラストークンが別 )
+  //  閉じられなかった ( ユーザー報告 2026-06-27: ダイアログが閉じない ) 。 ① Esc ② オーバーレイ背景クリック
+  //  ③ 閉じる系ボタン の 3 経路で閉じる。 セレクタは複合クラスも拾うよう [class*="overlay"] を含む。
+  //  閉じ方は「開クラス ( active/open/show 等 ) があれば外す ( 再オープン可 ) 、 無ければ inline display:none」。
+  //  modal-header 等の sub-part を誤って隠さないため [class*="modal"] は使わない。
+  var AIVIC_OVERLAY_SELECTOR = '[class*="overlay"],[data-aivic-overlay],[data-modal],[role="dialog"],[role="alertdialog"]';
+  var aivicCloseOverlay = function(el) {
+    if (!el || !el.classList) return;
+    var openClasses = ["active", "open", "show", "visible", "is-open", "is-active", "show-modal"];
+    var removed = false;
+    for (var c = 0; c < openClasses.length; c++) {
+      if (el.classList.contains(openClasses[c])) { el.classList.remove(openClasses[c]); removed = true; }
+    }
+    if (!removed && el.style) el.style.display = "none";
+  };
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape" && e.keyCode !== 27) return;
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  });
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.closest) {
+      var closer = t.closest('.modal-close,[data-modal-close],[data-close],[data-dismiss]');
+      if (closer) {
+        var oc = closer.closest(AIVIC_OVERLAY_SELECTOR);
+        if (oc) { aivicCloseOverlay(oc); return; }
+      }
+    }
+    // 背景 ( オーバーレイ要素そのもの ) を直接クリックした時のみ閉じる ( モーダル本体クリックでは閉じない ) 。
+    if (t.matches && t.matches(AIVIC_OVERLAY_SELECTOR) && t === e.target) {
+      aivicCloseOverlay(t);
+    }
+  });
+  // 【2026-06-28 強化・ロード時に必ず閉じる】 生成 AI が overlay を初期 display:none にし忘れた場合でも、
+  //  ロード直後にダイアログが画面を覆って操作不能になる事故 ( ユーザー報告 2026-06-28: ダイアログが常に表示され
+  //  閉じられない ) を防ぐ。 認識可能な overlay/dialog セレクタに該当する要素はロード時に必ず閉じる
+  //  ( 開クラス除去 or display:none ) 。 真にロード時表示すべき業務コンテンツは overlay セレクタに該当しないため
+  //  影響しない ( パネルコンテナは data-aivic-panel で別管理 ) 。
+  var aivicHideOverlaysOnLoad = function() {
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aivicHideOverlaysOnLoad);
+  } else {
+    aivicHideOverlaysOnLoad();
+  }
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2684 @@
+[
+  {
+    "systemId": "itg-2",
+    "systemName": "Salesforce移行・機能マッピング支援システム",
+    "screens": [
+      {
+        "id": "scr-1791354749663",
+        "name": "機能マッピング管理画面",
+        "purpose": "Salesforceの請求書・請求明細カスタムオブジェクトの構造・計算ロジック・参照関係を記録し、移行対象システムの標準機能との機能マッピング表を生成・管理する。マッピング検証結果と移行リスク評価を表示し、移行プロジェクトの進捗を支援する。",
+        "items": [
+          "Salesforceオブジェクト構造情報パネル",
+          "請求書オブジェクト定義表示エリア",
+          "請求明細オブジェクト定義表示エリア",
+          "計算ロジック定義一覧",
+          "オブジェクト間参照関係図",
+          "参照関係の可視化ボタン",
+          "移行対象システム選択ドロップダウン",
+          "移行対象システム標準機能一覧",
+          "機能マッピング表生成ボタン",
+          "機能マッピング詳細テーブル",
+          "マッピング検索フィールド",
+          "マッピングフィルタリングパネル"
+        ]
+      }
+    ],
+    "tableDefinitions": [
+      {
+        "tableName": "操作履歴",
+        "purpose": "ユーザーによるシステム操作の全履歴を記録し、監査証跡、不正検知、データ変更追跡を実現するトランザクションテーブル",
+        "columns": [
+          {
+            "name": "操作履歴ID",
+            "type": "uuid",
+            "required": true,
+            "description": "操作履歴レコードの一意識別子"
+          },
+          {
+            "name": "ユーザーID",
+            "type": "uuid",
+            "required": true,
+            "description": "操作を実行したユーザーの識別子、ユーザーテーブルへの外部キー"
+          },
+          {
+            "name": "操作種別",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "実行された操作の種類（作成、更新、削除、参照、ログイン、ログアウト等）"
+          },
+          {
+            "name": "対象テーブル名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "操作の対象となったテーブル名"
+          },
+          {
+            "name": "対象レコードID",
+            "type": "uuid",
+            "required": false,
+            "description": "操作の対象となったレコードの識別子"
+          },
+          {
+            "name": "変更前値",
+            "type": "text",
+            "required": false,
+            "description": "更新操作の場合の変更前の値、複数フィールドはカンマ区切りまたは構造化テキスト形式"
+          },
+          {
+            "name": "変更後値",
+            "type": "text",
+            "required": false,
+            "description": "更新操作の場合の変更後の値、複数フィールドはカンマ区切りまたは構造化テキスト形式"
+          },
+          {
+            "name": "操作内容詳細",
+            "type": "text",
+            "required": false,
+            "description": "操作の詳細説明、検索条件やフィルタ条件等の追加情報"
+          },
+          {
+            "name": "IPアドレス",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "操作を実行したクライアントのIPアドレス"
+          },
+          {
+            "name": "セッションID",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "操作が実行されたセッションの識別子"
+          },
+          {
+            "name": "操作ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "操作の実行結果（成功、失敗、エラー等）"
+          },
+          {
+            "name": "エラーメッセージ",
+            "type": "text",
+            "required": false,
+            "description": "操作失敗時のエラーメッセージ"
+          },
+          {
+            "name": "操作実行日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "操作が実行された日時"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "この操作履歴レコードが作成された日時"
+          }
+        ]
+      },
+      {
+        "tableName": "ログインユーザー",
+        "purpose": "Salesforce移行・機能マッピング支援システムにおけるユーザー認証・アクセス管理を行い、ログインユーザーの基本情報と認証状態を一元管理する",
+        "columns": [
+          {
+            "name": "ユーザーID",
+            "type": "uuid",
+            "required": true,
+            "description": "ログインユーザーの一意識別子"
+          },
+          {
+            "name": "メールアドレス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーのメールアドレス、ログイン時の識別に使用"
+          },
+          {
+            "name": "ユーザー名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーの表示名"
+          },
+          {
+            "name": "パスワードハッシュ",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーのパスワードをハッシュ化した値"
+          },
+          {
+            "name": "ロール",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーに割り当てられたロール（管理者、ユーザー等）"
+          },
+          {
+            "name": "ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーのステータス（有効、無効、一時停止等）"
+          },
+          {
+            "name": "最終ログイン日時",
+            "type": "timestamp",
+            "required": false,
+            "description": "ユーザーが最後にログインした日時"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ユーザーレコードが作成された日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ユーザーレコードが最後に更新された日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーレコードを作成したユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "Salesforce移行プロジェクト",
+        "purpose": "Salesforce移行プロジェクトの基本情報、ステータス、スケジュール、および移行対象システムの詳細を管理するマスタテーブル",
+        "columns": [
+          {
+            "name": "プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "Salesforce移行プロジェクトの一意識別子"
+          },
+          {
+            "name": "プロジェクト名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行プロジェクトの名称"
+          },
+          {
+            "name": "説明",
+            "type": "text",
+            "required": false,
+            "description": "プロジェクトの詳細説明および背景情報"
+          },
+          {
+            "name": "ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "プロジェクトの現在のステータス(計画中/進行中/完了/中止等)"
+          },
+          {
+            "name": "開始予定日",
+            "type": "timestamp",
+            "required": true,
+            "description": "プロジェクト開始予定日時"
+          },
+          {
+            "name": "終了予定日",
+            "type": "timestamp",
+            "required": true,
+            "description": "プロジェクト終了予定日時"
+          },
+          {
+            "name": "実開始日",
+            "type": "timestamp",
+            "required": false,
+            "description": "プロジェクト実際の開始日時"
+          },
+          {
+            "name": "実終了日",
+            "type": "timestamp",
+            "required": false,
+            "description": "プロジェクト実際の終了日時"
+          },
+          {
+            "name": "移行元システム",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "Salesforceへ移行するソースシステムの名称"
+          },
+          {
+            "name": "プロジェクトマネージャー",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "プロジェクト責任者の名前またはユーザーID"
+          },
+          {
+            "name": "進捗率",
+            "type": "integer",
+            "required": false,
+            "description": "プロジェクトの進捗率(0-100)"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード作成者のユーザーID"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード最終更新者のユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "カスタムオブジェクト定義",
+        "purpose": "Salesforce移行プロジェクトにおいて、既存システムのカスタムオブジェクトの構造・仕様を定義・管理し、Salesforce標準オブジェクトへのマッピング対象となるメタデータを一元管理するマスタテーブル",
+        "columns": [
+          {
+            "name": "カスタムオブジェクト定義ID",
+            "type": "uuid",
+            "required": true,
+            "description": "カスタムオブジェクト定義の一意識別子"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "所属するSalesforce移行プロジェクトの外部キー"
+          },
+          {
+            "name": "オブジェクト名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "既存システムにおけるカスタムオブジェクトの名称"
+          },
+          {
+            "name": "オブジェクト説明",
+            "type": "text",
+            "required": false,
+            "description": "カスタムオブジェクトの機能・用途に関する説明"
+          },
+          {
+            "name": "マッピング対象Salesforceオブジェクト",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "マッピング先となるSalesforce標準オブジェクト名またはカスタムオブジェクト名"
+          },
+          {
+            "name": "レコード件数",
+            "type": "integer",
+            "required": false,
+            "description": "既存システムにおける当該オブジェクトの総レコード数"
+          },
+          {
+            "name": "移行ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行進捗状況（未開始/分析中/マッピング完了/移行実行中/完了/保留等）"
+          },
+          {
+            "name": "優先度",
+            "type": "integer",
+            "required": false,
+            "description": "移行実行時の優先順位（1-10、数字が小さいほど優先度が高い）"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード作成者のログインユーザーID"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード最終更新者のログインユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "請求書オブジェクト",
+        "purpose": "Salesforce移行プロジェクトにおいて、既存システムの請求書データをマッピング・変換・検証するための中間テーブル。請求書の基本情報、金額、ステータス、Salesforce連携状況を管理する。",
+        "columns": [
+          {
+            "name": "請求書ID",
+            "type": "uuid",
+            "required": true,
+            "description": "請求書オブジェクトの一意識別子"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "Salesforce移行プロジェクトテーブルへの外部キー"
+          },
+          {
+            "name": "請求書番号",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "既存システムの請求書番号"
+          },
+          {
+            "name": "顧客ID",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求先顧客の識別子"
+          },
+          {
+            "name": "顧客名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求先顧客の名称"
+          },
+          {
+            "name": "請求日",
+            "type": "timestamp",
+            "required": true,
+            "description": "請求書の発行日"
+          },
+          {
+            "name": "支払期限日",
+            "type": "timestamp",
+            "required": true,
+            "description": "支払い期限日"
+          },
+          {
+            "name": "請求金額",
+            "type": "integer",
+            "required": true,
+            "description": "請求書の合計金額（単位：円）"
+          },
+          {
+            "name": "税金額",
+            "type": "integer",
+            "required": false,
+            "description": "税金額（単位：円）"
+          },
+          {
+            "name": "請求ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求書のステータス（未送付、送付済、支払済、キャンセル等）"
+          },
+          {
+            "name": "Salesforce連携ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "Salesforceへの連携状況（未連携、連携済、連携失敗、検証中等）"
+          },
+          {
+            "name": "SalesforceレコードID",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "Salesforceに作成されたレコードのID"
+          },
+          {
+            "name": "マッピング検証結果",
+            "type": "text",
+            "required": false,
+            "description": "データマッピング時の検証結果やエラーメッセージ"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "ログインユーザーテーブルへの外部キー"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "最終更新を行ったログインユーザーのID"
+          }
+        ]
+      },
+      {
+        "tableName": "請求明細オブジェクト",
+        "purpose": "Salesforce移行プロジェクトにおいて、請求書に紐付く個別の請求明細行を管理し、金額・数量・商品情報などの詳細データを記録・追跡するトランザクションテーブル",
+        "columns": [
+          {
+            "name": "請求明細ID",
+            "type": "uuid",
+            "required": true,
+            "description": "請求明細オブジェクトの一意識別子"
+          },
+          {
+            "name": "請求書ID",
+            "type": "uuid",
+            "required": true,
+            "description": "親となる請求書オブジェクトへの外部キー参照"
+          },
+          {
+            "name": "商品コード",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求対象の商品またはサービスを識別するコード"
+          },
+          {
+            "name": "商品名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求対象の商品またはサービスの名称"
+          },
+          {
+            "name": "数量",
+            "type": "integer",
+            "required": true,
+            "description": "請求明細の数量"
+          },
+          {
+            "name": "単価",
+            "type": "integer",
+            "required": true,
+            "description": "商品またはサービスの単価（金額は整数で管理）"
+          },
+          {
+            "name": "金額",
+            "type": "integer",
+            "required": true,
+            "description": "請求明細の合計金額（数量×単価）"
+          },
+          {
+            "name": "税率",
+            "type": "integer",
+            "required": false,
+            "description": "適用される税率（パーセンテージ）"
+          },
+          {
+            "name": "税額",
+            "type": "integer",
+            "required": false,
+            "description": "計算された税額"
+          },
+          {
+            "name": "説明",
+            "type": "text",
+            "required": false,
+            "description": "請求明細に関する補足説明やメモ"
+          },
+          {
+            "name": "行番号",
+            "type": "integer",
+            "required": true,
+            "description": "請求書内での明細行の表示順序"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "請求明細レコードが作成された日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "請求明細レコードが最後に更新された日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "請求明細を作成したログインユーザーへの外部キー参照"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "請求明細を最後に更新したログインユーザーへの外部キー参照"
+          }
+        ]
+      },
+      {
+        "tableName": "オブジェクト間参照関係",
+        "purpose": "Salesforce移行プロジェクト内で、カスタムオブジェクト定義間の参照関係を管理し、オブジェクト間の依存性や関連性を追跡するためのマスタテーブル",
+        "columns": [
+          {
+            "name": "参照関係ID",
+            "type": "uuid",
+            "required": true,
+            "description": "オブジェクト間参照関係の一意識別子"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "所属するSalesforce移行プロジェクトの外部キー"
+          },
+          {
+            "name": "ソースオブジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "参照元のカスタムオブジェクト定義の外部キー"
+          },
+          {
+            "name": "ターゲットオブジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "参照先のカスタムオブジェクト定義の外部キー"
+          },
+          {
+            "name": "参照フィールド名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ソースオブジェクト内で参照を行うフィールド名"
+          },
+          {
+            "name": "参照タイプ",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "参照の種類（ルックアップ、マスター詳細、外部キー等）"
+          },
+          {
+            "name": "カーディナリティ",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "参照関係の多重度（1対1、1対多、多対多等）"
+          },
+          {
+            "name": "削除時の動作",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "参照先削除時の処理方法（制限、カスケード削除等）"
+          },
+          {
+            "name": "必須フラグ",
+            "type": "boolean",
+            "required": false,
+            "description": "参照フィールドが必須項目かどうか"
+          },
+          {
+            "name": "説明",
+            "type": "text",
+            "required": false,
+            "description": "参照関係の詳細説明やビジネスロジック"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード作成者のログインユーザーID"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード最終更新者のログインユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "計算ロジック定義",
+        "purpose": "Salesforce移行時に請求書・請求明細などのオブジェクト間で使用される計算ロジック（フィールド計算式、ワークフロー、プロセスビルダーなど）の定義と移行マッピング情報を管理する",
+        "columns": [
+          {
+            "name": "計算ロジックID",
+            "type": "uuid",
+            "required": true,
+            "description": "計算ロジック定義の一意識別子"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "所属するSalesforce移行プロジェクトへの外部キー"
+          },
+          {
+            "name": "ロジック名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "計算ロジックの名称（例：請求金額合計計算、税金計算）"
+          },
+          {
+            "name": "ロジック種別",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ロジックの種類（フィールド計算式、ワークフロー、プロセスビルダー、フロー等）"
+          },
+          {
+            "name": "対象オブジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "このロジックが適用されるカスタムオブジェクト定義への外部キー"
+          },
+          {
+            "name": "対象フィールド名",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "計算対象となるフィールド名"
+          },
+          {
+            "name": "ロジック説明",
+            "type": "text",
+            "required": false,
+            "description": "計算ロジックの詳細説明"
+          },
+          {
+            "name": "既存システムロジック",
+            "type": "text",
+            "required": false,
+            "description": "既存システムでの計算ロジック定義（数式、条件分岐等）"
+          },
+          {
+            "name": "Salesforceロジック",
+            "type": "text",
+            "required": false,
+            "description": "Salesforceでの計算ロジック定義（数式、フロー定義等）"
+          },
+          {
+            "name": "参照フィールド一覧",
+            "type": "text",
+            "required": false,
+            "description": "このロジックで参照される全フィールド名のカンマ区切りリスト"
+          },
+          {
+            "name": "依存ロジックID",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "このロジックが依存する他の計算ロジックのID（カンマ区切り）"
+          },
+          {
+            "name": "移行ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行状況（未検討、検討中、マッピング完了、テスト中、本番反映済み等）"
+          },
+          {
+            "name": "移行難易度",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "移行の難易度評価（低、中、高）"
+          },
+          {
+            "name": "移行リスク",
+            "type": "text",
+            "required": false,
+            "description": "移行時の潜在的なリスク・注意点"
+          },
+          {
+            "name": "テスト結果",
+            "type": "text",
+            "required": false,
+            "description": "Salesforce環境でのテスト結果・検証内容"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード作成者のログインユーザーID"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード最終更新者のログインユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "標準機能マッピング",
+        "purpose": "Salesforce標準機能と既存システム機能の対応関係を管理し、移行時の機能要件定義と検証を支援するマスタテーブル",
+        "columns": [
+          {
+            "name": "マッピングID",
+            "type": "uuid",
+            "required": true,
+            "description": "標準機能マッピングレコードの一意識別子"
+          },
+          {
+            "name": "既存システム機能名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行前の既存システムにおける機能の名称"
+          },
+          {
+            "name": "既存システム機能説明",
+            "type": "text",
+            "required": false,
+            "description": "既存システム機能の詳細な説明と仕様"
+          },
+          {
+            "name": "Salesforce標準機能名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "対応するSalesforce標準機能の名称"
+          },
+          {
+            "name": "Salesforce標準機能説明",
+            "type": "text",
+            "required": false,
+            "description": "Salesforce標準機能の詳細な説明と仕様"
+          },
+          {
+            "name": "マッピング対応状況",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "マッピング状況を示す値（完全対応、部分対応、カスタマイズ必要、代替案検討中等）"
+          },
+          {
+            "name": "カスタマイズ必要性",
+            "type": "boolean",
+            "required": true,
+            "description": "Salesforce標準機能のカスタマイズが必要かどうかを示すフラグ"
+          },
+          {
+            "name": "カスタマイズ内容",
+            "type": "text",
+            "required": false,
+            "description": "必要なカスタマイズの具体的な内容と実装方針"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "このマッピングが属するSalesforce移行プロジェクトの識別子"
+          },
+          {
+            "name": "優先度",
+            "type": "integer",
+            "required": false,
+            "description": "移行実装の優先度を示す数値（1が最高優先度）"
+          },
+          {
+            "name": "リスク評価",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "マッピング実装に関するリスク評価（高、中、低）"
+          },
+          {
+            "name": "備考",
+            "type": "text",
+            "required": false,
+            "description": "マッピングに関する追加情報や特記事項"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "マッピングレコードが作成された日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "マッピングレコードを作成したユーザーの識別子"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "マッピングレコードが最後に更新された日時"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "マッピングレコードを最後に更新したユーザーの識別子"
+          }
+        ]
+      },
+      {
+        "tableName": "機能マッピング詳細",
+        "purpose": "Salesforce移行プロジェクトにおいて、既存システムの機能とSalesforceの標準・カスタム機能のマッピング関係を詳細に管理し、移行対象機能の実装方針と検証状況を追跡する。",
+        "columns": [
+          {
+            "name": "機能マッピング詳細ID",
+            "type": "uuid",
+            "required": true,
+            "description": "機能マッピング詳細レコードの一意識別子"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "所属するSalesforce移行プロジェクトへの外部キー参照"
+          },
+          {
+            "name": "既存機能名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "既存システムにおける機能の名称"
+          },
+          {
+            "name": "既存機能説明",
+            "type": "text",
+            "required": false,
+            "description": "既存システムの機能詳細説明"
+          },
+          {
+            "name": "マッピング対象オブジェクトID",
+            "type": "uuid",
+            "required": false,
+            "description": "マッピング先のカスタムオブジェクト定義またはSalesforce標準オブジェクトへの参照"
+          },
+          {
+            "name": "マッピング方式",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "マッピング方式の分類（標準機能利用、カスタム開発、ワークフロー、フロー等）"
+          },
+          {
+            "name": "実装方針",
+            "type": "text",
+            "required": true,
+            "description": "Salesforceでの実装方法と技術的アプローチの詳細"
+          },
+          {
+            "name": "移行ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "マッピングの進捗状態（未着手、設計中、開発中、テスト中、完了等）"
+          },
+          {
+            "name": "優先度",
+            "type": "integer",
+            "required": false,
+            "description": "移行実装の優先順位（1-5の数値、1が最高優先度）"
+          },
+          {
+            "name": "複雑度",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "実装の複雑度レベル（低、中、高）"
+          },
+          {
+            "name": "依存関係",
+            "type": "text",
+            "required": false,
+            "description": "他の機能マッピングとの依存関係の説明"
+          },
+          {
+            "name": "検証方法",
+            "type": "text",
+            "required": false,
+            "description": "移行後の機能検証方法とテスト項目"
+          },
+          {
+            "name": "検証ステータス",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "検証の進捗状態（未実施、実施中、完了、不合格等）"
+          },
+          {
+            "name": "備考",
+            "type": "text",
+            "required": false,
+            "description": "その他の注記事項や特殊な対応が必要な情報"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "作成者",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード作成者のログインユーザーID"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "更新者",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード最終更新者のログインユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "移行対象システム",
+        "purpose": "Salesforce移行プロジェクトにおいて、移行対象となるレガシーシステムの基本情報を管理し、移行スコープ、システム特性、依存関係を記録するマスタテーブル",
+        "columns": [
+          {
+            "name": "システムID",
+            "type": "uuid",
+            "required": true,
+            "description": "移行対象システムを一意に識別するプライマリキー"
+          },
+          {
+            "name": "システム名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行対象システムの名称"
+          },
+          {
+            "name": "システム説明",
+            "type": "text",
+            "required": false,
+            "description": "移行対象システムの概要や機能説明"
+          },
+          {
+            "name": "システムタイプ",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "システムの種類（例：ERP、CRM、会計システム、基幹業務システム等）"
+          },
+          {
+            "name": "現行プラットフォーム",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "現在のシステムが構築されているプラットフォーム（例：Oracle、SAP、カスタム開発等）"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "このシステムが属するSalesforce移行プロジェクトへの外部キー"
+          },
+          {
+            "name": "移行ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行の進捗状況（例：計画中、分析中、設計中、実装中、テスト中、本番移行済み）"
+          },
+          {
+            "name": "優先度",
+            "type": "integer",
+            "required": true,
+            "description": "移行優先度を示す数値（1=最高、数値が大きいほど優先度が低い）"
+          },
+          {
+            "name": "ユーザー数",
+            "type": "integer",
+            "required": false,
+            "description": "このシステムの利用ユーザー数"
+          },
+          {
+            "name": "データ件数",
+            "type": "integer",
+            "required": false,
+            "description": "移行対象となるマスタデータやトランザクションデータの概算件数"
+          },
+          {
+            "name": "移行予定開始日",
+            "type": "timestamp",
+            "required": false,
+            "description": "このシステムの移行予定開始日時"
+          },
+          {
+            "name": "移行予定完了日",
+            "type": "timestamp",
+            "required": false,
+            "description": "このシステムの移行予定完了日時"
+          },
+          {
+            "name": "実移行開始日",
+            "type": "timestamp",
+            "required": false,
+            "description": "実際の移行開始日時"
+          },
+          {
+            "name": "実移行完了日",
+            "type": "timestamp",
+            "required": false,
+            "description": "実際の移行完了日時"
+          },
+          {
+            "name": "責任者",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "このシステム移行の責任者名またはユーザーID"
+          },
+          {
+            "name": "備考",
+            "type": "text",
+            "required": false,
+            "description": "移行に関する特記事項や注意点"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード作成者のユーザーID"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード最終更新者のユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "移行対象システム標準機能",
+        "purpose": "移行対象システムが保有する標準機能を管理し、Salesforceへのマッピング対象となる機能を一元管理するマスタテーブル",
+        "columns": [
+          {
+            "name": "機能ID",
+            "type": "uuid",
+            "required": true,
+            "description": "移行対象システム標準機能の一意識別子"
+          },
+          {
+            "name": "移行対象システムID",
+            "type": "uuid",
+            "required": true,
+            "description": "移行対象システムテーブルへの外部キー参照"
+          },
+          {
+            "name": "機能名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行対象システムにおける標準機能の名称"
+          },
+          {
+            "name": "機能説明",
+            "type": "text",
+            "required": false,
+            "description": "機能の詳細説明および仕様内容"
+          },
+          {
+            "name": "機能カテゴリ",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "機能の分類カテゴリ（例：営業管理、顧客管理、請求管理等）"
+          },
+          {
+            "name": "マッピング対象フラグ",
+            "type": "boolean",
+            "required": true,
+            "description": "Salesforceへのマッピング対象かどうかを示すフラグ"
+          },
+          {
+            "name": "マッピング状態",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "マッピング状態（未マッピング、マッピング済み、マッピング不可等）"
+          },
+          {
+            "name": "複雑度レベル",
+            "type": "integer",
+            "required": false,
+            "description": "機能の複雑度を示す数値（1-5段階等）"
+          },
+          {
+            "name": "依存機能ID",
+            "type": "uuid",
+            "required": false,
+            "description": "この機能が依存する他の機能のID"
+          },
+          {
+            "name": "備考",
+            "type": "text",
+            "required": false,
+            "description": "マッピング時の注意事項や特記事項"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード作成者のユーザー識別子"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード最終更新者のユーザー識別子"
+          }
+        ]
+      },
+      {
+        "tableName": "マッピング検証結果",
+        "purpose": "Salesforce移行プロジェクトにおいて、既存システムの機能とSalesforceの標準・カスタム機能のマッピング検証結果を記録し、検証ステータス、検出された問題、推奨事項を管理するテーブル",
+        "columns": [
+          {
+            "name": "マッピング検証結果ID",
+            "type": "uuid",
+            "required": true,
+            "description": "マッピング検証結果の一意識別子"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "Salesforce移行プロジェクトテーブルへの外部キー"
+          },
+          {
+            "name": "機能マッピング詳細ID",
+            "type": "uuid",
+            "required": true,
+            "description": "機能マッピング詳細テーブルへの外部キー"
+          },
+          {
+            "name": "検証ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "検証結果のステータス（未検証、検証中、検証完了、要修正、承認済み等）"
+          },
+          {
+            "name": "検証日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "検証が実施された日時"
+          },
+          {
+            "name": "検証者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "検証を実施したユーザーの識別子"
+          },
+          {
+            "name": "検出問題",
+            "type": "text",
+            "required": false,
+            "description": "検証時に検出された問題や不適合の詳細説明"
+          },
+          {
+            "name": "推奨事項",
+            "type": "text",
+            "required": false,
+            "description": "検証結果に基づく改善や対応の推奨事項"
+          },
+          {
+            "name": "リスクレベル",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "検出された問題に関連するリスクレベル（低、中、高、極高等）"
+          },
+          {
+            "name": "対応状況",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "推奨事項への対応状況（未対応、対応中、対応完了等）"
+          },
+          {
+            "name": "備考",
+            "type": "text",
+            "required": false,
+            "description": "その他の補足情報やコメント"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード作成者のユーザーID"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード最終更新者のユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "移行リスク評価",
+        "purpose": "Salesforce移行プロジェクトにおける各種リスク要因を評価・管理し、移行の成功確度を定量的に把握するための評価記録を保持する",
+        "columns": [
+          {
+            "name": "リスク評価ID",
+            "type": "uuid",
+            "required": true,
+            "description": "リスク評価レコードの一意識別子"
+          },
+          {
+            "name": "移行プロジェクトID",
+            "type": "uuid",
+            "required": true,
+            "description": "Salesforce移行プロジェクトテーブルへの外部キー参照"
+          },
+          {
+            "name": "リスク分類",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "リスクの分類カテゴリ（技術的リスク、運用リスク、データリスク、組織リスク等）"
+          },
+          {
+            "name": "リスク項目名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "具体的なリスク項目の名称"
+          },
+          {
+            "name": "リスク説明",
+            "type": "text",
+            "required": false,
+            "description": "リスク内容の詳細説明"
+          },
+          {
+            "name": "発生可能性レベル",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "リスク発生の可能性度合い（高・中・低等）"
+          },
+          {
+            "name": "影響度レベル",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "リスク発生時の影響度合い（高・中・低等）"
+          },
+          {
+            "name": "リスク評価スコア",
+            "type": "integer",
+            "required": true,
+            "description": "発生可能性と影響度から算出されたリスク総合スコア（0-100）"
+          },
+          {
+            "name": "対応方針",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "リスク対応の方針（回避、軽減、受容、転嫁等）"
+          },
+          {
+            "name": "対応策",
+            "type": "text",
+            "required": false,
+            "description": "具体的なリスク対応策の内容"
+          },
+          {
+            "name": "責任者",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "リスク対応の責任者名"
+          },
+          {
+            "name": "対応状況",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "対応策の実施状況（未実施、実施中、完了等）"
+          },
+          {
+            "name": "評価日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "リスク評価を実施した日時"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード作成者のユーザーID"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "レコード最終更新者のユーザーID"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "systemId": "itg-3",
+    "systemName": "移行期間データ整合性検証・監視システム",
+    "screens": [
+      {
+        "id": "scr-1791354872866",
+        "name": "データ整合性検証ダッシュボード",
+        "purpose": "旧システム（Salesforce）と新システムの請求書生成ロジックを並行実行し、営業データ（件数・金額・ステータス）の日次自動照合を実施。差異を自動検出・レポート生成し、是正追跡管理と修正データ検証を一元管理するダッシュボード",
+        "items": [
+          "並行実行ステータス表示パネル",
+          "旧システム請求書生成結果",
+          "新システム請求書生成結果",
+          "差異検出サマリー",
+          "営業データ日次照合結果",
+          "件数差異表示",
+          "金額差異表示",
+          "ステータス差異表示",
+          "差異詳細一覧テーブル",
+          "差異レコード選択チェックボックス",
+          "差異内容確認ボタン",
+          "是正追跡管理テーブル"
+        ]
+      }
+    ],
+    "tableDefinitions": [
+      {
+        "tableName": "ユーザー",
+        "purpose": "営業プロセス・請求データ統合管理システムのユーザー認証・権限管理・プロフィール情報を一元管理するマスタテーブル",
+        "columns": [
+          {
+            "name": "ユーザーID",
+            "type": "uuid",
+            "required": true,
+            "description": "ユーザーの一意識別子"
+          },
+          {
+            "name": "ログインID",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ログイン時に使用するユーザー識別名、システム内で一意"
+          },
+          {
+            "name": "パスワードハッシュ",
+            "type": "varchar(255)",
+            "required": true,
+            "description": "暗号化されたパスワード"
+          },
+          {
+            "name": "ユーザー名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーの表示名"
+          },
+          {
+            "name": "メールアドレス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ユーザーのメールアドレス、連絡先として使用"
+          },
+          {
+            "name": "ロール",
+            "type": "varchar(50)",
+            "required": true,
+            "description": "ユーザーの権限ロール（管理者、営業担当者、請求担当者等）"
+          },
+          {
+            "name": "営業担当者ID",
+            "type": "uuid",
+            "required": false,
+            "description": "営業担当者テーブルへの外部キー、営業担当者の場合のみ設定"
+          },
+          {
+            "name": "有効フラグ",
+            "type": "boolean",
+            "required": true,
+            "description": "ユーザーのアクティブ状態、falseの場合はログイン不可"
+          },
+          {
+            "name": "最終ログイン日時",
+            "type": "timestamp",
+            "required": false,
+            "description": "ユーザーが最後にログインした日時"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ユーザーレコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ユーザーレコード最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "uuid",
+            "required": true,
+            "description": "ユーザーレコードを作成したユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "旧システム請求書",
+        "purpose": "旧システムから移行される請求書データを保持し、データ整合性検証・監視システムにおいて新システムとの照合・検証対象となるマスタテーブル",
+        "columns": [
+          {
+            "name": "請求書ID",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "旧システムにおける請求書の一意識別子"
+          },
+          {
+            "name": "ユーザーID",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求書に関連するユーザーの識別子"
+          },
+          {
+            "name": "請求書番号",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "旧システムで管理される請求書番号"
+          },
+          {
+            "name": "請求日",
+            "type": "timestamp",
+            "required": true,
+            "description": "請求書の発行日"
+          },
+          {
+            "name": "請求金額",
+            "type": "integer",
+            "required": true,
+            "description": "請求書の合計金額（単位：円）"
+          },
+          {
+            "name": "税金額",
+            "type": "integer",
+            "required": true,
+            "description": "請求書に含まれる税金額（単位：円）"
+          },
+          {
+            "name": "ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求書のステータス（未請求、請求済、支払済等）"
+          },
+          {
+            "name": "支払期限日",
+            "type": "timestamp",
+            "required": false,
+            "description": "請求書の支払期限日"
+          },
+          {
+            "name": "摘要",
+            "type": "text",
+            "required": false,
+            "description": "請求書の摘要・備考"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "旧システムにおける請求書作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "旧システムにおける請求書最終更新日時"
+          },
+          {
+            "name": "検証ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "移行検証ステータス（未検証、検証済、不一致等）"
+          },
+          {
+            "name": "検証日時",
+            "type": "timestamp",
+            "required": false,
+            "description": "データ整合性検証が実施された日時"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "systemId": "itg-1",
+    "systemName": "営業プロセス・請求データ統合管理システム",
+    "screens": [
+      {
+        "id": "scr-1791354337614",
+        "name": "営業プロセス統合ダッシュボード",
+        "purpose": "営業プロセス全体（取引先→責任者→活動→商談→請求）のデータフロー一覧表示と異常値・未完了案件の自動検知、営業担当者ごとの活動実績と商談ステージ別進捗を可視化し、商談から請求書までのデータ整合性を自動検証して金額ズレ・未請求案件・ステータス不整合を検出・通知する統合管理画面",
+        "items": [
+          "営業プロセスデータフロー一覧表示エリア",
+          "異常値・未完了案件の自動検知結果表示パネル",
+          "異常検知ログ詳細確認ボタン",
+          "営業担当者別活動実績サマリーテーブル",
+          "営業担当者別活動件数・頻度グラフ",
+          "商談ステージ別進捗テーブル",
+          "商談ステージ別件数・金額・達成度表示",
+          "営業目標値との差分自動計算結果",
+          "目標達成度ハイライト表示",
+          "データ整合性検証結果パネル",
+          "金額ズレ検出案件リスト",
+          "未請求案件リスト"
+        ]
+      },
+      {
+        "id": "scr-1791354351333",
+        "name": "商談・請求管理画面",
+        "purpose": "営業担当者が商談情報と関連する請求書を一元管理し、商談ステージの進捗管理、請求書の生成・修正・再発行、および全操作履歴の追跡を行うための統合管理画面",
+        "items": [
+          "商談検索フィルター",
+          "商談一覧表示",
+          "商談詳細情報パネル",
+          "商談ステージ更新ドロップダウン",
+          "商談編集フォーム",
+          "関連請求書タブ",
+          "請求明細一覧表示",
+          "請求書生成ボタン",
+          "請求書修正ボタン",
+          "請求書再発行ボタン",
+          "修正内容入力フォーム",
+          "修正反映・再生成実行ボタン"
+        ]
+      },
+      {
+        "id": "scr-1791354364933",
+        "name": "営業活動実績入力画面",
+        "purpose": "営業担当者が営業活動の実績を新規登録・編集し、活動内容・件数・頻度を記録するとともに、取引先・商談との関連付けを行い、操作履歴を自動追跡する画面",
+        "items": [
+          "営業担当者選択ドロップダウン",
+          "取引先選択ドロップダウン",
+          "商談選択ドロップダウン",
+          "活動タイプ選択（訪問・電話・メール等）",
+          "活動日付入力フィールド",
+          "活動時間入力フィールド",
+          "活動件数入力フィールド",
+          "活動頻度選択（初回・継続等）",
+          "活動内容テキストエリア",
+          "活動結果選択（成功・失敗・保留等）",
+          "次のアクション入力フィールド",
+          "次回予定日付入力フィールド"
+        ]
+      },
+      {
+        "id": "scr-1791354379354",
+        "name": "顧客・取引先管理画面",
+        "purpose": "取引先情報の一元管理と営業活動の進捗追跡を行い、営業担当者の割り当て確認、関連する商談・活動・請求情報の統合表示により、営業プロセスの効率化と顧客対応の最適化を実現する",
+        "items": [
+          "取引先検索フィールド",
+          "取引先一覧表",
+          "取引先基本情報パネル",
+          "営業担当者割り当て表示",
+          "関連商談タブ",
+          "商談一覧表",
+          "営業活動タブ",
+          "活動履歴一覧",
+          "活動登録ボタン",
+          "請求情報タブ",
+          "請求書一覧表",
+          "取引先詳細表示ボタン"
+        ]
+      }
+    ],
+    "tableDefinitions": [
+      {
+        "tableName": "取引先",
+        "purpose": "営業プロセスと請求管理における顧客・仕入先などの取引先マスタ情報を一元管理し、営業活動と請求処理の基盤となるデータを保持する",
+        "columns": [
+          {
+            "name": "取引先ID",
+            "type": "uuid",
+            "required": true,
+            "description": "取引先を一意に識別するプライマリキー"
+          },
+          {
+            "name": "取引先名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "取引先の正式名称"
+          },
+          {
+            "name": "取引先名カナ",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "取引先名のカナ表記、検索用"
+          },
+          {
+            "name": "取引先区分",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "顧客、仕入先、その他など取引先の分類"
+          },
+          {
+            "name": "郵便番号",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "取引先の郵便番号"
+          },
+          {
+            "name": "住所",
+            "type": "text",
+            "required": false,
+            "description": "取引先の住所"
+          },
+          {
+            "name": "電話番号",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "取引先の電話番号"
+          },
+          {
+            "name": "メールアドレス",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "取引先の連絡用メールアドレス"
+          },
+          {
+            "name": "担当者名",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "取引先の主要担当者名"
+          },
+          {
+            "name": "支払条件",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "請求時の支払期限や支払方法などの条件"
+          },
+          {
+            "name": "請求先住所",
+            "type": "text",
+            "required": false,
+            "description": "請求書送付先住所、納入先と異なる場合に使用"
+          },
+          {
+            "name": "請求先メールアドレス",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "請求書送付先メールアドレス"
+          },
+          {
+            "name": "ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "取引先の状態、有効/無効など"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "取引先レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "取引先レコード最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "取引先レコード作成者のユーザーID"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "取引先レコード最終更新者のユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "営業担当者",
+        "purpose": "営業プロセス・請求データ統合管理システムにおいて、営業担当者の基本情報と組織構造を管理し、取引先との関連付けや営業活動の追跡を可能にするマスタテーブル",
+        "columns": [
+          {
+            "name": "営業担当者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "営業担当者を一意に識別するプライマリキー"
+          },
+          {
+            "name": "名前",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "営業担当者の氏名"
+          },
+          {
+            "name": "メールアドレス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "営業担当者の連絡用メールアドレス"
+          },
+          {
+            "name": "電話番号",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "営業担当者の連絡用電話番号"
+          },
+          {
+            "name": "部門",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "営業担当者が属する部門名"
+          },
+          {
+            "name": "役職",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "営業担当者の役職"
+          },
+          {
+            "name": "上司ID",
+            "type": "uuid",
+            "required": false,
+            "description": "営業担当者の上司となる営業担当者ID（階層構造の管理用）"
+          },
+          {
+            "name": "ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "営業担当者の状態（在職中、休職中、退職等）"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "営業担当者レコードが作成された日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "営業担当者レコードが最後に更新された日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "営業担当者レコードを作成したユーザー"
+          }
+        ]
+      },
+      {
+        "tableName": "営業活動",
+        "purpose": "営業担当者による営業活動の記録・管理、取引先との接触履歴、営業進捗の追跡、請求データとの連携を実現するトランザクションテーブル",
+        "columns": [
+          {
+            "name": "営業活動ID",
+            "type": "uuid",
+            "required": true,
+            "description": "営業活動の一意識別子"
+          },
+          {
+            "name": "取引先ID",
+            "type": "uuid",
+            "required": true,
+            "description": "取引先テーブルへの外部キー"
+          },
+          {
+            "name": "営業担当者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "営業担当者テーブルへの外部キー"
+          },
+          {
+            "name": "活動種別",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "営業活動の種類(訪問、電話、メール、提案、商談等)"
+          },
+          {
+            "name": "活動日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "営業活動が実施された日時"
+          },
+          {
+            "name": "活動内容",
+            "type": "text",
+            "required": false,
+            "description": "営業活動の詳細内容・メモ"
+          },
+          {
+            "name": "次回フォローアップ予定日",
+            "type": "timestamp",
+            "required": false,
+            "description": "次のアクション予定日"
+          },
+          {
+            "name": "商談ステージ",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "営業進捗ステージ(初期接触、提案中、交渉中、成約予定等)"
+          },
+          {
+            "name": "見積金額",
+            "type": "integer",
+            "required": false,
+            "description": "この営業活動に関連する見積金額(円)"
+          },
+          {
+            "name": "成約フラグ",
+            "type": "boolean",
+            "required": false,
+            "description": "この営業活動が成約に至ったかどうか"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード作成日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード作成者の営業担当者ID"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "レコード最終更新日時"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "レコード最終更新者の営業担当者ID"
+          }
+        ]
+      },
+      {
+        "tableName": "商談",
+        "purpose": "営業プロセスにおける顧客との商談情報を管理し、営業活動の進捗追跡と請求データへの連携を支援するトランザクションテーブル",
+        "columns": [
+          {
+            "name": "商談ID",
+            "type": "uuid",
+            "required": true,
+            "description": "商談を一意に識別するプライマリキー"
+          },
+          {
+            "name": "取引先ID",
+            "type": "uuid",
+            "required": true,
+            "description": "取引先テーブルへの外部キー参照"
+          },
+          {
+            "name": "営業担当者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "営業担当者テーブルへの外部キー参照"
+          },
+          {
+            "name": "商談名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "商談の名称・件名"
+          },
+          {
+            "name": "商談金額",
+            "type": "integer",
+            "required": true,
+            "description": "商談の予想売上金額（円）"
+          },
+          {
+            "name": "ステージ",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "商談の進捗ステージ（初期接触、提案、交渉、成約、失注等）"
+          },
+          {
+            "name": "成約予定日",
+            "type": "timestamp",
+            "required": true,
+            "description": "商談の成約予定日"
+          },
+          {
+            "name": "説明",
+            "type": "text",
+            "required": false,
+            "description": "商談の詳細説明・備考"
+          },
+          {
+            "name": "成約日",
+            "type": "timestamp",
+            "required": false,
+            "description": "実際の成約日（ステージが成約の場合に設定）"
+          },
+          {
+            "name": "失注理由",
+            "type": "varchar(100)",
+            "required": false,
+            "description": "ステージが失注の場合の失注理由"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "商談レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "商談レコード最終更新日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "商談レコード作成者の営業担当者ID"
+          }
+        ]
+      },
+      {
+        "tableName": "商談ステージマスタ",
+        "purpose": "営業プロセスにおける商談の進捗ステージを定義・管理するマスタテーブル。営業担当者が商談を進める際のステージ遷移ルールと各ステージの属性を一元管理する。",
+        "columns": [
+          {
+            "name": "ステージID",
+            "type": "uuid",
+            "required": true,
+            "description": "商談ステージを一意に識別するプライマリキー"
+          },
+          {
+            "name": "ステージ名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "営業プロセスにおけるステージの名称（例：初期接触、提案、交渉、成約等）"
+          },
+          {
+            "name": "ステージ順序",
+            "type": "integer",
+            "required": true,
+            "description": "営業プロセス内でのステージの進行順序。昇順で表示・遷移判定に使用"
+          },
+          {
+            "name": "説明",
+            "type": "text",
+            "required": false,
+            "description": "ステージの詳細説明や実施内容のガイドライン"
+          },
+          {
+            "name": "成約ステージフラグ",
+            "type": "boolean",
+            "required": true,
+            "description": "このステージが成約を示すステージであるかを判定するフラグ。請求処理の開始判定に使用"
+          },
+          {
+            "name": "失注ステージフラグ",
+            "type": "boolean",
+            "required": true,
+            "description": "このステージが失注を示すステージであるかを判定するフラグ"
+          },
+          {
+            "name": "有効フラグ",
+            "type": "boolean",
+            "required": true,
+            "description": "ステージが現在使用可能であるかを示すフラグ。無効化により過去データは保持しつつ新規使用を制限"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ステージマスタレコードの作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ステージマスタレコードの最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ステージマスタレコードを作成したユーザーID"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "ステージマスタレコードを最後に更新したユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "請求書",
+        "purpose": "営業プロセスから生成された商談に基づいて、顧客への請求内容・金額・支払期限・支払状況を一元管理し、売上計上と入金管理を実現するトランザクションテーブル",
+        "columns": [
+          {
+            "name": "請求書ID",
+            "type": "uuid",
+            "required": true,
+            "description": "請求書の一意識別子"
+          },
+          {
+            "name": "商談ID",
+            "type": "uuid",
+            "required": true,
+            "description": "関連する商談の外部キー"
+          },
+          {
+            "name": "取引先ID",
+            "type": "uuid",
+            "required": true,
+            "description": "請求対象の取引先の外部キー"
+          },
+          {
+            "name": "営業担当者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "当該商談の営業担当者の外部キー"
+          },
+          {
+            "name": "請求書番号",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "取引先に通知する請求書番号"
+          },
+          {
+            "name": "請求日",
+            "type": "timestamp",
+            "required": true,
+            "description": "請求書発行日"
+          },
+          {
+            "name": "支払期限日",
+            "type": "timestamp",
+            "required": true,
+            "description": "支払期日"
+          },
+          {
+            "name": "請求金額",
+            "type": "integer",
+            "required": true,
+            "description": "請求総額（税込み、単位：円）"
+          },
+          {
+            "name": "税額",
+            "type": "integer",
+            "required": true,
+            "description": "消費税額（単位：円）"
+          },
+          {
+            "name": "税抜金額",
+            "type": "integer",
+            "required": true,
+            "description": "税抜き請求金額（単位：円）"
+          },
+          {
+            "name": "請求ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求状態（未送付/送付済/入金待ち/入金済/キャンセル等）"
+          },
+          {
+            "name": "入金日",
+            "type": "timestamp",
+            "required": false,
+            "description": "実際の入金日"
+          },
+          {
+            "name": "入金金額",
+            "type": "integer",
+            "required": false,
+            "description": "実際の入金額（単位：円）"
+          },
+          {
+            "name": "摘要",
+            "type": "text",
+            "required": false,
+            "description": "請求内容の説明や特記事項"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "請求書レコード作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "請求書レコード最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求書レコード作成者"
+          }
+        ]
+      },
+      {
+        "tableName": "請求明細",
+        "purpose": "請求書に紐付く個別の商品・サービス明細行を管理し、金額計算・税務処理・売上認識の基礎データとなる",
+        "columns": [
+          {
+            "name": "請求明細ID",
+            "type": "uuid",
+            "required": true,
+            "description": "請求明細の一意識別子"
+          },
+          {
+            "name": "請求書ID",
+            "type": "uuid",
+            "required": true,
+            "description": "親テーブル請求書への外部キー"
+          },
+          {
+            "name": "商談ID",
+            "type": "uuid",
+            "required": false,
+            "description": "元となった商談への参照"
+          },
+          {
+            "name": "営業活動ID",
+            "type": "uuid",
+            "required": false,
+            "description": "関連する営業活動への参照"
+          },
+          {
+            "name": "明細行番号",
+            "type": "integer",
+            "required": true,
+            "description": "請求書内での行番号（表示順序用）"
+          },
+          {
+            "name": "商品名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "請求対象の商品またはサービス名"
+          },
+          {
+            "name": "商品説明",
+            "type": "text",
+            "required": false,
+            "description": "商品・サービスの詳細説明"
+          },
+          {
+            "name": "数量",
+            "type": "integer",
+            "required": true,
+            "description": "請求対象の数量"
+          },
+          {
+            "name": "単価",
+            "type": "integer",
+            "required": true,
+            "description": "1単位あたりの金額（税抜き）"
+          },
+          {
+            "name": "金額",
+            "type": "integer",
+            "required": true,
+            "description": "数量×単価の小計（税抜き）"
+          },
+          {
+            "name": "税率",
+            "type": "integer",
+            "required": true,
+            "description": "適用税率（パーセンテージ、例：10）"
+          },
+          {
+            "name": "税額",
+            "type": "integer",
+            "required": true,
+            "description": "計算された税額"
+          },
+          {
+            "name": "税込金額",
+            "type": "integer",
+            "required": true,
+            "description": "金額＋税額"
+          },
+          {
+            "name": "摘要",
+            "type": "text",
+            "required": false,
+            "description": "請求内容に関する備考・摘要"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "明細行の作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "明細行の最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "明細行を作成したユーザー"
+          }
+        ]
+      },
+      {
+        "tableName": "営業目標",
+        "purpose": "営業担当者および取引先ごとの売上目標を管理し、営業活動の進捗追跡と実績評間の基準となるマスタデータ",
+        "columns": [
+          {
+            "name": "営業目標ID",
+            "type": "uuid",
+            "required": true,
+            "description": "営業目標を一意に識別するプライマリキー"
+          },
+          {
+            "name": "営業担当者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "営業担当者テーブルへの外部キー、目標を割り当てられた営業担当者を特定"
+          },
+          {
+            "name": "取引先ID",
+            "type": "uuid",
+            "required": false,
+            "description": "取引先テーブルへの外部キー、特定取引先向けの目標の場合に指定"
+          },
+          {
+            "name": "対象年月",
+            "type": "varchar(7)",
+            "required": true,
+            "description": "目標が適用される年月、YYYY-MM形式"
+          },
+          {
+            "name": "目標金額",
+            "type": "integer",
+            "required": true,
+            "description": "達成すべき売上目標金額（円）"
+          },
+          {
+            "name": "目標件数",
+            "type": "integer",
+            "required": false,
+            "description": "達成すべき商談成約件数"
+          },
+          {
+            "name": "ステータス",
+            "type": "varchar(20)",
+            "required": true,
+            "description": "目標のステータス、有効/無効/達成/未達成など"
+          },
+          {
+            "name": "備考",
+            "type": "text",
+            "required": false,
+            "description": "目標に関する補足情報やコメント"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "営業目標レコードが作成された日時"
+          },
+          {
+            "name": "作成者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "営業目標を作成したユーザーの識別子"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "営業目標レコードが最後に更新された日時"
+          },
+          {
+            "name": "更新者",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "営業目標を最後に更新したユーザーの識別子"
+          }
+        ]
+      },
+      {
+        "tableName": "ユーザー権限",
+        "purpose": "ユーザーの機能アクセス権限と操作権限を管理し、営業プロセス・請求データへのアクセス制御を実現するマスタテーブル",
+        "columns": [
+          {
+            "name": "権限ID",
+            "type": "uuid",
+            "required": true,
+            "description": "ユーザー権限の一意識別子"
+          },
+          {
+            "name": "ユーザーID",
+            "type": "uuid",
+            "required": true,
+            "description": "ユーザーテーブルへの外部キー参照"
+          },
+          {
+            "name": "権限コード",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "権限の種類を示すコード（例：営業活動閲覧、請求書編集、営業目標管理等）"
+          },
+          {
+            "name": "権限名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "権限の日本語表示名"
+          },
+          {
+            "name": "説明",
+            "type": "text",
+            "required": false,
+            "description": "権限の詳細説明"
+          },
+          {
+            "name": "有効フラグ",
+            "type": "boolean",
+            "required": true,
+            "description": "権限が有効かどうかを示すフラグ"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "権限レコードの作成日時"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "権限レコードの最終更新日時"
+          },
+          {
+            "name": "作成者",
+            "type": "uuid",
+            "required": true,
+            "description": "権限レコードを作成したユーザーID"
+          },
+          {
+            "name": "更新者",
+            "type": "uuid",
+            "required": true,
+            "description": "権限レコードを最後に更新したユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "データ検証ルール",
+        "purpose": "営業プロセスと請求データの入力値・ビジネスロジックを検証するルール定義を一元管理し、システム全体のデータ品質と業務ルール遵守を確保する",
+        "columns": [
+          {
+            "name": "検証ルールID",
+            "type": "uuid",
+            "required": true,
+            "description": "データ検証ルールの一意識別子"
+          },
+          {
+            "name": "ルール名",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "検証ルールの名称"
+          },
+          {
+            "name": "ルール説明",
+            "type": "text",
+            "required": false,
+            "description": "検証ルールの詳細説明と適用背景"
+          },
+          {
+            "name": "対象テーブル",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "検証ルールが適用されるテーブル名"
+          },
+          {
+            "name": "対象カラム",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "検証ルールが適用されるカラム名"
+          },
+          {
+            "name": "検証タイプ",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "検証の種類(必須チェック、範囲チェック、形式チェック、重複チェック、参照整合性チェック等)"
+          },
+          {
+            "name": "検証条件",
+            "type": "text",
+            "required": true,
+            "description": "検証ルールの具体的な条件式またはロジック"
+          },
+          {
+            "name": "エラーメッセージ",
+            "type": "text",
+            "required": true,
+            "description": "検証失敗時に表示するエラーメッセージ"
+          },
+          {
+            "name": "警告レベル",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "検証失敗時の対応レベル(エラー、警告、情報)"
+          },
+          {
+            "name": "有効フラグ",
+            "type": "boolean",
+            "required": true,
+            "description": "検証ルールが有効かどうか"
+          },
+          {
+            "name": "適用開始日",
+            "type": "timestamp",
+            "required": false,
+            "description": "検証ルールの適用開始日時"
+          },
+          {
+            "name": "適用終了日",
+            "type": "timestamp",
+            "required": false,
+            "description": "検証ルールの適用終了日時"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "検証ルール作成日時"
+          },
+          {
+            "name": "作成者",
+            "type": "uuid",
+            "required": true,
+            "description": "検証ルール作成者のユーザーID"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "検証ルール最終更新日時"
+          },
+          {
+            "name": "更新者",
+            "type": "uuid",
+            "required": true,
+            "description": "検証ルール最終更新者のユーザーID"
+          }
+        ]
+      },
+      {
+        "tableName": "異常検知ログ",
+        "purpose": "営業プロセスと請求データの異常を検知・記録し、システム監視と問題追跡を実現するための監査ログテーブル",
+        "columns": [
+          {
+            "name": "異常検知ログID",
+            "type": "uuid",
+            "required": true,
+            "description": "異常検知ログの一意識別子"
+          },
+          {
+            "name": "検知日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "異常が検知された日時"
+          },
+          {
+            "name": "異常タイプ",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "異常の分類（例：データ不整合、ルール違反、金額異常、期限超過）"
+          },
+          {
+            "name": "重要度",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "異常の重要度レベル（例：高、中、低）"
+          },
+          {
+            "name": "対象テーブル",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "異常が検知されたテーブル名"
+          },
+          {
+            "name": "対象レコードID",
+            "type": "uuid",
+            "required": false,
+            "description": "異常が検知されたレコードの一意識別子"
+          },
+          {
+            "name": "検証ルールID",
+            "type": "uuid",
+            "required": false,
+            "description": "適用されたデータ検証ルールの識別子"
+          },
+          {
+            "name": "異常内容",
+            "type": "text",
+            "required": true,
+            "description": "異常の詳細説明と検知理由"
+          },
+          {
+            "name": "期待値",
+            "type": "text",
+            "required": false,
+            "description": "ルール違反時の期待値"
+          },
+          {
+            "name": "実際値",
+            "type": "text",
+            "required": false,
+            "description": "ルール違反時の実際の値"
+          },
+          {
+            "name": "ステータス",
+            "type": "varchar(100)",
+            "required": true,
+            "description": "異常の対応状況（例：未対応、対応中、解決済み、無視）"
+          },
+          {
+            "name": "対応者ID",
+            "type": "uuid",
+            "required": false,
+            "description": "異常に対応するユーザーの識別子"
+          },
+          {
+            "name": "対応日時",
+            "type": "timestamp",
+            "required": false,
+            "description": "異常に対応した日時"
+          },
+          {
+            "name": "対応コメント",
+            "type": "text",
+            "required": false,
+            "description": "対応内容の説明やメモ"
+          },
+          {
+            "name": "作成日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ログレコードが作成された日時"
+          },
+          {
+            "name": "作成者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "ログを作成したシステムまたはユーザーの識別子"
+          },
+          {
+            "name": "更新日時",
+            "type": "timestamp",
+            "required": true,
+            "description": "ログレコードが最後に更新された日時"
+          },
+          {
+            "name": "更新者ID",
+            "type": "uuid",
+            "required": true,
+            "description": "ログを最後に更新したユーザーの識別子"
+          }
+        ]
+      }
+    ]
+  }
+]
