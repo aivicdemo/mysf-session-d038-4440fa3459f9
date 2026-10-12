@@ -1,0 +1,376 @@
+import { prepareMonthlyClosing } from '../../src/logic/monthly-closing-preparation';
+import * as dataPersistence from '../../src/logic/data-persistence';
+
+jest.mock('../../src/logic/data-persistence');
+
+describe('SCEN-1557: 各オブジェクトの抽出条件が抽出スコープに含まれる', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should include extraction conditions for each object in extraction scope', async () => {
+    const mockCustomers = [
+      {
+        customerId: 'cust-001',
+        customerName: '取引先A',
+        status: 'active',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+        customerNameKana: null,
+        customerCategory: null,
+        postalCode: null,
+        address: null,
+        phoneNumber: null,
+        emailAddress: null,
+        contactPersonName: null,
+        paymentTerms: null,
+        invoiceAddress: null,
+        invoiceEmailAddress: null,
+      },
+      {
+        customerId: 'cust-002',
+        customerName: '取引先B',
+        status: 'active',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+        customerNameKana: null,
+        customerCategory: null,
+        postalCode: null,
+        address: null,
+        phoneNumber: null,
+        emailAddress: null,
+        contactPersonName: null,
+        paymentTerms: null,
+        invoiceAddress: null,
+        invoiceEmailAddress: null,
+      },
+      {
+        customerId: 'cust-test-001',
+        customerName: 'テスト取引先',
+        status: 'active',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+        customerNameKana: null,
+        customerCategory: null,
+        postalCode: null,
+        address: null,
+        phoneNumber: null,
+        emailAddress: null,
+        contactPersonName: null,
+        paymentTerms: null,
+        invoiceAddress: null,
+        invoiceEmailAddress: null,
+      },
+    ];
+
+    const mockDeals = [
+      {
+        dealId: 'deal-001',
+        dealName: '商談A',
+        customerId: 'cust-001',
+        stageId: 'stage-closed',
+        dealAmount: 100000,
+        status: '成約済み',
+        stage: 'stage-closed',
+        salesRepresentativeId: 'SR-001',
+        expectedContractDate: '2024-01-15',
+        createdAt: '2024-01-15T00:00:00Z',
+        updatedAt: '2024-01-15T00:00:00Z',
+        createdBy: 'USER-001',
+        invoiceSLAExceededFlag: false,
+        contractedDate: '2024-01-15',
+        description: null,
+        lossReason: null,
+        invoiceGenerationSLADeadline: null,
+      },
+      {
+        dealId: 'deal-002',
+        dealName: '商談B',
+        customerId: 'cust-002',
+        stageId: 'stage-closed',
+        dealAmount: 250000,
+        status: '成約済み',
+        stage: 'stage-closed',
+        salesRepresentativeId: 'SR-002',
+        expectedContractDate: '2024-01-20',
+        createdAt: '2024-01-20T00:00:00Z',
+        updatedAt: '2024-01-20T00:00:00Z',
+        createdBy: 'USER-002',
+        invoiceSLAExceededFlag: false,
+        contractedDate: '2024-01-20',
+        description: null,
+        lossReason: null,
+        invoiceGenerationSLADeadline: null,
+      },
+      {
+        dealId: 'deal-cancel-001',
+        dealName: '商談C',
+        customerId: 'cust-001',
+        stageId: 'stage-cancelled',
+        dealAmount: 50000,
+        status: 'キャンセル済み',
+        stage: 'stage-cancelled',
+        salesRepresentativeId: 'SR-001',
+        expectedContractDate: '2024-01-10',
+        createdAt: '2024-01-10T00:00:00Z',
+        updatedAt: '2024-01-10T00:00:00Z',
+        createdBy: 'USER-001',
+        invoiceSLAExceededFlag: false,
+        contractedDate: null,
+        description: null,
+        lossReason: 'not interested',
+        invoiceGenerationSLADeadline: null,
+      },
+    ];
+
+    const mockInvoices = [
+      {
+        invoiceId: 'inv-001',
+        dealId: 'deal-001',
+        amount: 100000,
+        status: 'issued',
+        customerId: 'cust-001',
+        salesRepresentativeId: 'SR-001',
+        invoiceNumber: 'INV-001',
+        invoiceDate: '2024-01-15',
+        dueDate: '2024-02-14',
+        taxAmount: 0,
+        untaxedAmount: 100000,
+        paidDate: null,
+        paidAmount: null,
+        remarks: null,
+        modificationReason: null,
+        reissueCount: 0,
+        lastReissuedAt: null,
+        amountCalculationVerificationStatus: 'verified',
+        referenceIntegrityVerificationStatus: 'verified',
+        createdAt: '2024-01-15T00:00:00Z',
+        updatedAt: '2024-01-15T00:00:00Z',
+        createdBy: 'USER-001',
+      },
+      {
+        invoiceId: 'inv-002',
+        dealId: 'deal-002',
+        amount: 250000,
+        status: 'issued',
+        customerId: 'cust-002',
+        salesRepresentativeId: 'SR-002',
+        invoiceNumber: 'INV-002',
+        invoiceDate: '2024-01-20',
+        dueDate: '2024-02-19',
+        taxAmount: 0,
+        untaxedAmount: 250000,
+        paidDate: null,
+        paidAmount: null,
+        remarks: null,
+        modificationReason: null,
+        reissueCount: 0,
+        lastReissuedAt: null,
+        amountCalculationVerificationStatus: 'verified',
+        referenceIntegrityVerificationStatus: 'verified',
+        createdAt: '2024-01-20T00:00:00Z',
+        updatedAt: '2024-01-20T00:00:00Z',
+        createdBy: 'USER-002',
+      },
+      {
+        invoiceId: 'inv-003',
+        dealId: 'deal-cancel-001',
+        amount: 50000,
+        status: 'cancelled',
+        customerId: 'cust-001',
+        salesRepresentativeId: 'SR-001',
+        invoiceNumber: 'INV-003',
+        invoiceDate: '2024-01-10',
+        dueDate: '2024-02-09',
+        taxAmount: 0,
+        untaxedAmount: 50000,
+        paidDate: null,
+        paidAmount: null,
+        remarks: null,
+        modificationReason: null,
+        reissueCount: 0,
+        lastReissuedAt: null,
+        amountCalculationVerificationStatus: 'verified',
+        referenceIntegrityVerificationStatus: 'verified',
+        createdAt: '2024-01-10T00:00:00Z',
+        updatedAt: '2024-01-10T00:00:00Z',
+        createdBy: 'USER-001',
+      },
+    ];
+
+    const mockStages = [
+      {
+        stageId: 'stage-open',
+        stageName: 'オープン',
+        sequenceNumber: 1,
+        stageOrder: 1,
+        contractedStageFlag: false,
+        lossStageFlag: false,
+        validFlag: true,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+        description: null,
+      },
+      {
+        stageId: 'stage-progress',
+        stageName: '進行中',
+        sequenceNumber: 2,
+        stageOrder: 2,
+        contractedStageFlag: false,
+        lossStageFlag: false,
+        validFlag: true,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+        description: null,
+      },
+      {
+        stageId: 'stage-closed',
+        stageName: '成約済み',
+        sequenceNumber: 3,
+        stageOrder: 3,
+        contractedStageFlag: true,
+        lossStageFlag: false,
+        validFlag: true,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+        description: null,
+      },
+      {
+        stageId: 'stage-cancelled',
+        stageName: 'キャンセル済み',
+        sequenceNumber: 4,
+        stageOrder: 4,
+        contractedStageFlag: false,
+        lossStageFlag: false,
+        validFlag: true,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+        description: null,
+      },
+    ];
+
+    const mockRules = [
+      {
+        validationRuleId: 'rule-deal-invoice-mapping',
+        ruleName: '商談と請求書の紐付け確認',
+        validationLogic: 'dealId必須、金額一致',
+        ruleDescription: '商談と請求書の紐付け確認',
+        targetTable: 'invoices',
+        targetColumn: 'dealId',
+        validationType: 'foreign_key',
+        validationCondition: 'dealId IS NOT NULL',
+        errorMessage: 'deal not found',
+        warningLevel: 'error',
+        validFlag: true,
+        applicationStartDate: '2024-01-01',
+        applicationEndDate: null,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+      },
+      {
+        validationRuleId: 'rule-amount-consistency',
+        ruleName: '金額一致確認',
+        validationLogic: '請求書明細の合計が請求書額と一致',
+        ruleDescription: '金額一致確認',
+        targetTable: 'invoices',
+        targetColumn: 'amount',
+        validationType: 'amount_match',
+        validationCondition: 'amount = dealAmount',
+        errorMessage: 'amount mismatch',
+        warningLevel: 'error',
+        validFlag: true,
+        applicationStartDate: '2024-01-01',
+        applicationEndDate: null,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+      },
+      {
+        validationRuleId: 'rule-test-data-exclusion',
+        ruleName: 'テストデータ除外',
+        validationLogic: 'テスト対象外のレコード除外',
+        ruleDescription: 'テストデータ除外',
+        targetTable: 'customers',
+        targetColumn: 'name',
+        validationType: 'exclusion',
+        validationCondition: "name NOT LIKE '%test%'",
+        errorMessage: 'test record excluded',
+        warningLevel: 'warning',
+        validFlag: true,
+        applicationStartDate: '2024-01-01',
+        applicationEndDate: null,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        createdBy: 'ADMIN',
+        updatedBy: 'ADMIN',
+      },
+    ];
+
+    (dataPersistence.fetchAllCustomers as jest.Mock).mockResolvedValue({
+      customers: mockCustomers,
+      totalCount: 3,
+      fetchedAt: '2024-02-01T09:00:00Z',
+    });
+
+    (dataPersistence.fetchDealsForPeriod as jest.Mock).mockResolvedValue({
+      deals: mockDeals,
+      totalCount: 3,
+      fetchedAt: '2024-02-01T09:00:00Z',
+    });
+
+    (dataPersistence.fetchInvoicesForPeriod as jest.Mock).mockResolvedValue({
+      invoices: mockInvoices,
+      totalCount: 3,
+      fetchedAt: '2024-02-01T09:00:00Z',
+    });
+
+    (dataPersistence.fetchAllDealStages as jest.Mock).mockResolvedValue({
+      stages: mockStages,
+      totalCount: 4,
+      fetchedAt: '2024-02-01T09:00:00Z',
+    });
+
+    (dataPersistence.fetchAllValidationRules as jest.Mock).mockResolvedValue({
+      validationRules: mockRules,
+      totalCount: 3,
+      fetchedAt: '2024-02-01T09:00:00Z',
+    });
+
+    const result = await prepareMonthlyClosing({
+      closingInstructionId: 'instr-20240131-001',
+      targetMonth: '2024-01',
+      operatorUserId: 'user-sales-operator-001',
+      executionTimestamp: new Date('2024-02-01T09:00:00Z'),
+    });
+
+    expect(result).toBeDefined();
+    expect(result.closingPeriod).toBeDefined();
+    expect(result.closingPeriod.periodStartDate).toEqual(new Date('2024-01-01'));
+    expect(result.closingPeriod.periodEndDate).toEqual(new Date('2024-01-31'));
+    expect(result.extractionScope).toBeDefined();
+    expect(result.extractionScope.extractionObjects).toBeDefined();
+    expect(result.extractionScope.extractionObjects.length).toBeGreaterThan(0);
+    expect(result.extractionScope.exclusionRules).toBeDefined();
+    expect(result.extractionScope.dataIntegrityCheckpoints).toBeDefined();
+    expect(result.extractionCriteria).toBeDefined();
+    expect(result.readyForExtraction).toBe(true);
+    expect(result.preparationCompletedAt).toEqual(new Date('2024-02-01T09:00:00Z'));
+  });
+});

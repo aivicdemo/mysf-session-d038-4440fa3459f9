@@ -1,7 +1,7 @@
 name: AIVIC Auto Test
 on:
   push:
-    branches: [dev]
+    branches: [stage]
   workflow_dispatch: {}
 
 jobs:
