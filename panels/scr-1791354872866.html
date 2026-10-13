@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ja">
-<head>
+<head><script data-aivic-auth-config>window.AIVIC_AUTH = {"region":"us-east-1","userPoolId":"us-east-1_3rXZRVVWI","clientId":"69c58vqgglavkcn3dhvrv25nvb","appId":"stage-d038b63d-48c8-4bc4-8922-bd33c55dc9b3"};window.AIVIC_GATEWAY_URL = "https://5r36haozsl464asvq4tcglhgh40mhkwt.lambda-url.us-east-1.on.aws";</script><script data-aivic-auth-runtime src="../auth/aivic-auth.js"></script>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MySF - 移行期間データ整合性検証・監視システム</title>
@@ -262,7 +263,8 @@ body {
   </style>
 <script>
 window.AIVIC_API_URL = "https://jqykrkgdvngp7qvmavufg5tohq0xwdzb.lambda-url.us-east-1.on.aws/";
-window.AIVIC_APP_ID = "session-d038b63d-48c8-4bc4-8922-bd33c55dc9b3";
+window.AIVIC_APP_ID = "stage-d038b63d-48c8-4bc4-8922-bd33c55dc9b3";
+window.AIVIC_DB_TYPE = "aurora_postgresql";
 window.AIVIC_APPLICATION_NAME = "MySF";
 window.AIVIC_SYSTEM_NAME = "移行期間データ整合性検証・監視システム";
 window.AIVIC_TABLES = [{"tableName":"ユーザー","purpose":"営業プロセス・請求データ統合管理システムのユーザー認証・権限管理・プロフィール情報を一元管理するマスタテーブル","columns":[{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーの一意識別子"},{"name":"ログインID","type":"varchar(100)","required":true,"description":"ログイン時に使用するユーザー識別名、システム内で一意"},{"name":"パスワードハッシュ","type":"varchar(255)","required":true,"description":"暗号化されたパスワード"},{"name":"ユーザー名","type":"varchar(100)","required":true,"description":"ユーザーの表示名"},{"name":"メールアドレス","type":"varchar(100)","required":true,"description":"ユーザーのメールアドレス、連絡先として使用"},{"name":"ロール","type":"varchar(50)","required":true,"description":"ユーザーの権限ロール（管理者、営業担当者、請求担当者等）"},{"name":"営業担当者ID","type":"uuid","required":false,"description":"営業担当者テーブルへの外部キー、営業担当者の場合のみ設定"},{"name":"有効フラグ","type":"boolean","required":true,"description":"ユーザーのアクティブ状態、falseの場合はログイン不可"},{"name":"最終ログイン日時","type":"timestamp","required":false,"description":"ユーザーが最後にログインした日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"ユーザーレコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ユーザーレコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザーレコードを作成したユーザーID"}]},{"tableName":"旧システム請求書","purpose":"旧システムから移行される請求書データを保持し、データ整合性検証・監視システムにおいて新システムとの照合・検証対象となるマスタテーブル","columns":[{"name":"請求書ID","type":"varchar(100)","required":true,"description":"旧システムにおける請求書の一意識別子"},{"name":"ユーザーID","type":"varchar(100)","required":true,"description":"請求書に関連するユーザーの識別子"},{"name":"請求書番号","type":"varchar(100)","required":true,"description":"旧システムで管理される請求書番号"},{"name":"請求日","type":"timestamp","required":true,"description":"請求書の発行日"},{"name":"請求金額","type":"integer","required":true,"description":"請求書の合計金額（単位：円）"},{"name":"税金額","type":"integer","required":true,"description":"請求書に含まれる税金額（単位：円）"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"請求書のステータス（未請求、請求済、支払済等）"},{"name":"支払期限日","type":"timestamp","required":false,"description":"請求書の支払期限日"},{"name":"摘要","type":"text","required":false,"description":"請求書の摘要・備考"},{"name":"作成日時","type":"timestamp","required":true,"description":"旧システムにおける請求書作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"旧システムにおける請求書最終更新日時"},{"name":"検証ステータス","type":"varchar(100)","required":true,"description":"移行検証ステータス（未検証、検証済、不一致等）"},{"name":"検証日時","type":"timestamp","required":false,"description":"データ整合性検証が実施された日時"}]}];

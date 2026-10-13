@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="ja">
+<head><script data-aivic-auth-config>window.AIVIC_AUTH = {"region":"us-east-1","userPoolId":"us-east-1_3rXZRVVWI","clientId":"69c58vqgglavkcn3dhvrv25nvb","appId":"stage-d038b63d-48c8-4bc4-8922-bd33c55dc9b3"};window.AIVIC_GATEWAY_URL = "https://5r36haozsl464asvq4tcglhgh40mhkwt.lambda-url.us-east-1.on.aws";</script><script data-aivic-auth-runtime src="./auth/aivic-auth.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>営業プロセス・請求データ統合管理システム - 設定</title>
+  <style>
+    :root {
+      /* Salesforce カラーパレット：深い藍と銀白、洗練された企業向けデザイン */
+      /* 明るいテーマ基調で、Salesforceの信頼感と効率性を表現 */
+      
+      /* プライマリカラー：Salesforce標準の深い藍 */
+      --primary: #0070d2;
+      --primary-hover: #0056b3;
+      
+      /* 背景色：クリーンな白ベースに微かな藍の色相を保持 */
+      --bg-main: #f7f9fc;
+      --bg-card: #ffffff;
+      --bg-sidebar: #f3f6fb;
+      
+      /* ボーダー：Salesforceの洗練された細い線 */
+      --border: #d3dce6;
+      --border-width: 1px;
+      
+      /* テキスト：高コントラストの濃紺 */
+      --text: #16325c;
+      --text-muted: #576d7b;
+      
+      /* トップバー：Salesforce標準の濃紺ヘッダー */
+      --top-bar-bg: #0b5394;
+      --top-bar-border: #054098;
+      --top-bar-text: #ffffff;
+      
+      /* タイポグラフィ：Salesforceの標準フォントスタック */
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Salesforce Sans', sans-serif;
+      
+      /* 角丸：Salesforceの控えめで洗練された角丸 */
+      --radius-card: 4px;
+      --radius-control: 3px;
+      
+      /* シャドウ：Salesforceの微妙で奥行きのある影 */
+      --shadow-card: 0 2px 4px rgba(11, 83, 148, 0.08), 0 1px 2px rgba(11, 83, 148, 0.04);
+      
+      /* コントロール寸法：Salesforceの標準的なコンパクト設計 */
+      --control-height: 32px;
+      --space-unit: 8px;
+      
+      /* アニメーション：Salesforceの洗練された動き */
+      --motion-duration: 200ms;
+      
+      /* 質感：Salesforceの企業向けシステムの信頼感を表現する微細なテクスチャ */
+      /* 薄い格子パターンで、データ管理システムの秩序感を表現 */
+      --surface-texture: linear-gradient(90deg, rgba(0, 112, 210, 0.02) 1px, transparent 1px),
+                         linear-gradient(rgba(0, 112, 210, 0.02) 1px, transparent 1px);
+      --surface-texture-size: 16px 16px;
+      --surface-texture-position: 0 0;
+    }
+
+    [hidden] { display: none !important; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      background-color: var(--bg-main);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    body {
+      background-image: var(--surface-texture);
+      background-size: var(--surface-texture-size);
+      background-position: var(--surface-texture-position);
+    }
+
+    header {
+      background-color: var(--top-bar-bg);
+      border-bottom: var(--border-width) solid var(--top-bar-border);
+      padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+      box-shadow: var(--shadow-card);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--top-bar-text);
+    }
+
+    header p {
+      margin: calc(var(--space-unit) * 0.5) 0 0 0;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 2);
+    }
+
+    section {
+      margin-bottom: calc(var(--space-unit) * 4);
+    }
+
+    h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0 0 calc(var(--space-unit) * 2) 0;
+      color: var(--text);
+      border-bottom: var(--border-width) solid var(--border);
+      padding-bottom: calc(var(--space-unit) * 1.5);
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 calc(var(--space-unit) * 1) 0;
+      color: var(--text);
+    }
+
+    p {
+      margin: 0 0 calc(var(--space-unit) * 1.5) 0;
+      font-size: 0.9375rem;
+    }
+
+    /* メッセージ */
+    .aivic-message {
+      padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+      border-radius: var(--radius-card);
+      background-color: #e8f4fd;
+      border: var(--border-width) solid #b3d9f2;
+      color: #0b5394;
+      font-size: 0.9375rem;
+      margin-bottom: calc(var(--space-unit) * 2);
+    }
+
+    .aivic-message.is-error {
+      background-color: #fef2f1;
+      border-color: #f3c3c1;
+      color: #c23b22;
+    }
+
+    /* 連携先のカード */
+    .aivic-card {
+      background-color: var(--bg-card);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-card);
+      padding: calc(var(--space-unit) * 2.5);
+      margin-bottom: calc(var(--space-unit) * 2);
+      box-shadow: var(--shadow-card);
+    }
+
+    .aivic-card-title {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      margin: 0 0 calc(var(--space-unit) * 1) 0;
+      color: var(--text);
+    }
+
+    .aivic-card-purpose {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      margin: 0 0 calc(var(--space-unit) * 1) 0;
+    }
+
+    .aivic-card-scope {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin: 0 0 calc(var(--space-unit) * 1.5) 0;
+      padding: calc(var(--space-unit) * 1) calc(var(--space-unit) * 1.5);
+      background-color: var(--bg-sidebar);
+      border-radius: var(--radius-control);
+      border-left: 3px solid var(--primary);
+    }
+
+    /* 接続状態 */
+    .aivic-status {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      margin: 0 0 calc(var(--space-unit) * 2) 0;
+      padding: calc(var(--space-unit) * 1) calc(var(--space-unit) * 1.5);
+      border-radius: var(--radius-control);
+      background-color: #fef2f1;
+      color: #c23b22;
+      border: var(--border-width) solid #f3c3c1;
+    }
+
+    .aivic-status.is-connected {
+      background-color: #ecf6f3;
+      color: #2e7d6e;
+      border-color: #b3dfd6;
+    }
+
+    /* 設定フォーム */
+    .aivic-connection-form {
+      margin-top: calc(var(--space-unit) * 2);
+      padding-top: calc(var(--space-unit) * 2);
+      border-top: var(--border-width) solid var(--border);
+    }
+
+    .aivic-hint {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: calc(var(--space-unit) * 1.5);
+    }
+
+    .aivic-redirect-uri {
+      display: block;
+      width: 100%;
+      padding: calc(var(--space-unit) * 1.5);
+      margin-bottom: calc(var(--space-unit) * 2);
+      background-color: var(--bg-sidebar);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-control);
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.8125rem;
+      color: var(--text);
+      word-break: break-all;
+      overflow-wrap: break-word;
+    }
+
+    .aivic-field {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: calc(var(--space-unit) * 1.5);
+      cursor: pointer;
+    }
+
+    .aivic-field-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: calc(var(--space-unit) * 0.5);
+    }
+
+    .aivic-input {
+      padding: calc(var(--space-unit) * 1) calc(var(--space-unit) * 1.5);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-control);
+      font-family: var(--font-family);
+      font-size: 0.9375rem;
+      color: var(--text);
+      background-color: var(--bg-card);
+      transition: border-color var(--motion-duration), box-shadow var(--motion-duration);
+    }
+
+    .aivic-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 112, 210, 0.1);
+    }
+
+    .aivic-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ボタン */
+    .aivic-button {
+      padding: calc(var(--space-unit) * 1) calc(var(--space-unit) * 2);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-control);
+      background-color: var(--bg-card);
+      color: var(--text);
+      font-family: var(--font-family);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--motion-duration);
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .aivic-button:hover {
+      background-color: var(--bg-sidebar);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .aivic-button:active {
+      transform: translateY(1px);
+    }
+
+    .aivic-button.is-primary {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .aivic-button.is-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+
+    /* カードアクション */
+    .aivic-card-actions {
+      display: flex;
+      gap: calc(var(--space-unit) * 1);
+      flex-wrap: wrap;
+      margin-top: calc(var(--space-unit) * 2);
+      padding-top: calc(var(--space-unit) * 2);
+      border-top: var(--border-width) solid var(--border);
+    }
+
+    .aivic-card-actions .aivic-button {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    /* 利用者の行 */
+    .aivic-user-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: calc(var(--space-unit) * 2);
+      align-items: center;
+      padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+      background-color: var(--bg-card);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-card);
+      margin-bottom: calc(var(--space-unit) * 1);
+    }
+
+    .aivic-user-email {
+      font-size: 0.9375rem;
+      color: var(--text);
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    .aivic-user-role {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .aivic-user-status {
+      font-size: 0.875rem;
+      padding: calc(var(--space-unit) * 0.5) calc(var(--space-unit) * 1);
+      border-radius: var(--radius-control);
+      background-color: #ecf6f3;
+      color: #2e7d6e;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    /* 招待フォーム */
+    #aivic-invite-form {
+      background-color: var(--bg-card);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-card);
+      padding: calc(var(--space-unit) * 2.5);
+      margin-top: calc(var(--space-unit) * 2);
+    }
+
+    #aivic-invite-form .aivic-field {
+      margin-bottom: calc(var(--space-unit) * 2);
+    }
+
+    #aivic-invite-form .aivic-field input[type="email"] {
+      width: 100%;
+    }
+
+    #aivic-invite-form .aivic-field input[type="checkbox"] {
+      width: auto;
+      margin-right: calc(var(--space-unit) * 1);
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    #aivic-invite-form .aivic-field label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    #aivic-invite-form button[type="submit"] {
+      width: 100%;
+    }
+
+    /* 空の状態 */
+    .aivic-empty {
+      text-align: center;
+      padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 2);
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+      background-color: var(--bg-sidebar);
+      border-radius: var(--radius-card);
+      border: var(--border-width) dashed var(--border);
+    }
+
+    /* フッター */
+    footer {
+      text-align: center;
+      padding: calc(var(--space-unit) * 2);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      border-top: var(--border-width) solid var(--border);
+      margin-top: calc(var(--space-unit) * 4);
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color var(--motion-duration);
+    }
+
+    footer a:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 600px) {
+      main {
+        padding: calc(var(--space-unit) * 2) calc(var(--space-unit) * 1.5);
+      }
+
+      .aivic-card {
+        padding: calc(var(--space-unit) * 2);
+      }
+
+      .aivic-user-row {
+        grid-template-columns: 1fr;
+        gap: calc(var(--space-unit) * 1);
+      }
+
+      .aivic-user-role,
+      .aivic-user-status {
+        text-align: left;
+      }
+
+      .aivic-card-actions {
+        flex-direction: column;
+      }
+
+      .aivic-card-actions .aivic-button {
+        width: 100%;
+      }
+
+      #aivic-invite-form button[type="submit"] {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 data-testid="settings-title">設定</h1>
+    <p>ログイン中: <span id="aivic-current-user"></span></p>
+  </header>
+
+  <main>
+    <section>
+      <h2>外部サービス連携</h2>
+      <p id="aivic-connections-message" role="status" hidden></p>
+      <div id="aivic-connections-list"></div>
+    </section>
+
+    <section id="aivic-users-section" hidden>
+      <h2>利用者の管理</h2>
+      <div id="aivic-users-list"></div>
+
+      <form id="aivic-invite-form" novalidate>
+        <h3>新しい利用者を招待</h3>
+        <label class="aivic-field">
+          <span class="aivic-field-label">メールアドレス</span>
+          <input type="email" id="aivic-invite-email" data-testid="invite-email" required>
+        </label>
+        <label class="aivic-field">
+          <input type="checkbox" id="aivic-invite-admin" data-testid="invite-admin">
+          <span class="aivic-field-label">管理者にする</span>
+        </label>
+        <button type="submit" class="aivic-button is-primary" data-testid="invite-button">招待する</button>
+        <p id="aivic-invite-message" role="status" hidden></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <a id="aivic-back-link">アプリに戻る</a>
+  </footer>
+
+  <script src="./auth/aivic-settings.js"></script>
+  <script>
+(function () {
+  var settings = window.aivicSettings;
+  var FIELD_LABELS = {
+    authorizeUrl: "同意画面の URL",
+    tokenUrl: "通行証を受け取る URL",
+    apiBaseUrl: "接続先の URL",
+    clientId: "連携先が発行した ID",
+    clientSecret: "連携先が発行した秘密の値",
+  };
+  function byId(id) { return document.getElementById(id); }
+  function make(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function message(target, text, isError) {
+    target.textContent = text;
+    target.className = "aivic-message" + (isError ? " is-error" : "");
+    target.hidden = !text;
+  }
+  function renderUsers() {
+    settings.listUsers().then(function (users) {
+      var list = byId("aivic-users-list");
+      list.innerHTML = "";
+      users.forEach(function (user) {
+        var row = make("div", "aivic-user-row");
+        row.appendChild(make("span", "aivic-user-email", user.email));
+        row.appendChild(make("span", "aivic-user-role", user.isAdmin ? "管理者" : "利用者"));
+        row.appendChild(make("span", "aivic-user-status", user.status === "CONFIRMED" ? "利用中" : "招待中"));
+        list.appendChild(row);
+      });
+    }).catch(function (error) { message(byId("aivic-invite-message"), error.message, true); });
+  }
+  function renderConnections() {
+    var note = byId("aivic-connections-message");
+    settings.listConnections().then(function (connections) {
+      var list = byId("aivic-connections-list");
+      list.innerHTML = "";
+      if (connections.length === 0) {
+        list.appendChild(make("p", "aivic-empty", "このアプリが連携する外部サービスはありません。"));
+        return;
+      }
+      connections.forEach(function (connection) {
+        var card = make("section", "aivic-card");
+        card.setAttribute("data-connection-id", connection.connectionId);
+        card.appendChild(make("h3", "aivic-card-title", connection.providerName));
+        card.appendChild(make("p", "aivic-card-purpose", connection.businessPurpose));
+        card.appendChild(make("p", "aivic-card-scope", connection.ownerScope === "company"
+          ? "会社として 1 つの接続（管理者が接続し、全員が使います）"
+          : "利用者ごとの接続（各自が自分のアカウントで接続します）"));
+        var status = make("p", "aivic-status" + (connection.connected ? " is-connected" : ""),
+          connection.connected
+            ? "接続済み" + (connection.connectedBy ? "（" + connection.connectedBy + "）" : "")
+            : connection.missing.length > 0 ? "設定が足りません" : "未接続");
+        status.setAttribute("data-testid", "connection-status");
+        card.appendChild(status);
+        if (connection.canConfigure) {
+          var form = make("form", "aivic-connection-form");
+          form.appendChild(make("p", "aivic-hint", "連携先の管理画面でアプリを登録し、戻り先 URL に次の値を登録してください。"));
+          var redirect = make("code", "aivic-redirect-uri", connection.redirectUri);
+          redirect.setAttribute("data-testid", "redirect-uri");
+          form.appendChild(redirect);
+          ["clientId", "clientSecret", "authorizeUrl", "tokenUrl", "apiBaseUrl"].forEach(function (field) {
+            if (field === "authorizeUrl" && connection.grantType !== "authorization_code") return;
+            var wrapper = make("label", "aivic-field");
+            wrapper.appendChild(make("span", "aivic-field-label", FIELD_LABELS[field]));
+            var input = make("input", "aivic-input");
+            input.name = field;
+            input.type = field === "clientSecret" ? "password" : "text";
+            input.setAttribute("data-testid", "connection-" + field);
+            if (field === "clientId") input.placeholder = connection.hasClientId ? "入力済み（変えるときだけ入力）" : "";
+            else if (field === "clientSecret") input.placeholder = connection.hasClientSecret ? "入力済み（変えるときだけ入力）" : "";
+            else input.value = connection[field] || "";
+            wrapper.appendChild(input);
+            form.appendChild(wrapper);
+          });
+          var save = make("button", "aivic-button", "設定を保存");
+          save.type = "submit";
+          save.setAttribute("data-testid", "connection-save");
+          form.appendChild(save);
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var values = {};
+            Array.prototype.forEach.call(form.querySelectorAll("input"), function (input) {
+              if (input.value) values[input.name] = input.value;
+            });
+            settings.saveConnectionSettings(connection.connectionId, values).then(function () {
+              message(note, "「" + connection.providerName + "」の設定を保存しました。", false);
+              renderConnections();
+            }).catch(function (error) { message(note, error.message, true); });
+          });
+          card.appendChild(form);
+        }
+        var actions = make("div", "aivic-card-actions");
+        if (connection.canConnect) {
+          var connect = make("button", "aivic-button is-primary", connection.connected ? "接続し直す" : "接続する");
+          connect.type = "button";
+          connect.setAttribute("data-testid", "connection-connect");
+          connect.addEventListener("click", function () {
+            settings.connect(connection.connectionId).then(function (result) {
+              if (result.status === "connected") {
+                message(note, "「" + connection.providerName + "」と接続しました。", false);
+                renderConnections();
+              }
+            }).catch(function (error) { message(note, error.message, true); });
+          });
+          actions.appendChild(connect);
+        } else if (!connection.connected) {
+          actions.appendChild(make("p", "aivic-hint", connection.missing.length > 0
+            ? "管理者が設定を入力すると接続できます。"
+            : "この接続は管理者が行います。"));
+        }
+        if (connection.connected && (connection.ownerScope === "user" || connection.canConfigure)) {
+          var disconnect = make("button", "aivic-button", "接続を解除");
+          disconnect.type = "button";
+          disconnect.setAttribute("data-testid", "connection-disconnect");
+          disconnect.addEventListener("click", function () {
+            settings.disconnect(connection.connectionId).then(function () {
+              message(note, "「" + connection.providerName + "」との接続を解除しました。", false);
+              renderConnections();
+            }).catch(function (error) { message(note, error.message, true); });
+          });
+          actions.appendChild(disconnect);
+        }
+        card.appendChild(actions);
+        list.appendChild(card);
+      });
+    }).catch(function (error) { message(note, error.message, true); });
+  }
+  var returned = settings.connectionResult();
+  if (returned) {
+    message(byId("aivic-connections-message"), returned.result === "connected"
+      ? "外部サービスと接続しました。"
+      : "外部サービスと接続できませんでした。" + (returned.detail ? "（" + returned.detail + "）" : ""), returned.result !== "connected");
+    window.history.replaceState(null, "", window.location.pathname);
+  }
+  byId("aivic-users-section").hidden = true;
+  settings.me().then(function (me) {
+    byId("aivic-current-user").textContent = me.email;
+    if (me.isAdmin) {
+      byId("aivic-users-section").hidden = false;
+      renderUsers();
+    }
+  }).catch(function (error) { message(byId("aivic-connections-message"), error.message, true); });
+  byId("aivic-invite-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    var email = byId("aivic-invite-email").value;
+    var isAdmin = byId("aivic-invite-admin").checked;
+    settings.inviteUser(email, isAdmin).then(function () {
+      message(byId("aivic-invite-message"), email + " に招待のメールを送りました。", false);
+      byId("aivic-invite-email").value = "";
+      renderUsers();
+    }).catch(function (error) { message(byId("aivic-invite-message"), error.message, true); });
+  });
+  byId("aivic-back-link").setAttribute("href", "./index.html");
+  renderConnections();
+})();
+  </script>
+</body>
+</html>
