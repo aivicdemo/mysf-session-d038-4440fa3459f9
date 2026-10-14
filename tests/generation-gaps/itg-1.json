@@ -1,25 +1,11 @@
 {
   "skippedCodeFiles": [
     {
-      "item": "jest1:SCEN-207:itg-1:営業プロセス・請求データ統合管理システム",
-      "fileLabel": "営業プロセス・請求データ統合管理システム",
-      "errorMessage": "「営業プロセス・請求データ統合管理システム」のテストコードは、書き方の決まり（対象の処理を実際に呼ぶ・他モジュールのモックで実物を残す・接続先を書かない）に合っていません。未生成として記録し、次へ進みます。\njest.mock(\"../../src/logic/data-persistence\", ...) の差し替え関数が実物を展開していません。業務エラーのクラスや他の処理が消えるため、先頭に ...jest.requireActual<typeof import(\"../../src/logic/data-persistence\")>(\"../../src/logic/data-persistence\") を入れます",
-      "attempts": 3,
-      "jobId": "8d2fe12c-fd7e-421f-a6f3-d00f37f1fbf0"
-    },
-    {
-      "item": "jest1:SCEN-213:itg-1:営業プロセス・請求データ統合管理システム",
-      "fileLabel": "営業プロセス・請求データ統合管理システム",
-      "errorMessage": "「営業プロセス・請求データ統合管理システム」のテストコードは、書き方の決まり（対象の処理を実際に呼ぶ・他モジュールのモックで実物を残す・接続先を書かない）に合っていません。未生成として記録し、次へ進みます。\njest.mock(\"../../src/logic/data-persistence\", ...) の差し替え関数が実物を展開していません。業務エラーのクラスや他の処理が消えるため、先頭に ...jest.requireActual<typeof import(\"../../src/logic/data-persistence\")>(\"../../src/logic/data-persistence\") を入れます",
-      "attempts": 3,
-      "jobId": "8d2fe12c-fd7e-421f-a6f3-d00f37f1fbf0"
-    },
-    {
       "item": "jest1:SCEN-425:itg-1:営業プロセス・請求データ統合管理システム",
       "fileLabel": "営業プロセス・請求データ統合管理システム",
       "errorMessage": "「営業プロセス・請求データ統合管理システム」のテストコードが作成されませんでした。未生成として記録し、次へ進みます。",
       "attempts": 3,
-      "jobId": "8d2fe12c-fd7e-421f-a6f3-d00f37f1fbf0"
+      "jobId": "71e779d5-5b00-4e1a-9410-b86ed1fe59e1"
     }
   ]
 }
