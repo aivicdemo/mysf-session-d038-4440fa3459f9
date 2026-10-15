@@ -1,11 +1,3 @@
 {
-  "skippedCodeFiles": [
-    {
-      "item": "jest1:SCEN-425:itg-1:営業プロセス・請求データ統合管理システム",
-      "fileLabel": "営業プロセス・請求データ統合管理システム",
-      "errorMessage": "「営業プロセス・請求データ統合管理システム」のテストコードが作成されませんでした。未生成として記録し、次へ進みます。",
-      "attempts": 3,
-      "jobId": "14fcc48f-fd4b-4bc6-abcc-844fed071eac"
-    }
-  ]
+  "skippedCodeFiles": []
 }
